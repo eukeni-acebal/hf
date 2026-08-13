@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -41,14 +44,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-946b8259dbb7e15e23be5cfe10679035.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8844d5f7d9f77201dfdabae81953214c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -79,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="../theme/print.css">
+<link rel="stylesheet" href="../../quarto-theme/print.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -270,6 +273,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
 </div>
     </div>
@@ -505,7 +509,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Tema 21 · Beauvoir y el pensamiento feminista · saberes fase 2: C9.2 §76, C9.1 §77, C9.2 (aportaciones de Beauvoir) §77 · Redactado (fase 5): entradilla + §76-§77 (completo). ~3.770 palabras; recuento de páginas pendiente (no compila en sandbox). · DECISIÓN Eukeni 2026-06-22: orden invertido respecto al índice previo —§76 = las olas (contextual, no central, ~1.020 pal.) y §77 = Beauvoir (central, a fondo, ~2.415 pal.)— por lógica cronológica y narrativa (el movimiento como marco, luego la figura). La ética de la ambigüedad (viejo §47) se desarrolla con amplitud como base filosófica de la alteridad; la vejez (viejo §48) integrada como párrafo de prosa (NO recuadro/blockquote, a petición de Eukeni); aportaciones de Beauvoir (feminismo existencialista, sororidad, Manifiesto de las 343) en §77. Cantera: viejo §44-§49 (Beauvoir y feminismo = el tramo más fuerte del manual viejo). Único retrato: Beauvoir (placeholder gris, aviso de licencia; figura del s. XX, no DP). Las ilustradas (Wollstonecraft, Gouges) por remisión a §49; Butler (tercera ola) redactada en §76, referenciada desde §79. -->
 <section id="para-entrar-en-beauvoir-y-el-pensamiento-feminista" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-beauvoir-y-el-pensamiento-feminista">Para entrar en Beauvoir y el pensamiento feminista</h2>
 <p>El tema anterior se cerró con una advertencia posmoderna: desconfiar de quien dice hablar en nombre de la Razón con mayúscula, porque tras lo que cada época proclama «universal» suelen esconderse intereses particulares (<a href="tema-20.html#sec-75">§75</a>). Pues bien, hay un caso donde esa sospecha da en el blanco con una nitidez incómoda. Durante casi toda la historia de la filosofía, lo que se llamó «el ser humano», «el ciudadano» o «el Hombre» se pensó, calladamente, en masculino, y dejó fuera —o en segundo plano— a la mitad de la humanidad: las mujeres. Sacar a la luz esa exclusión, mostrar que no era natural sino fabricada, y reclamar la igual dignidad de las mujeres es uno de los grandes acontecimientos del pensamiento de los siglos XIX y XX. Ese es el asunto de este tema.</p>
@@ -684,7 +687,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/eukeni-acebal\.github\.io\/hf\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

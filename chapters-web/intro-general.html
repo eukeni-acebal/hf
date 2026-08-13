@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -41,14 +44,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-946b8259dbb7e15e23be5cfe10679035.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8844d5f7d9f77201dfdabae81953214c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -79,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="../theme/print.css">
+<link rel="stylesheet" href="../../quarto-theme/print.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -270,6 +273,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
 </div>
     </div>
@@ -507,10 +511,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Introducción general del libro · «cómo leer este libro» (D39) · Redactado (fase 5, 2026-06-22).
-     Decisiones Eukeni: formato con SUBSECCIONES tituladas (H2 sin §); tono dirigido al estudiante («tú»); se NOMBRAN las cinco lecturas PAU 2026 (Platón, Descartes, Kant, Nietzsche, Beauvoir) y se aclara que los textos van en un VOLUMEN DE LECTURAS APARTE —si cambia la lista oficial, se actualiza ese volumen, no este manual—.
-     Estructura: apertura (qué es el libro + metáfora de la EXCAVACIÓN, que la coda del T22 retoma: «si al empezar dijimos…») + Cómo está organizado (5 partes, intros de parte, temas, secciones §, caja «En este tema») + Las remisiones «§» + El aparato de estudio (notas por tema, tablas sinópticas, pies de figura, H2 sin §) + Las lecturas de la PAU (cinco autores + volumen aparte) + Autoría y licencia (Eukeni Acebal; CC BY-SA 4.0; libro vivo y bilingüe) + cierre-puente a la Parte I.
-     Ubicación: tras portadilla/índice y antes de la Parte I (#include ya en main-es.typ). NO duplica las intros de parte (panoramas por época). Datos verificados: título/subtítulo/autor/año (main-es.typ), 5 partes (índice), § de los autores PAU (índice), licencia CC BY-SA 4.0 (referencia editorial §… / roadmap). ~1.500 palabras. Autoría: redacción Claude sobre los documentos del proyecto; revisión Eukeni. -->
 <p>Tienes en las manos un manual de Historia de la Filosofía pensado para 2.º de Bachillerato. Su meta más inmediata es ayudarte a llegar bien preparado a la prueba de acceso a la universidad; pero su ambición de fondo es otra, y más duradera.</p>
 <p>Estudiar la historia de la filosofía se parece a una excavación arqueológica, solo que el yacimiento eres tú. Casi todo lo que hoy te resulta evidente —tu idea de lo que está bien y lo que está mal, de qué es la libertad, de qué cuenta como verdad, de quién eres— tiene una historia: fue, en su día, una idea nueva que alguien pensó por primera vez y que otros discutieron, defendieron o combatieron. Este libro va levantando esas capas. Al recorrerlo descubrirás de cuán atrás vienen muchos de tus pensamientos y, sobre todo, aprenderás a hacer con tus propias ideas lo que los filósofos hicieron con las suyas: examinarlas en lugar de darlas por supuestas. Esa es la herramienta que esperamos que te lleves del curso, mucho más que una lista de nombres y fechas.</p>
 <p>Antes de empezar, conviene que sepas cómo está hecho el libro y cómo sacarle partido.</p>
@@ -536,7 +536,6 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="las-lecturas-de-la-pau">Las lecturas de la PAU</h2>
 <p>La prueba de acceso a la universidad no se examina solo de lo que sepas <em>sobre</em> los filósofos: también te pide leer directamente algunos <strong>textos clásicos</strong> y comentarlos. Para el curso 2025-2026 son cinco los autores fijados, y a todos los estudiarás en este manual: <strong>Platón</strong>, del que se lee un pasaje de la <em>República</em> (<a href="tema-03.html#sec-09">§09</a>–<a href="tema-03.html#sec-13">§13</a>); <strong>Descartes</strong> (<a href="tema-08.html#sec-35">§35</a>–<a href="tema-08.html#sec-37">§37</a>); <strong>Kant</strong> (<a href="tema-12.html#sec-50">§50</a>–<a href="tema-12.html#sec-51">§51</a>); <strong>Nietzsche</strong> (<a href="tema-16.html#sec-59">§59</a>–<a href="tema-16.html#sec-61">§61</a>); y <strong>Simone de Beauvoir</strong>, con <em>El segundo sexo</em> (<a href="tema-21.html#sec-77">§77</a>).</p>
 <p>Los textos completos no van en este libro, sino en un <strong>volumen de lecturas aparte</strong> que lo acompaña, con los fragmentos seleccionados para el examen. Esa separación es deliberada: la lista de lecturas obligatorias la fijan cada año los coordinadores de la materia en la universidad y puede cambiar de un curso a otro, de modo que, cuando cambie, bastará con <strong>actualizar ese volumen de lecturas</strong> sin tener que tocar este manual. Aquí, en cambio, cada uno de esos autores se estudia en su sitio, con las claves para que puedas enfrentarte a su texto por tu cuenta: hacerlo —escuchar al filósofo en sus propias palabras, y no solo lo que otros dicen de él— es justo lo que la prueba, y la filosofía, esperan de ti.</p>
-<!-- Texto canónico de esta sección: referencia_sistema-editorial.md §10 (fuente única, D43). Si cambia, se edita allí primero; esta instancia y el euskera se ajustan. El [CORREO — PENDIENTE] se fija una sola vez. -->
 </section>
 <section id="autoría-y-licencia" class="level2">
 <h2 class="anchored" data-anchor-id="autoría-y-licencia">Autoría y licencia</h2>
@@ -641,7 +640,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/eukeni-acebal\.github\.io\/hf\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

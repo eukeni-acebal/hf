@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -41,14 +44,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-946b8259dbb7e15e23be5cfe10679035.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8844d5f7d9f77201dfdabae81953214c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -79,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="../theme/print.css">
+<link rel="stylesheet" href="../../quarto-theme/print.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -270,6 +273,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
 </div>
     </div>
@@ -506,7 +510,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Tema 22 · Retos del siglo XXI · saberes fase 2: C10.1 §78, C10.2 §79 · Redactado (fase 5): entradilla + §78 + §79 + coda de cierre «Para cerrar». ~2.600 palabras; recuento de páginas pendiente (no compila en sandbox). Cierra el libro. · DECISIONES Eukeni 2026-06-22: profundidad MEDIA (~2.400-2.800 pal. el tema); desarrollo suficiente por autor (un concepto central con su sentido y un ejemplo), sin caricatura ni sobreextensión; coda de cierre de curso al final del §79; Butler con reaparición breve en §79 (el grueso queda en §76); UN retrato representativo (Byung-Chul Han, placeholder gris + aviso de licencia: figura viva, no DP). Panorámica de cierre «a brochazos por autor» (inventario C10.1/C10.2): no monografía. Cantera escasa (autores N/P, no están en el manual viejo): se redacta de conocimiento propio. Butler ya en §76, se referencia. · ORDEN CRONOLÓGICO dentro de cada epígrafe (decisión Eukeni 2026-06-22): §78 = Bauman (1925) → Chomsky (1928) → Han (1959) → Klein (1970); §79 ya cronológico = Nussbaum (1947) → Butler (1956) → Herrero (1965) → Preciado (1970). Propagar el nuevo orden del título de §78 al índice y al inventario en el cierre contable. -->
 <section id="para-entrar-en-retos-del-siglo-xxi" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-retos-del-siglo-xxi">Para entrar en Retos del siglo XXI</h2>
 <p>Hemos llegado al presente. Las páginas anteriores nos han traído desde los primeros filósofos griegos hasta los grandes nombres del siglo XX, y el último tema dejó una pregunta abierta: la de <em>quién queda fuera</em> de la categoría de Sujeto pleno —quién es tratado como el Otro—, que Beauvoir formuló para las mujeres y que el siglo XXI ha vuelto a plantear en mil frentes nuevos (<a href="tema-21.html#sec-77">§77</a>). Este tema final se asoma a esos frentes. Ya no estudiamos a clásicos consagrados, sino a pensadores vivos o de muy reciente fallecimiento, sobre cuya obra el tiempo aún no ha dictado sentencia: no hay todavía un «canon» del siglo XXI. Por eso lo recorreremos a brochazos, presentando a cada autor por su idea más característica, sin la pretensión de agotarlos.</p>
@@ -635,7 +638,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/eukeni-acebal\.github\.io\/hf\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
