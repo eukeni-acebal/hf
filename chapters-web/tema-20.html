@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-19.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-20.html"><span class="chapter-title">Tema 20 · El giro lingüístico y la posmodernidad</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-20.html"><span class="chapter-title">Tema 20 · El giro lingüístico y la posmodernidad</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -493,10 +505,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-20.html"><span class="chapter-title">Tema 20 · El giro lingüístico y la posmodernidad</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-20.html"><span class="chapter-title">Tema 20 · El giro lingüístico y la posmodernidad</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 20 · El giro lingüístico y la posmodernidad</span></h1>
 </div>
@@ -518,13 +530,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="para-entrar-en-el-giro-lingüístico-y-la-posmodernidad" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-el-giro-lingüístico-y-la-posmodernidad">Para entrar en el giro lingüístico y la posmodernidad</h2>
 <p>Conviene avisarlo desde la primera línea: este es, en apariencia, el tema más heterogéneo del curso. En él se dan cita un lógico vienés que escribía en proposiciones numeradas, dos pensadores vascos que reflexionan sobre el euskera y un grupo de filósofos franceses que proclaman el fin de las grandes verdades. A primera vista no tienen nada que ver. Pero sí lo tienen, y entender <em>qué</em> es justamente la llave del tema; sin ella uno se pierde, y con ella todo encaja. Por eso conviene entrar despacio y con el mapa en la mano.</p>
-<p>La llave es una sola palabra: el <em>lenguaje</em>. El tema anterior se cerró con un cambio de frente. Después de interrogar a la <em>razón</em> —qué podíamos seguir esperando de ella tras la catástrofe del siglo (<a href="tema-19.html#sec-68">§68</a>-<a href="tema-19.html#sec-71">§71</a>)—, una parte del pensamiento del siglo XX dio un paso atrás y volvió la mirada hacia el <em>instrumento</em> en que la razón se dice y se piensa. La sospecha es sencilla de enunciar y de largo alcance: quizá muchos de los viejos enigmas de la filosofía no sean problemas reales sobre el mundo, sino confusiones nacidas de un mal uso del lenguaje; y quizá no exista un pensamiento puro, anterior a las palabras, sino que pensemos siempre <em>con</em> y <em>dentro</em> de una lengua. A esa gran reorientación —la decisión de mirar ya no las cosas, sino las palabras con que las cosas se nos dan— se la conoce como el <em>giro lingüístico</em>, y es la columna vertebral que sostiene todo el tema.</p>
-<p>Sobre esa columna lo recorreremos en tres tramos, de lo general a lo concreto y de ahí a sus consecuencias. El <strong>primer tramo</strong> es el del giro en su versión más influyente: <em>Ludwig Wittgenstein</em> y la <em>filosofía analítica</em>, que convierten el análisis del lenguaje en el método mismo de la filosofía (<a href="tema-20.html#sec-72">§72</a>). El <strong>segundo tramo</strong> baja de la teoría general a una lengua y una situación cultural concretas —la vasca—: si pensamos siempre desde una lengua, ¿qué supone pensar desde una lengua pequeña y amenazada? A esa pregunta responden <em>Txillardegi</em>, que piensa el euskera y desde el euskera (<a href="tema-20.html#sec-73">§73</a>), y <em>Joxe Azurmendi</em>, que hace de la relación entre lengua, técnica y pensamiento el centro de una obra inmensa (<a href="tema-20.html#sec-74">§74</a>). El <strong>tercer tramo</strong> extrae la consecuencia más radical: si el lenguaje y la cultura lo tejen todo, ¿queda en pie alguna <em>verdad</em> o algún <em>progreso</em> válidos para todos, o solo relatos particulares enfrentados? Es la disputa de la <em>posmodernidad</em>, en la que los pensadores «rupturistas» anuncian el fin de los grandes relatos y <em>Jürgen Habermas</em> sale a defender la modernidad como una tarea aún no terminada (<a href="tema-20.html#sec-75">§75</a>).</p>
+<p>La llave es una sola palabra: el <em>lenguaje</em>. El tema anterior se cerró con un cambio de frente. Después de interrogar a la <em>razón</em> —qué podíamos seguir esperando de ella tras la catástrofe del siglo (<a href="../chapters-web/tema-19.html#sec-68">§68</a>-<a href="../chapters-web/tema-19.html#sec-71">§71</a>)—, una parte del pensamiento del siglo XX dio un paso atrás y volvió la mirada hacia el <em>instrumento</em> en que la razón se dice y se piensa. La sospecha es sencilla de enunciar y de largo alcance: quizá muchos de los viejos enigmas de la filosofía no sean problemas reales sobre el mundo, sino confusiones nacidas de un mal uso del lenguaje; y quizá no exista un pensamiento puro, anterior a las palabras, sino que pensemos siempre <em>con</em> y <em>dentro</em> de una lengua. A esa gran reorientación —la decisión de mirar ya no las cosas, sino las palabras con que las cosas se nos dan— se la conoce como el <em>giro lingüístico</em>, y es la columna vertebral que sostiene todo el tema.</p>
+<p>Sobre esa columna lo recorreremos en tres tramos, de lo general a lo concreto y de ahí a sus consecuencias. El <strong>primer tramo</strong> es el del giro en su versión más influyente: <em>Ludwig Wittgenstein</em> y la <em>filosofía analítica</em>, que convierten el análisis del lenguaje en el método mismo de la filosofía (<a href="../chapters-web/tema-20.html#sec-72">§72</a>). El <strong>segundo tramo</strong> baja de la teoría general a una lengua y una situación cultural concretas —la vasca—: si pensamos siempre desde una lengua, ¿qué supone pensar desde una lengua pequeña y amenazada? A esa pregunta responden <em>Txillardegi</em>, que piensa el euskera y desde el euskera (<a href="../chapters-web/tema-20.html#sec-73">§73</a>), y <em>Joxe Azurmendi</em>, que hace de la relación entre lengua, técnica y pensamiento el centro de una obra inmensa (<a href="../chapters-web/tema-20.html#sec-74">§74</a>). El <strong>tercer tramo</strong> extrae la consecuencia más radical: si el lenguaje y la cultura lo tejen todo, ¿queda en pie alguna <em>verdad</em> o algún <em>progreso</em> válidos para todos, o solo relatos particulares enfrentados? Es la disputa de la <em>posmodernidad</em>, en la que los pensadores «rupturistas» anuncian el fin de los grandes relatos y <em>Jürgen Habermas</em> sale a defender la modernidad como una tarea aún no terminada (<a href="../chapters-web/tema-20.html#sec-75">§75</a>).</p>
 <p>Téngase, pues, a mano ese mapa, porque cose los tres tramos en una sola idea. En todos ellos la filosofía deja de mirar directamente al mundo, o a la razón en abstracto, y se vuelve sobre las <em>mediaciones</em> —el lenguaje, la lengua materna, los relatos culturales— a través de las cuales nos llegan el mundo y la razón. Wittgenstein lo descubre en general, los vascos lo viven en una lengua propia y los posmodernos lo llevan al extremo. Esa es la última gran vuelta de tuerca del pensamiento del siglo XX, y el hilo que no hay que soltar en las páginas que siguen.</p>
 </section>
 <section id="sec-72" class="level2">
 <h2 class="anchored" data-anchor-id="sec-72">§72 · Wittgenstein y la filosofía analítica</h2>
-<p><strong>El giro lingüístico.</strong> A comienzos del siglo XX, buena parte de la filosofía —sobre todo en el mundo anglosajón— cambió de asunto. En lugar de preguntarse directamente «¿qué es el ser?», «¿qué es la justicia?» o «¿existe Dios?», empezó a preguntarse algo previo: «¿qué <em>queremos decir</em> exactamente cuando decimos “ser”, “justicia” o “Dios”?». La idea de fondo es que el lenguaje no es un cristal transparente por el que vemos el mundo sin más, sino una herramienta complicada que a menudo nos engaña; y que muchos enigmas filosóficos clásicos son, en realidad, <em>nudos del lenguaje</em> —preguntas mal planteadas que parecen hondísimas solo porque hemos usado mal las palabras—. Analizar y aclarar el lenguaje se convierte así en la tarea primera de la filosofía. Esta corriente, que arranca de lógicos como <em>Gottlob Frege</em> y <em>Bertrand Russell</em> (1872-1970) y se prolonga en el <em>positivismo lógico</em> del Círculo de Viena (<a href="tema-14.html#sec-54">§54</a>), se conoce como <em>filosofía analítica</em>, y su figura mayor —además de la más singular— es Ludwig Wittgenstein.</p>
+<p><strong>El giro lingüístico.</strong> A comienzos del siglo XX, buena parte de la filosofía —sobre todo en el mundo anglosajón— cambió de asunto. En lugar de preguntarse directamente «¿qué es el ser?», «¿qué es la justicia?» o «¿existe Dios?», empezó a preguntarse algo previo: «¿qué <em>queremos decir</em> exactamente cuando decimos “ser”, “justicia” o “Dios”?». La idea de fondo es que el lenguaje no es un cristal transparente por el que vemos el mundo sin más, sino una herramienta complicada que a menudo nos engaña; y que muchos enigmas filosóficos clásicos son, en realidad, <em>nudos del lenguaje</em> —preguntas mal planteadas que parecen hondísimas solo porque hemos usado mal las palabras—. Analizar y aclarar el lenguaje se convierte así en la tarea primera de la filosofía. Esta corriente, que arranca de lógicos como <em>Gottlob Frege</em> y <em>Bertrand Russell</em> (1872-1970) y se prolonga en el <em>positivismo lógico</em> del Círculo de Viena (<a href="../chapters-web/tema-14.html#sec-54">§54</a>), se conoce como <em>filosofía analítica</em>, y su figura mayor —además de la más singular— es Ludwig Wittgenstein.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-wittgenstein.jpg" class="img-fluid figure-img"></p>
@@ -542,55 +554,167 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-73" class="level2">
 <h2 class="anchored" data-anchor-id="sec-73">§73 · Txillardegi: la filosofía del lenguaje desde el euskera</h2>
-<p><strong>Un intelectual total.</strong> <em>José Luis Álvarez Enparantza</em> (1929-2012), conocido por el seudónimo de <em>Txillardegi</em>, fue una de las figuras decisivas de la cultura vasca del siglo XX, y una de las más difíciles de encasillar: novelista, lingüista, militante político y ensayista, lo fue todo a la vez y movido por una sola pasión, el euskera. Ingeniero de formación y donostiarra de nacimiento, irrumpió en las letras vascas con <em>Leturiaren egunkari ezkutua</em> (<em>El diario oculto de Leturia</em>, 1957), considerada la primera novela <em>existencialista</em> en lengua vasca: un monólogo interior, deudor del clima de Sartre y Camus (<a href="tema-17.html#sec-64">§64</a>), que sacó a la narrativa en euskera de los temas rurales y costumbristas y la metió de lleno en la angustia del hombre urbano contemporáneo. Fue, además, una figura central del nacionalismo vasco de posguerra: en 1959 estuvo entre los fundadores de <em>ETA</em> —de la que se distanciaría años más tarde—, una militancia que bajo el franquismo le costó la cárcel y un largo exilio. Pero lo que aquí nos interesa no es el novelista ni el político, sino el <em>pensador del lenguaje</em>: el hombre que convirtió la pregunta por una lengua concreta —el euskera— en una reflexión filosófica de primer orden.</p>
+<p><strong>Un intelectual total.</strong> <em>José Luis Álvarez Enparantza</em> (1929-2012), conocido por el seudónimo de <em>Txillardegi</em>, fue una de las figuras decisivas de la cultura vasca del siglo XX, y una de las más difíciles de encasillar: novelista, lingüista, militante político y ensayista, lo fue todo a la vez y movido por una sola pasión, el euskera. Ingeniero de formación y donostiarra de nacimiento, irrumpió en las letras vascas con <em>Leturiaren egunkari ezkutua</em> (<em>El diario oculto de Leturia</em>, 1957), considerada la primera novela <em>existencialista</em> en lengua vasca: un monólogo interior, deudor del clima de Sartre y Camus (<a href="../chapters-web/tema-17.html#sec-64">§64</a>), que sacó a la narrativa en euskera de los temas rurales y costumbristas y la metió de lleno en la angustia del hombre urbano contemporáneo. Fue, además, una figura central del nacionalismo vasco de posguerra: en 1959 estuvo entre los fundadores de <em>ETA</em> —de la que se distanciaría años más tarde—, una militancia que bajo el franquismo le costó la cárcel y un largo exilio. Pero lo que aquí nos interesa no es el novelista ni el político, sino el <em>pensador del lenguaje</em>: el hombre que convirtió la pregunta por una lengua concreta —el euskera— en una reflexión filosófica de primer orden.</p>
 <p><strong>La batalla por el euskera unificado.</strong> Su primera gran aportación fue práctica antes que teórica. A mediados del siglo XX el euskera era un mosaico de dialectos sin una norma común escrita, y eso lo condenaba: una lengua fragmentada no puede usarse en la enseñanza, la administración o los medios, y queda relegada al ámbito doméstico. Txillardegi fue uno de los impulsores más tenaces del <em>euskera batua</em> (el «euskera unificado»), el estándar literario común que la Academia de la Lengua Vasca (<em>Euskaltzaindia</em>) empezó a fijar a partir de 1968. Detrás de aquella batalla aparentemente técnica latía una convicción filosófica: una lengua no es un museo de formas antiguas que haya que conservar intactas, sino un instrumento vivo que, para sobrevivir en el mundo moderno, debe poder <em>decirlo todo</em> —la ciencia, el derecho, la filosofía— con una norma compartida. Defender el euskera no era, para él, un gesto de nostalgia, sino de futuro.</p>
-<p><strong>Lengua y pensamiento.</strong> Aquí está su núcleo propiamente filosófico, y el que lo emparenta con el giro lingüístico de <a href="tema-20.html#sec-72">§72</a>. Txillardegi sostiene, en la estela de una vieja idea que se remonta al romántico <em>Wilhelm von Humboldt</em>, que cada lengua encierra una <em>manera propia de ver y de organizar el mundo</em>: su vocabulario, su gramática y sus giros recortan la realidad de un modo que no coincide con el de ninguna otra. No hablamos solo <em>en</em> una lengua; en cierto sentido, <em>pensamos</em> con ella y desde ella, de modo que aprender de veras una lengua es heredar toda una forma de habitar el mundo —algo muy cercano a las <em>formas de vida</em> de Wittgenstein (<a href="tema-20.html#sec-72">§72</a>)—. De esta tesis extrae una consecuencia grave: cuando una lengua muere, no se pierde solo un código intercambiable por otro, sino una visión irrepetible del mundo, una manera de ser humano que ya nadie volverá a tener. Por eso la desaparición de una lengua es, para Txillardegi, un empobrecimiento de la humanidad entera, y no un mero accidente local.</p>
+<p><strong>Lengua y pensamiento.</strong> Aquí está su núcleo propiamente filosófico, y el que lo emparenta con el giro lingüístico de <a href="../chapters-web/tema-20.html#sec-72">§72</a>. Txillardegi sostiene, en la estela de una vieja idea que se remonta al romántico <em>Wilhelm von Humboldt</em>, que cada lengua encierra una <em>manera propia de ver y de organizar el mundo</em>: su vocabulario, su gramática y sus giros recortan la realidad de un modo que no coincide con el de ninguna otra. No hablamos solo <em>en</em> una lengua; en cierto sentido, <em>pensamos</em> con ella y desde ella, de modo que aprender de veras una lengua es heredar toda una forma de habitar el mundo —algo muy cercano a las <em>formas de vida</em> de Wittgenstein (<a href="../chapters-web/tema-20.html#sec-72">§72</a>)—. De esta tesis extrae una consecuencia grave: cuando una lengua muere, no se pierde solo un código intercambiable por otro, sino una visión irrepetible del mundo, una manera de ser humano que ya nadie volverá a tener. Por eso la desaparición de una lengua es, para Txillardegi, un empobrecimiento de la humanidad entera, y no un mero accidente local.</p>
 <p><strong>Una sociolingüística militante.</strong> De esa convicción nació su trabajo más maduro, ya como profesor de <em>sociolingüística</em> en la universidad. La sociolingüística estudia la lengua no como un sistema abstracto, sino en su vida social: quién la habla, en qué situaciones, con cuánto prestigio y bajo qué presiones. Txillardegi analizó con lucidez los mecanismos por los que una lengua minorizada como el euskera es desplazada por otra dominante —la <em>diglosia</em>, en que la lengua fuerte se reserva los usos cultos y de prestigio y arrincona a la débil en lo íntimo y familiar, primer paso hacia su <em>sustitución</em>—. Su diagnóstico no era resignado sino combativo: si una lengua se pierde por procesos sociales y políticos, también puede salvarse por una acción social y política consciente. Pensó, en suma, el euskera no como una reliquia, sino como un problema filosófico y un proyecto colectivo, y en ello fue un pionero. Esa misma preocupación —la lengua como casa del pensamiento— vertebra la obra del segundo pensador vasco de este tema, de aliento más sistemático y filosófico.</p>
 </section>
 <section id="sec-74" class="level2">
 <h2 class="anchored" data-anchor-id="sec-74">§74 · La aportación de Joxe Azurmendi</h2>
-<p><strong>El filósofo que pensó en euskera.</strong> <em>Joxe Azurmendi</em> (Zegama, 1941) es probablemente el filósofo y ensayista en lengua vasca más importante de las últimas décadas, y una buena medida de hasta dónde ha llegado el proyecto que Txillardegi defendía. Formado en filosofía en Roma y en Alemania, profesor durante años en la Universidad del País Vasco y miembro de la Academia de la Lengua Vasca, Azurmendi ha construido una obra inmensa —decenas de libros— en la que la gran tradición del pensamiento europeo (Hegel, Marx, Nietzsche, la Escuela de Fráncfort, Heidegger) dialoga con las preguntas propias de la cultura vasca. Si Txillardegi <em>reivindicó</em> que el euskera podía pensar, Azurmendi lo <em>demostró</em>: hizo de él una lengua capaz de la filosofía más exigente, y con ello dio el ejemplo práctico más rotundo de la tesis del giro lingüístico (<a href="tema-20.html#sec-72">§72</a>-<a href="tema-20.html#sec-73">§73</a>).</p>
+<p><strong>El filósofo que pensó en euskera.</strong> <em>Joxe Azurmendi</em> (Zegama, 1941) es probablemente el filósofo y ensayista en lengua vasca más importante de las últimas décadas, y una buena medida de hasta dónde ha llegado el proyecto que Txillardegi defendía. Formado en filosofía en Roma y en Alemania, profesor durante años en la Universidad del País Vasco y miembro de la Academia de la Lengua Vasca, Azurmendi ha construido una obra inmensa —decenas de libros— en la que la gran tradición del pensamiento europeo (Hegel, Marx, Nietzsche, la Escuela de Fráncfort, Heidegger) dialoga con las preguntas propias de la cultura vasca. Si Txillardegi <em>reivindicó</em> que el euskera podía pensar, Azurmendi lo <em>demostró</em>: hizo de él una lengua capaz de la filosofía más exigente, y con ello dio el ejemplo práctico más rotundo de la tesis del giro lingüístico (<a href="../chapters-web/tema-20.html#sec-72">§72</a>-<a href="../chapters-web/tema-20.html#sec-73">§73</a>).</p>
 <p><strong>Lengua, pueblo y pensamiento.</strong> El centro de su reflexión es, precisamente, la trama que une <em>lengua</em>, <em>comunidad</em> e <em>identidad</em>. Azurmendi ha estudiado a fondo la vieja idea romántica del <em>espíritu del pueblo</em> (el <em>Volksgeist</em> de Herder y Humboldt), según la cual cada pueblo posee un alma colectiva que se expresa en su lengua. Pero lo hace de manera <em>crítica</em>, no devota: ni acepta sin más ese romanticismo de las esencias nacionales —que con facilidad degenera en mito peligroso—, ni lo desprecia como pura superstición. Su pregunta es más fina: ¿qué hay de verdad en la intuición de que una lengua sostiene una forma de comunidad y de pensamiento, y dónde empieza la fábula? Esa misma lucidez aplicó a los estereotipos enfrentados de <em>españoles y vascos</em> —el título de uno de sus libros más conocidos—, desmontando las imágenes que cada identidad fabrica de sí misma y del otro. Pensar la propia identidad sin engañarse: esa es una de sus lecciones mayores.</p>
 <p><strong>Modernidad, técnica y secularización.</strong> La obra de Azurmendi desborda con mucho la cuestión vasca. Ha meditado sobre la <em>técnica</em> y su poder sobre la vida moderna —en la estela de Heidegger y de Ortega—, sobre la <em>secularización</em> y el lugar de la religión en un mundo que se ha quedado sin Dios, y sobre el destino del <em>humanismo</em> y sus contradicciones. En todos esos frentes lo mueve una misma inquietud: comprender la <em>modernidad</em> —de dónde viene, qué prometió y qué ha incumplido—, que es exactamente el campo de batalla del último debate del siglo. Con ello, los dos pensadores vascos de este tema nos devuelven al gran cauce de la filosofía europea, y nos dejan en el umbral de su discusión más encendida: si la modernidad fue un proyecto valioso que conviene continuar, o un relato agotado que toca abandonar.</p>
 </section>
 <section id="sec-75" class="level2">
 <h2 class="anchored" data-anchor-id="sec-75">§75 · La herencia posmoderna: Habermas frente a los rupturistas</h2>
-<p><strong>Qué es la posmodernidad.</strong> Llamamos <em>modernidad</em>, en sentido filosófico, al gran proyecto nacido de la Ilustración (<a href="tema-11.html#sec-47">§47</a>): la confianza en una <em>razón universal</em> capaz de liberar al ser humano de la superstición, en una <em>ciencia</em> que progresa sin descanso y en una <em>historia</em> que avanza hacia la emancipación. Pues bien, en el último tercio del siglo XX se extiende un estado de ánimo que ha <em>perdido la fe</em> en esas promesas. A ese clima —y a las filosofías que lo expresan— se lo llama <em>posmodernidad</em>. Quien acuñó el término en filosofía fue el francés <em>Jean-François Lyotard</em> (1924-1998), en un libro breve y muy citado, <em>La condición posmoderna</em> (1979). Su definición se ha hecho célebre:</p>
+<p><strong>Qué es la posmodernidad.</strong> Llamamos <em>modernidad</em>, en sentido filosófico, al gran proyecto nacido de la Ilustración (<a href="../chapters-web/tema-11.html#sec-47">§47</a>): la confianza en una <em>razón universal</em> capaz de liberar al ser humano de la superstición, en una <em>ciencia</em> que progresa sin descanso y en una <em>historia</em> que avanza hacia la emancipación. Pues bien, en el último tercio del siglo XX se extiende un estado de ánimo que ha <em>perdido la fe</em> en esas promesas. A ese clima —y a las filosofías que lo expresan— se lo llama <em>posmodernidad</em>. Quien acuñó el término en filosofía fue el francés <em>Jean-François Lyotard</em> (1924-1998), en un libro breve y muy citado, <em>La condición posmoderna</em> (1979). Su definición se ha hecho célebre:</p>
 <blockquote class="blockquote">
 <p>Simplificando al máximo, se tiene por «posmoderna» la incredulidad con respecto a los metarrelatos.</p>
 <p>—Jean-François Lyotard, <em>La condición posmoderna</em> (1979)</p>
 </blockquote>
-<p><strong>El descrédito de los grandes relatos.</strong> Un <em>metarrelato</em> o <em>gran relato</em> es una de esas grandes historias con que la modernidad daba sentido y dirección a todo y <em>legitimaba</em> el saber: la emancipación del ciudadano por la razón (la Ilustración), el progreso del Espíritu hacia la libertad (Hegel), la liberación del proletariado y la sociedad sin clases (Marx, <a href="tema-15.html#sec-58">§58</a>), el avance indefinido de la ciencia. Cada uno prometía un final feliz y ofrecía una vara para medir todo lo demás. La tesis posmoderna es que esos relatos <em>ya no se sostienen</em>: el siglo de las guerras mundiales y los totalitarismos (<a href="tema-19.html#sec-68">§68</a>-<a href="tema-19.html#sec-69">§69</a>) los ha desmentido demasiadas veces como para seguir creyéndolos. Y lo que queda, una vez caídos, no es un relato mejor, sino una <em>pluralidad</em> de relatos pequeños, locales y parciales —muchos <em>juegos de lenguaje</em>, en el sentido de Wittgenstein (<a href="tema-20.html#sec-72">§72</a>), que Lyotard toma prestado—, ninguno de los cuales puede ya erigirse en juez supremo de los demás. No hay un punto de vista de Dios desde el que ordenar la verdad de todos.</p>
-<p><strong>La radicalización de la sospecha.</strong> Los pensadores «rupturistas» —Lyotard, <em>Michel Foucault</em>, <em>Jacques Derrida</em> y otros— llevan hasta el final la herencia de los maestros de la sospecha. De <em>Nietzsche</em> (<a href="tema-16.html#sec-61">§61</a>) recogen que «no hay hechos, solo interpretaciones», y de ahí concluyen que no existe una verdad objetiva, sino solo <em>construcciones</em> dependientes de cada cultura y cada perspectiva. Y del propio <em>Nietzsche</em> (<a href="tema-16.html#sec-59">§59</a>) toman la <em>genealogía</em> como método de desenmascaramiento: lo que cada época llama «verdad» y «razón» está tramado con el <em>poder</em> —saber y poder son inseparables—, de modo que detrás de toda pretensión de objetividad hay siempre intereses y relaciones de dominio. La gran <em>Razón</em> y la gran <em>Verdad</em>, escritas con mayúscula, quedan así descubiertas como máscaras de lo particular. De aquí su rasgo más característico, y más polémico: el <em>relativismo</em>, la idea de que todas las verdades y todos los valores son construcciones sociales sin fundamento universal.</p>
-<p><strong>La réplica de Habermas: un proyecto inacabado.</strong> Frente a esta deriva se alza la voz más influyente de la segunda generación de la Escuela de Fráncfort, <em>Jürgen Habermas</em> (1929-2026), a quien ya conocimos en su disputa con Popper (<a href="tema-19.html#sec-70">§70</a>). Su tesis, formulada en 1980, es tan clara como su título: la modernidad es <em>un proyecto inacabado</em>. No ha fracasado, dice Habermas: está <em>sin terminar</em>. Y renunciar a la razón, como hacen los posmodernos, es a la vez injusto y peligroso —injusto, porque tira el grano con la paja; peligroso, porque quien abandona la razón se queda sin armas frente a la sinrazón—. Ahora bien, Habermas no defiende la vieja razón que Fráncfort había denunciado (<a href="tema-19.html#sec-68">§68</a>). Su movimiento decisivo consiste en distinguir <em>dos</em> racionalidades. Una es la <em>razón instrumental</em>, la que calcula los medios más eficaces para dominar la naturaleza —la razón del <em>trabajo</em> y de la técnica—. La otra es la <em>razón comunicativa</em>, la que se ejerce entre las personas cuando dialogan buscando entenderse —la razón de la <em>interacción</em>, que vive en el lenguaje<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>—. El error de los modernos —y también de los primeros frankfurtianos— fue ver solo la primera; el de los posmodernos, creer que, podrida la instrumental, no quedaba ninguna. Habermas rescata la segunda.</p>
+<p><strong>El descrédito de los grandes relatos.</strong> Un <em>metarrelato</em> o <em>gran relato</em> es una de esas grandes historias con que la modernidad daba sentido y dirección a todo y <em>legitimaba</em> el saber: la emancipación del ciudadano por la razón (la Ilustración), el progreso del Espíritu hacia la libertad (Hegel), la liberación del proletariado y la sociedad sin clases (Marx, <a href="../chapters-web/tema-15.html#sec-58">§58</a>), el avance indefinido de la ciencia. Cada uno prometía un final feliz y ofrecía una vara para medir todo lo demás. La tesis posmoderna es que esos relatos <em>ya no se sostienen</em>: el siglo de las guerras mundiales y los totalitarismos (<a href="../chapters-web/tema-19.html#sec-68">§68</a>-<a href="../chapters-web/tema-19.html#sec-69">§69</a>) los ha desmentido demasiadas veces como para seguir creyéndolos. Y lo que queda, una vez caídos, no es un relato mejor, sino una <em>pluralidad</em> de relatos pequeños, locales y parciales —muchos <em>juegos de lenguaje</em>, en el sentido de Wittgenstein (<a href="../chapters-web/tema-20.html#sec-72">§72</a>), que Lyotard toma prestado—, ninguno de los cuales puede ya erigirse en juez supremo de los demás. No hay un punto de vista de Dios desde el que ordenar la verdad de todos.</p>
+<p><strong>La radicalización de la sospecha.</strong> Los pensadores «rupturistas» —Lyotard, <em>Michel Foucault</em>, <em>Jacques Derrida</em> y otros— llevan hasta el final la herencia de los maestros de la sospecha. De <em>Nietzsche</em> (<a href="../chapters-web/tema-16.html#sec-61">§61</a>) recogen que «no hay hechos, solo interpretaciones», y de ahí concluyen que no existe una verdad objetiva, sino solo <em>construcciones</em> dependientes de cada cultura y cada perspectiva. Y del propio <em>Nietzsche</em> (<a href="../chapters-web/tema-16.html#sec-59">§59</a>) toman la <em>genealogía</em> como método de desenmascaramiento: lo que cada época llama «verdad» y «razón» está tramado con el <em>poder</em> —saber y poder son inseparables—, de modo que detrás de toda pretensión de objetividad hay siempre intereses y relaciones de dominio. La gran <em>Razón</em> y la gran <em>Verdad</em>, escritas con mayúscula, quedan así descubiertas como máscaras de lo particular. De aquí su rasgo más característico, y más polémico: el <em>relativismo</em>, la idea de que todas las verdades y todos los valores son construcciones sociales sin fundamento universal.</p>
+<p><strong>La réplica de Habermas: un proyecto inacabado.</strong> Frente a esta deriva se alza la voz más influyente de la segunda generación de la Escuela de Fráncfort, <em>Jürgen Habermas</em> (1929-2026), a quien ya conocimos en su disputa con Popper (<a href="../chapters-web/tema-19.html#sec-70">§70</a>). Su tesis, formulada en 1980, es tan clara como su título: la modernidad es <em>un proyecto inacabado</em>. No ha fracasado, dice Habermas: está <em>sin terminar</em>. Y renunciar a la razón, como hacen los posmodernos, es a la vez injusto y peligroso —injusto, porque tira el grano con la paja; peligroso, porque quien abandona la razón se queda sin armas frente a la sinrazón—. Ahora bien, Habermas no defiende la vieja razón que Fráncfort había denunciado (<a href="../chapters-web/tema-19.html#sec-68">§68</a>). Su movimiento decisivo consiste en distinguir <em>dos</em> racionalidades. Una es la <em>razón instrumental</em>, la que calcula los medios más eficaces para dominar la naturaleza —la razón del <em>trabajo</em> y de la técnica—. La otra es la <em>razón comunicativa</em>, la que se ejerce entre las personas cuando dialogan buscando entenderse —la razón de la <em>interacción</em>, que vive en el lenguaje<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>—. El error de los modernos —y también de los primeros frankfurtianos— fue ver solo la primera; el de los posmodernos, creer que, podrida la instrumental, no quedaba ninguna. Habermas rescata la segunda.</p>
 <p><strong>La verdad como consenso.</strong> ¿Cómo salva la razón comunicativa lo que el relativismo da por perdido? Cambiando la idea misma de verdad. Para la razón instrumental, una afirmación es verdadera si <em>se corresponde</em> con los hechos. Para la razón comunicativa, en cambio, lo válido —lo justo, lo verdadero en cuestiones humanas— es aquello sobre lo que <em>podríamos ponernos de acuerdo</em> todos los afectados en un diálogo libre: la <em>verdad como consenso</em>. Pero no cualquier acuerdo vale; ha de alcanzarse en condiciones ideales —lo que Habermas llama una <em>situación ideal de habla</em>—: que nadie sea excluido ni coaccionado, que todos puedan hablar y ser oídos, que se busque sinceramente el entendimiento y que la única fuerza admitida sea <em>la del mejor argumento</em>. Una norma o una verdad así acordadas no son una imposición de los fuertes, sino el fruto de una razón compartida. Por eso Habermas, que también hace su «giro lingüístico», lo hace en sentido contrario al de los rupturistas: para ellos el lenguaje <em>disuelve</em> toda verdad universal en juegos inconmensurables; para él, el lenguaje —en cuanto orientado al entendimiento— es precisamente el lugar donde una razón universal y no violenta todavía es posible.</p>
 <p><strong>Balance.</strong> La disputa sigue viva, y conviene sopesar ambos lados. Los posmodernos aciertan en una advertencia valiosa, heredera de Fráncfort y de Arendt: toda razón que se cree única y total tiende a aplastar lo diferente, y conviene desconfiar de quien dice hablar en nombre de la Verdad con mayúscula. Su atención a lo plural, a lo marginado y a las voces acalladas ha sido fecunda. Pero el relativismo radical es frágil por dos flancos. Primero, <em>se refuta a sí mismo</em>: afirmar «no hay ninguna verdad universal» es proponer, justamente, una verdad universal<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Y segundo, <em>desarma la crítica</em>: si no hay verdad ni justicia que valgan para todos, ¿en nombre de qué denunciar una mentira, una injusticia o un genocidio? Habermas ofrece una salida que no vuelve al dogmatismo ni cae en el «todo vale»: una razón modesta y dialogante, que no impone sus verdades pero tampoco renuncia a buscarlas en común.</p>
-<p>Con este último debate se cierra el largo arco que abrieron los maestros de la sospecha (<a href="tema-14.html#sec-55">§55</a>) y que la catástrofe del siglo llevó a su extremo (<a href="tema-19.html#sec-68">§68</a>): la pregunta por <em>qué podemos seguir esperando de la razón</em> recibe aquí su respuesta más reciente —ni la confianza ingenua de antaño ni el abandono posmoderno, sino una razón escarmentada que sobrevive en el diálogo—. Pero esa misma atención posmoderna a las voces que los grandes relatos habían silenciado nos lleva de la mano al tema siguiente. Porque hubo una voz callada durante casi toda la historia de la filosofía —la de la mitad de la humanidad—, y su reivindicación es uno de los grandes acontecimientos del pensamiento del siglo XX (<a href="tema-21.html#sec-76">§76</a>).</p>
+<p>Con este último debate se cierra el largo arco que abrieron los maestros de la sospecha (<a href="../chapters-web/tema-14.html#sec-55">§55</a>) y que la catástrofe del siglo llevó a su extremo (<a href="../chapters-web/tema-19.html#sec-68">§68</a>): la pregunta por <em>qué podemos seguir esperando de la razón</em> recibe aquí su respuesta más reciente —ni la confianza ingenua de antaño ni el abandono posmoderno, sino una razón escarmentada que sobrevive en el diálogo—. Pero esa misma atención posmoderna a las voces que los grandes relatos habían silenciado nos lleva de la mano al tema siguiente. Porque hubo una voz callada durante casi toda la historia de la filosofía —la de la mitad de la humanidad—, y su reivindicación es uno de los grandes acontecimientos del pensamiento del siglo XX (<a href="../chapters-web/tema-21.html#sec-76">§76</a>).</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Este es el reparto que quedó anunciado en <a href="tema-19.html#sec-70">§70</a>: el ser humano tiene dos modos básicos e irreductibles de racionalidad, el del trabajo (dominar) y el de la interacción (entenderse), a los que corresponden intereses distintos —técnico, práctico y emancipatorio—. El grueso de la razón comunicativa, que allí se aplazó, es lo que aquí se desarrolla.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Este es el reparto que quedó anunciado en <a href="../chapters-web/tema-19.html#sec-70">§70</a>: el ser humano tiene dos modos básicos e irreductibles de racionalidad, el del trabajo (dominar) y el de la interacción (entenderse), a los que corresponden intereses distintos —técnico, práctico y emancipatorio—. El grueso de la razón comunicativa, que allí se aplazó, es lo que aquí se desarrolla.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Si de veras <em>toda</em> afirmación es solo una construcción cultural sin valor universal, entonces también lo es la afirmación de que toda afirmación lo es; y entonces no hay razón para creerla. El relativismo absoluto se muerde la cola.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -669,7 +793,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -678,8 +803,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -693,6 +879,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -855,44 +1042,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -991,7 +1188,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-19.html" class="pagination-link" aria-label="Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls</span></span>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-15.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-4.html">Parte IV · El siglo XIX</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-16.html"><span class="chapter-title">Tema 16 · Nietzsche</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-4.html">Parte IV · El siglo XIX</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-16.html"><span class="chapter-title">Tema 16 · Nietzsche</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-4.html">Parte IV · El siglo XIX</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-16.html"><span class="chapter-title">Tema 16 · Nietzsche</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-4.html">Parte IV · El siglo XIX</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-16.html"><span class="chapter-title">Tema 16 · Nietzsche</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 16 · Nietzsche</span></h1>
 </div>
@@ -516,37 +528,37 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-nietzsche" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-nietzsche">Para entrar en Nietzsche</h2>
-<p>Con Marx conocimos al primero de los filósofos de la sospecha (<a href="tema-14.html#sec-55">§55</a>); <em>Friedrich Nietzsche</em> es el segundo, y el más difícil de domesticar. No construye un sistema, sino que escribe en aforismos, a golpes, lo que él mismo llamó «filosofar a martillazos»: golpear los ídolos para oír, por el sonido, cuáles están huecos. Su martillo no respeta nada de lo que Occidente tenía por firme —la moral, la religión, la metafísica y, al final, la verdad misma—, y por eso es a la vez el más demoledor y el más malinterpretado de los pensadores modernos.</p>
-<p>Seguiremos su crítica en las tres direcciones en que la lanzó. Primero, contra la <em>moral</em>: una genealogía que rastrea los valores hasta su origen y desemboca en la muerte de Dios (<a href="tema-16.html#sec-59">§59</a>). Después, contra el <em>conocimiento</em>: la verdad no copia ninguna realidad en sí, porque todo conocer es interpretar desde una perspectiva (<a href="tema-16.html#sec-60">§60</a>). Y, tras el derribo, una respuesta afirmativa sobre la <em>vida</em>: superado el nihilismo, la voluntad de poder, el superhombre y el eterno retorno (<a href="tema-16.html#sec-61">§61</a>).</p>
+<p>Con Marx conocimos al primero de los filósofos de la sospecha (<a href="../chapters-web/tema-14.html#sec-55">§55</a>); <em>Friedrich Nietzsche</em> es el segundo, y el más difícil de domesticar. No construye un sistema, sino que escribe en aforismos, a golpes, lo que él mismo llamó «filosofar a martillazos»: golpear los ídolos para oír, por el sonido, cuáles están huecos. Su martillo no respeta nada de lo que Occidente tenía por firme —la moral, la religión, la metafísica y, al final, la verdad misma—, y por eso es a la vez el más demoledor y el más malinterpretado de los pensadores modernos.</p>
+<p>Seguiremos su crítica en las tres direcciones en que la lanzó. Primero, contra la <em>moral</em>: una genealogía que rastrea los valores hasta su origen y desemboca en la muerte de Dios (<a href="../chapters-web/tema-16.html#sec-59">§59</a>). Después, contra el <em>conocimiento</em>: la verdad no copia ninguna realidad en sí, porque todo conocer es interpretar desde una perspectiva (<a href="../chapters-web/tema-16.html#sec-60">§60</a>). Y, tras el derribo, una respuesta afirmativa sobre la <em>vida</em>: superado el nihilismo, la voluntad de poder, el superhombre y el eterno retorno (<a href="../chapters-web/tema-16.html#sec-61">§61</a>).</p>
 <p>Pocos pensadores han pesado tanto sobre el siglo XX y el XXI: el existencialismo, Foucault y buena parte del pensamiento contemporáneo son impensables sin él. Pero ninguno ha sido tan tergiversado, hasta el extremo de que el nazismo —que él habría despreciado— se reclamara suyo. Conviene leerlo con cuidado, porque Nietzsche se esconde tras máscaras y, según confesó, escribía para que se lo malinterpretara. Cerraremos el tema, como hicimos con Marx, separando su obra de lo que otros hicieron con ella.</p>
 </section>
 <section id="sec-59" class="level2">
 <h2 class="anchored" data-anchor-id="sec-59">§59 · Nietzsche: la crítica de la moral</h2>
-<p><strong>Genealogía en lugar de fundamento.</strong> <em>Friedrich Nietzsche</em> (1844-1900) nació en Röcken, en la Prusia luterana, hijo y nieto de pastores. Filólogo clásico brillantísimo —catedrático en Basilea con solo veinticuatro años—, pronto abandonó la erudición por la filosofía y, aquejado de una salud frágil, escribió en pocos años febriles sus obras mayores: <em>Así habló Zaratustra</em>, <em>Más allá del bien y del mal</em>, <em>La genealogía de la moral</em>. En 1889 se desplomó en una calle de Turín y pasó sus últimos once años sumido en la locura. Su gesto filosófico es inconfundible. Ante la moral, no pregunta «¿qué debo hacer?» ni siquiera «¿es verdadera esta moral?», sino algo previo y más peligroso: <em>¿de dónde viene la moral?, ¿a quién beneficia?</em> Eso es una <em>genealogía</em>: rastrear los valores hasta su origen, a menudo turbio. Con ello Nietzsche es, junto a Marx y Freud, un maestro de la sospecha (<a href="tema-14.html#sec-55">§55</a>): bajo lo que llamamos «bueno» late siempre un interés.</p>
+<p><strong>Genealogía en lugar de fundamento.</strong> <em>Friedrich Nietzsche</em> (1844-1900) nació en Röcken, en la Prusia luterana, hijo y nieto de pastores. Filólogo clásico brillantísimo —catedrático en Basilea con solo veinticuatro años—, pronto abandonó la erudición por la filosofía y, aquejado de una salud frágil, escribió en pocos años febriles sus obras mayores: <em>Así habló Zaratustra</em>, <em>Más allá del bien y del mal</em>, <em>La genealogía de la moral</em>. En 1889 se desplomó en una calle de Turín y pasó sus últimos once años sumido en la locura. Su gesto filosófico es inconfundible. Ante la moral, no pregunta «¿qué debo hacer?» ni siquiera «¿es verdadera esta moral?», sino algo previo y más peligroso: <em>¿de dónde viene la moral?, ¿a quién beneficia?</em> Eso es una <em>genealogía</em>: rastrear los valores hasta su origen, a menudo turbio. Con ello Nietzsche es, junto a Marx y Freud, un maestro de la sospecha (<a href="../chapters-web/tema-14.html#sec-55">§55</a>): bajo lo que llamamos «bueno» late siempre un interés.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-nietzsche.jpg" class="img-fluid figure-img"></p>
 <figcaption>Friedrich Nietzsche (1844-1900), el más demoledor de los críticos de la cultura occidental. Fotografía de Gustav Schultze, 1882. || Atribución: Gustav-Adolf Schultze, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Lo apolíneo y lo dionisíaco.</strong> Ese gesto no lo estrenó con la moral: lo ensayó sobre el terreno que mejor conocía, el arte griego. <em>El nacimiento de la tragedia</em> (1872), el libro con que el joven catedrático escandalizó a sus colegas, es el momento exacto en que la erudición se convierte en filosofía. ¿Qué vio allí que nadie había querido ver? Que la Grecia serena y luminosa de los manuales es solo la mitad de la historia: bajo el mármol laten dos impulsos enfrentados. Lo <em>apolíneo</em> —por Apolo, dios de la luz y de la medida— es el impulso de la forma: el orden, el límite, la bella apariencia que vuelve el mundo contemplable. Lo <em>dionisíaco</em> —por Dioniso, dios del vino y del desenfreno— es el impulso contrario: la embriaguez, el exceso, la disolución del individuo en el torrente de la vida. No los memorices como dos etiquetas: son dos fuerzas en tensión, y ninguna basta sola —la forma sin embriaguez se congela; la embriaguez sin forma destruye—. La <em>tragedia ática</em> de Esquilo y Sófocles fue, a ojos de Nietzsche, el instante supremo en que ambas se reconciliaron: el coro dionisíaco canta la verdad terrible de la existencia, y la escena apolínea le da una forma que permite contemplarla sin perecer. Los griegos conocían el dolor de existir mejor que nadie, y precisamente por eso levantaron un arte capaz de afirmar la vida entera, con su noche incluida: la afirmación que el tema perseguirá hasta su final (<a href="tema-16.html#sec-61">§61</a>). ¿Y quién mató la tragedia? Sócrates: el <em>racionalismo socrático</em> —la fe en que la existencia puede corregirse con conceptos— secó la fuente dionisíaca. En esa acusación está ya, en germen, todo lo que sigue: preguntar qué impulso vital se esconde bajo la fe en la razón es el primer ensayo de la genealogía, que ahora vuelve su mirada hacia la moral.</p>
+<p><strong>Lo apolíneo y lo dionisíaco.</strong> Ese gesto no lo estrenó con la moral: lo ensayó sobre el terreno que mejor conocía, el arte griego. <em>El nacimiento de la tragedia</em> (1872), el libro con que el joven catedrático escandalizó a sus colegas, es el momento exacto en que la erudición se convierte en filosofía. ¿Qué vio allí que nadie había querido ver? Que la Grecia serena y luminosa de los manuales es solo la mitad de la historia: bajo el mármol laten dos impulsos enfrentados. Lo <em>apolíneo</em> —por Apolo, dios de la luz y de la medida— es el impulso de la forma: el orden, el límite, la bella apariencia que vuelve el mundo contemplable. Lo <em>dionisíaco</em> —por Dioniso, dios del vino y del desenfreno— es el impulso contrario: la embriaguez, el exceso, la disolución del individuo en el torrente de la vida. No los memorices como dos etiquetas: son dos fuerzas en tensión, y ninguna basta sola —la forma sin embriaguez se congela; la embriaguez sin forma destruye—. La <em>tragedia ática</em> de Esquilo y Sófocles fue, a ojos de Nietzsche, el instante supremo en que ambas se reconciliaron: el coro dionisíaco canta la verdad terrible de la existencia, y la escena apolínea le da una forma que permite contemplarla sin perecer. Los griegos conocían el dolor de existir mejor que nadie, y precisamente por eso levantaron un arte capaz de afirmar la vida entera, con su noche incluida: la afirmación que el tema perseguirá hasta su final (<a href="../chapters-web/tema-16.html#sec-61">§61</a>). ¿Y quién mató la tragedia? Sócrates: el <em>racionalismo socrático</em> —la fe en que la existencia puede corregirse con conceptos— secó la fuente dionisíaca. En esa acusación está ya, en germen, todo lo que sigue: preguntar qué impulso vital se esconde bajo la fe en la razón es el primer ensayo de la genealogía, que ahora vuelve su mirada hacia la moral.</p>
 <p><strong>Moral de señores y moral de esclavos.</strong> El análisis arranca de una distinción entre dos sistemas de valores opuestos. La <em>moral de señores</em> es la de las aristocracias guerreras —el héroe homérico, el patricio romano—: el fuerte se afirma a sí mismo y llama «bueno» a lo que él es —noble, poderoso, vital, capaz— y «malo», sin más, a lo que le es ajeno —vil, débil, cobarde—. Es una moral que brota de la plenitud y dice «sí» a la vida. Frente a ella, la <em>moral de esclavos</em> nace de los sometidos, de los muchos que no pueden imponerse. Incapaz de actuar, esta moral reacciona: invierte la tabla del señor y llama «bueno» a lo que el débil tiene por necesidad —la humildad, la mansedumbre, la obediencia, la compasión— y «malvado» —ya no solo «malo»— a lo que el fuerte es.</p>
 <p><strong>La rebelión de los esclavos y el resentimiento.</strong> Esa inversión es lo que Nietzsche llama la <em>rebelión de los esclavos en la moral</em>, y su gran protagonista histórico es el judeocristianismo. Quienes no podían vengarse con la mano se vengaron con los valores: del <em>resentimiento</em> —un rencor que, no pudiendo descargarse en actos, se vuelve creador y engendra una tabla nueva— nació una moral que condena al señor y consuela al siervo. El cristianismo triunfó entre los esclavos del Imperio romano precisamente porque les ofrecía eso: una moral que declaraba pecadores a sus amos fuertes y crueles, y que prometía en otro mundo la justicia negada en este. Así, la oposición noble «bueno/malo» quedó sustituida por la oposición «bueno/malvado», y se impuso una moral <em>contra la vida</em>, que exalta la debilidad y sospecha de la fuerza, de la alegría y del cuerpo. A esa operación la llamará Nietzsche la <em>transvaloración</em> —también la encontrarás traducida como <em>transmutación</em>: la inversión de todos los valores— que él se propone, a su vez, invertir.</p>
 <p><strong>Mala conciencia y culpa.</strong> ¿De dónde sale, entonces, esa voz interior que nos juzga? Nietzsche ofrece una genealogía de la conciencia moral. Cuando la vida en sociedad prohíbe descargar hacia fuera los instintos de agresión, estos no desaparecen: se vuelven hacia dentro, y el ser humano empieza a hacerse daño a sí mismo. Esa crueldad interiorizada es la <em>mala conciencia</em>. El sacerdote le da un nombre y un uso: la convierte en <em>culpa</em>, en <em>pecado</em>, en deuda impagable con Dios. Y da un paso más, el más dañino de todos: mediante el <em>ideal ascético</em>, otorga al sufrimiento un <em>sentido</em>. Que el débil sea maltratado ya es bastante malo; pero el sacerdote le enseña además que es <em>responsable</em> de su dolor, que el dolor lo redime y tiene valor<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Así, una moral nacida para sobrellevar la vida termina por envenenarla.</p>
-<p><strong>La muerte de Dios.</strong> Todo desemboca en un diagnóstico, no en una blasfemia: «Dios ha muerto, y nosotros lo hemos matado»<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. No significa que un señor del cielo haya fallecido, sino que el fundamento que sostenía los valores de Occidente —Dios, el mundo suprasensible, el absoluto— ha perdido toda credibilidad. La revolución científica, el darwinismo (<a href="tema-14.html#sec-55">§55</a>) y la propia Ilustración lo han disuelto, y con él quedan en el aire los valores que en él se apoyaban. Por eso Nietzsche se proclama el <em>Anticristo</em>: no como adorador del diablo, sino como quien certifica el final del orden cristiano-moral. La pregunta es qué viene después de esa muerte; y esa pregunta tiene un nombre temible, el <em>nihilismo</em>, con el que se abrirá la última sección. Antes, sin embargo, el martillo se vuelve contra una pieza aún más íntima: la verdad.</p>
+<p><strong>La muerte de Dios.</strong> Todo desemboca en un diagnóstico, no en una blasfemia: «Dios ha muerto, y nosotros lo hemos matado»<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. No significa que un señor del cielo haya fallecido, sino que el fundamento que sostenía los valores de Occidente —Dios, el mundo suprasensible, el absoluto— ha perdido toda credibilidad. La revolución científica, el darwinismo (<a href="../chapters-web/tema-14.html#sec-55">§55</a>) y la propia Ilustración lo han disuelto, y con él quedan en el aire los valores que en él se apoyaban. Por eso Nietzsche se proclama el <em>Anticristo</em>: no como adorador del diablo, sino como quien certifica el final del orden cristiano-moral. La pregunta es qué viene después de esa muerte; y esa pregunta tiene un nombre temible, el <em>nihilismo</em>, con el que se abrirá la última sección. Antes, sin embargo, el martillo se vuelve contra una pieza aún más íntima: la verdad.</p>
 </section>
 <section id="sec-60" class="level2">
 <h2 class="anchored" data-anchor-id="sec-60">§60 · Nietzsche: perspectivismo y verdad</h2>
-<p><strong>La pregunta por la verdad misma.</strong> El segundo gran blanco de Nietzsche no es esta o aquella verdad, sino la verdad como tal: <em>¿qué es la verdad y por qué la veneramos?</em> Toda la tradición —Platón con sus Formas (<a href="tema-03.html#sec-09">§09</a>), Descartes con su certeza (<a href="tema-08.html#sec-36">§36</a>), Kant con su crítica (<a href="tema-12.html#sec-50">§50</a>)— había buscado un fundamento firme para el conocimiento, una verdad que <em>copiara</em> una realidad en sí. Nietzsche niega que haya tal realidad que copiar, ni tal ojo capaz de verla sin deformarla. Donde sus predecesores cavaban cimientos, él retira el suelo. Esta es su vertiente epistemológica, y conviene leerla en paralelo con aquellos autores, porque es la respuesta más radical a la misma pregunta: el origen, el alcance y los límites del conocimiento.</p>
+<p><strong>La pregunta por la verdad misma.</strong> El segundo gran blanco de Nietzsche no es esta o aquella verdad, sino la verdad como tal: <em>¿qué es la verdad y por qué la veneramos?</em> Toda la tradición —Platón con sus Formas (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), Descartes con su certeza (<a href="../chapters-web/tema-08.html#sec-36">§36</a>), Kant con su crítica (<a href="../chapters-web/tema-12.html#sec-50">§50</a>)— había buscado un fundamento firme para el conocimiento, una verdad que <em>copiara</em> una realidad en sí. Nietzsche niega que haya tal realidad que copiar, ni tal ojo capaz de verla sin deformarla. Donde sus predecesores cavaban cimientos, él retira el suelo. Esta es su vertiente epistemológica, y conviene leerla en paralelo con aquellos autores, porque es la respuesta más radical a la misma pregunta: el origen, el alcance y los límites del conocimiento.</p>
 <p><strong>La verdad como «ejército móvil de metáforas».</strong> El análisis se ancla en un texto temprano, <em>Sobre verdad y mentira en sentido extramoral</em> (1873). Allí Nietzsche reconstruye la génesis de eso que llamamos «verdad». Un estímulo nervioso se transforma en una imagen; la imagen, en un sonido; el sonido, en una palabra; y la palabra, al borrar las diferencias entre cosas que nunca son iguales, se vuelve <em>concepto</em>. En cada paso hay un salto, una traducción de algo a algo distinto: una <em>metáfora</em>. El lenguaje no copia el mundo, lo esquematiza y lo hace a nuestra medida, lo <em>antropomorfiza</em>. De ahí su célebre definición: «¿qué es entonces la verdad? Un ejército móvil de metáforas»; las verdades son «ilusiones de las que se ha olvidado que lo son», metáforas gastadas como monedas a las que el uso ha borrado el relieve. Llamamos «verdadero» al conjunto de metáforas habituales que hemos olvidado que lo eran.</p>
-<p><strong>El perspectivismo.</strong> De esa crítica del concepto se sigue la tesis central: «no hay hechos, solo interpretaciones»<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Todo conocer se da <em>desde</em> una perspectiva: situada, interesada, al servicio de la vida de quien conoce. No existe un «ojo divino», una mirada desde ningún lugar, ni una «cosa en sí» accesible —y aquí el choque con el noúmeno de Kant (<a href="tema-12.html#sec-50">§50</a>) y con las Formas de Platón (<a href="tema-03.html#sec-09">§09</a>) es frontal—. Esto no es una queja: lejos de empobrecer el conocimiento, multiplicar las perspectivas lo enriquece. Pero la objetividad deja de ser el reflejo de un mundo único y pasa a ser la suma, siempre abierta, de muchos puntos de vista.</p>
-<p><strong>La voluntad de verdad y las ficciones útiles.</strong> Si la verdad es esto, ¿por qué creemos tan firmemente en ella? Porque la vida la necesita: vivir exige ficciones estables. Las grandes «categorías de la razón» —la <em>sustancia</em>, el <em>yo</em>, la <em>causa</em>— no son rasgos de la realidad, sino ficciones útiles que nuestra especie impuso para orientarse y sobrevivir; aquí Nietzsche prolonga la sospecha que Hume (<a href="tema-09.html#sec-39">§39</a>) había dirigido contra el yo y la causalidad. Hasta la ciencia descansa sobre una fe que no examina: la <em>voluntad de verdad</em>, la convicción de que la verdad vale más que la ilusión. Y esa convicción —observa Nietzsche— es un resto moral, casi religioso, que él vuelve contra sí mismo: ¿y si, a veces, la ilusión sirviera más a la vida que la verdad?</p>
+<p><strong>El perspectivismo.</strong> De esa crítica del concepto se sigue la tesis central: «no hay hechos, solo interpretaciones»<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Todo conocer se da <em>desde</em> una perspectiva: situada, interesada, al servicio de la vida de quien conoce. No existe un «ojo divino», una mirada desde ningún lugar, ni una «cosa en sí» accesible —y aquí el choque con el noúmeno de Kant (<a href="../chapters-web/tema-12.html#sec-50">§50</a>) y con las Formas de Platón (<a href="../chapters-web/tema-03.html#sec-09">§09</a>) es frontal—. Esto no es una queja: lejos de empobrecer el conocimiento, multiplicar las perspectivas lo enriquece. Pero la objetividad deja de ser el reflejo de un mundo único y pasa a ser la suma, siempre abierta, de muchos puntos de vista.</p>
+<p><strong>La voluntad de verdad y las ficciones útiles.</strong> Si la verdad es esto, ¿por qué creemos tan firmemente en ella? Porque la vida la necesita: vivir exige ficciones estables. Las grandes «categorías de la razón» —la <em>sustancia</em>, el <em>yo</em>, la <em>causa</em>— no son rasgos de la realidad, sino ficciones útiles que nuestra especie impuso para orientarse y sobrevivir; aquí Nietzsche prolonga la sospecha que Hume (<a href="../chapters-web/tema-09.html#sec-39">§39</a>) había dirigido contra el yo y la causalidad. Hasta la ciencia descansa sobre una fe que no examina: la <em>voluntad de verdad</em>, la convicción de que la verdad vale más que la ilusión. Y esa convicción —observa Nietzsche— es un resto moral, casi religioso, que él vuelve contra sí mismo: ¿y si, a veces, la ilusión sirviera más a la vida que la verdad?</p>
 <p><strong>Alcance y una objeción.</strong> Tanta radicalidad invita a la objeción evidente: «¿es verdad que no hay verdades?». Si todo es interpretación, el perspectivismo sería una interpretación más y se refutaría a sí mismo. Nietzsche aceptaría la primera mitad sin verla como una derrota: el perspectivismo no es un nuevo dogma sobre la realidad, sino un método que se incluye a sí mismo, un martillo que también pone a prueba su propio sonido. Lo decisivo, para él, no es ya si una creencia es «verdadera» en el viejo sentido, sino si sirve a la vida o la empobrece. Con ese desplazamiento —del criterio de <em>verdad</em> al criterio de <em>vida</em>— termina la demolición y empieza la parte constructiva.</p>
 </section>
 <section id="sec-61" class="level2">
 <h2 class="anchored" data-anchor-id="sec-61">§61 · Nietzsche: nihilismo, voluntad de poder y superhombre</h2>
-<p><strong>El nihilismo.</strong> Si Dios ha muerto (<a href="tema-16.html#sec-59">§59</a>) y no hay verdades en sí (<a href="tema-16.html#sec-60">§60</a>), ¿qué sostiene nuestros valores? Nada: y a esa situación la llama Nietzsche <em>nihilismo</em>, «el más inquietante de los huéspedes», que llama a la puerta de Europa. Significa que «los valores supremos se desvalorizan»: caído el fundamento, todo lo que en él se apoyaba se tambalea. Nietzsche distingue dos formas. El <em>nihilismo pasivo</em> es el del agotamiento, el del «¿para qué?», encarnado en el «último hombre» de <em>Zaratustra</em>, que solo aspira a la comodidad y a una felicidad mediocre, y parpadea. El <em>nihilismo activo</em>, en cambio, destruye los valores ya muertos para despejar el terreno donde plantar otros nuevos. El nihilismo es, así, a la vez el gran peligro y el paso necesario: no hay que rodearlo, hay que atravesarlo.</p>
-<p><strong>La voluntad de poder.</strong> ¿Qué hay, entonces, bajo la vida, una vez retirados los fundamentos? Nietzsche no lee en el fondo de lo vivo una voluntad de sobrevivir —contra Darwin—, ni de placer —contra los utilitaristas (<a href="tema-13.html#sec-53">§53</a>)—, ni de reposo, sino una <em>voluntad de poder</em>: un impulso de crecer, de expandirse, de superarse a sí mismo. La realidad no es un conjunto de cosas-sustancias, sino un juego de fuerzas, de voluntades de poder que se interpretan y se dominan unas a otras; el «ser» es, en el fondo, <em>devenir</em>. Esta es su ontología, vital y no metafísica, y el cimiento de su ética: <em>bueno</em> es lo que acrecienta la potencia, la vida ascendente; <em>malo</em>, lo que la debilita.</p>
+<p><strong>El nihilismo.</strong> Si Dios ha muerto (<a href="../chapters-web/tema-16.html#sec-59">§59</a>) y no hay verdades en sí (<a href="../chapters-web/tema-16.html#sec-60">§60</a>), ¿qué sostiene nuestros valores? Nada: y a esa situación la llama Nietzsche <em>nihilismo</em>, «el más inquietante de los huéspedes», que llama a la puerta de Europa. Significa que «los valores supremos se desvalorizan»: caído el fundamento, todo lo que en él se apoyaba se tambalea. Nietzsche distingue dos formas. El <em>nihilismo pasivo</em> es el del agotamiento, el del «¿para qué?», encarnado en el «último hombre» de <em>Zaratustra</em>, que solo aspira a la comodidad y a una felicidad mediocre, y parpadea. El <em>nihilismo activo</em>, en cambio, destruye los valores ya muertos para despejar el terreno donde plantar otros nuevos. El nihilismo es, así, a la vez el gran peligro y el paso necesario: no hay que rodearlo, hay que atravesarlo.</p>
+<p><strong>La voluntad de poder.</strong> ¿Qué hay, entonces, bajo la vida, una vez retirados los fundamentos? Nietzsche no lee en el fondo de lo vivo una voluntad de sobrevivir —contra Darwin—, ni de placer —contra los utilitaristas (<a href="../chapters-web/tema-13.html#sec-53">§53</a>)—, ni de reposo, sino una <em>voluntad de poder</em>: un impulso de crecer, de expandirse, de superarse a sí mismo. La realidad no es un conjunto de cosas-sustancias, sino un juego de fuerzas, de voluntades de poder que se interpretan y se dominan unas a otras; el «ser» es, en el fondo, <em>devenir</em>. Esta es su ontología, vital y no metafísica, y el cimiento de su ética: <em>bueno</em> es lo que acrecienta la potencia, la vida ascendente; <em>malo</em>, lo que la debilita.</p>
 <p><strong>El superhombre.</strong> ¿Quién crea valores cuando Dios ha muerto? El <em>superhombre</em> (<em>Übermensch</em>), la figura que anuncia Zaratustra. No es una raza biológica ni un tirano —en este punto se lo malinterpretará, como veremos—, sino un <em>tipo espiritual</em>: el ser humano que se supera a sí mismo, que inventa sus propios valores y permanece «fiel a la tierra» en lugar de huir a un más allá. Las tres metamorfosis del espíritu dibujan el camino: el <em>camello</em>, que carga sobre sí los valores heredados; el <em>león</em>, que dice «no» y conquista la libertad de los viejos deberes; y el <em>niño</em>, que crea de nuevo, inocente y afirmativo. El superhombre es «el sentido de la tierra»: la respuesta al nihilismo no consiste en llorar el fundamento perdido, sino en convertirse uno mismo en fundamento.</p>
 <p><strong>El eterno retorno y el amor fati.</strong> La piedra de toque de esa afirmación es el pensamiento del <em>eterno retorno</em>. Nietzsche lo presenta como un experimento (<em>La gaya ciencia</em>, §&nbsp;341): imagina que un demonio se desliza en tu más honda soledad y te dice:</p>
 <blockquote class="blockquote">
@@ -557,10 +569,10 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li><em>La autorreferencia del perspectivismo.</em> Si no hay verdades, la tesis se vuelve contra sí misma; Nietzsche responde convirtiéndola en método, pero la tensión permanece y divide a sus lectores hasta hoy.</li>
 <li><em>El estilo asistemático y las máscaras.</em> El aforismo y la provocación se resisten a una lectura única: la voluntad de poder y el eterno retorno admiten interpretaciones opuestas —vitalista, metafísica, política—, y él mismo «escribía para que se lo malinterpretara». La falta de sistema es a la vez una elección y un riesgo.</li>
-<li><em>El peligro de la «moral de señores».</em> La exaltación de la fuerza y la jerarquía, y el desprecio de la compasión y la igualdad, pueden leerse —y se han leído— como un ataque a la democracia y a la dignidad universal que defendía Kant (<a href="tema-12.html#sec-51">§51</a>). Sea cual sea la interpretación más fiel, la tensión es real.</li>
+<li><em>El peligro de la «moral de señores».</em> La exaltación de la fuerza y la jerarquía, y el desprecio de la compasión y la igualdad, pueden leerse —y se han leído— como un ataque a la democracia y a la dignidad universal que defendía Kant (<a href="../chapters-web/tema-12.html#sec-51">§51</a>). Sea cual sea la interpretación más fiel, la tensión es real.</li>
 </ol>
-<p>La más grave de las distorsiones, sin embargo, fue póstuma. Tras su locura, su hermana <em>Elisabeth Förster-Nietzsche</em> —antisemita y nacionalista alemana— administró su legado, compiló sus apuntes inéditos en un libro, <em>La voluntad de poder</em>, que Nietzsche nunca escribió como tal, y cultivó la cercanía con el nazismo, que lo adoptó como precursor. Pero Nietzsche despreció el antisemitismo, el nacionalismo alemán y la moral de «rebaño» que el nazismo encarnaba; rompió incluso con Wagner, a quien admiraba, en parte por ello. Conviene, como con Marx (<a href="tema-15.html#sec-57">§57</a>-<a href="tema-15.html#sec-58">§58</a>), no confundir la obra con lo que sus herederos hicieron de ella.</p>
-<p>Con todo, su fuerza perdura. El existencialismo (<a href="tema-17.html#sec-62">§62</a>) hereda su «Dios ha muerto» y la tarea de crear valores sin garantía; Foucault y la herencia posmoderna (<a href="tema-20.html#sec-75">§75</a>) harán de la genealogía un método para desenmascarar las tramas de saber y poder; y Ortega recogerá su perspectivismo (<a href="tema-18.html#sec-66">§66</a>). Con Nietzsche, y con los demás filósofos de la sospecha (<a href="tema-14.html#sec-55">§55</a>), la confianza moderna en una razón transparente y soberana —la de Kant y los utilitaristas (<a href="tema-12.html#sec-51">§51</a>, <a href="tema-13.html#sec-53">§53</a>)— toca su punto más bajo. Y aquí, en el umbral del siglo XX, se cierra el XIX.</p>
+<p>La más grave de las distorsiones, sin embargo, fue póstuma. Tras su locura, su hermana <em>Elisabeth Förster-Nietzsche</em> —antisemita y nacionalista alemana— administró su legado, compiló sus apuntes inéditos en un libro, <em>La voluntad de poder</em>, que Nietzsche nunca escribió como tal, y cultivó la cercanía con el nazismo, que lo adoptó como precursor. Pero Nietzsche despreció el antisemitismo, el nacionalismo alemán y la moral de «rebaño» que el nazismo encarnaba; rompió incluso con Wagner, a quien admiraba, en parte por ello. Conviene, como con Marx (<a href="../chapters-web/tema-15.html#sec-57">§57</a>-<a href="../chapters-web/tema-15.html#sec-58">§58</a>), no confundir la obra con lo que sus herederos hicieron de ella.</p>
+<p>Con todo, su fuerza perdura. El existencialismo (<a href="../chapters-web/tema-17.html#sec-62">§62</a>) hereda su «Dios ha muerto» y la tarea de crear valores sin garantía; Foucault y la herencia posmoderna (<a href="../chapters-web/tema-20.html#sec-75">§75</a>) harán de la genealogía un método para desenmascarar las tramas de saber y poder; y Ortega recogerá su perspectivismo (<a href="../chapters-web/tema-18.html#sec-66">§66</a>). Con Nietzsche, y con los demás filósofos de la sospecha (<a href="../chapters-web/tema-14.html#sec-55">§55</a>), la confianza moderna en una razón transparente y soberana —la de Kant y los utilitaristas (<a href="../chapters-web/tema-12.html#sec-51">§51</a>, <a href="../chapters-web/tema-13.html#sec-53">§53</a>)— toca su punto más bajo. Y aquí, en el umbral del siglo XX, se cierra el XIX.</p>
 
 
 </section>
@@ -569,25 +581,137 @@ ul.task-list li input[type="checkbox"] {
 <ol>
 <li id="fn1"><p>Es el hilo de las tres partes de <em>La genealogía de la moral</em> (1887): la oposición «bueno/malo» frente a «bueno/malvado», el origen de la mala conciencia y la culpa, y el ideal ascético que da sentido al sufrimiento. Para Nietzsche, dar sentido al sufrimiento no lo alivia: lo eterniza.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>La sentencia aparece en boca del «loco» que busca a Dios con una linterna en pleno día (<em>La gaya ciencia</em>, §&nbsp;125). No es el grito triunfal de un ateo, sino el anuncio de una catástrofe cultural cuyas consecuencias casi nadie ha medido todavía.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Formulación de un apunte póstumo, coherente con lo que sostiene en obras publicadas, sobre todo en <em>La genealogía de la moral</em> (III, <a href="tema-03.html#sec-12">§12</a>): no existe un «conocer en sí» desprovisto de perspectiva; cuantos más ojos distintos sepamos poner sobre una cosa, más completa será nuestra «objetividad», que es siempre una suma de perspectivas, nunca su abolición.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Formulación de un apunte póstumo, coherente con lo que sostiene en obras publicadas, sobre todo en <em>La genealogía de la moral</em> (III, <a href="../chapters-web/tema-03.html#sec-12">§12</a>): no existe un «conocer en sí» desprovisto de perspectiva; cuantos más ojos distintos sepamos poner sobre una cosa, más completa será nuestra «objetividad», que es siempre una suma de perspectivas, nunca su abolición.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Nietzsche jugó también con una versión <em>cosmológica</em> del eterno retorno —como hipótesis física sobre un universo finito en un tiempo infinito—, pero es su lado más débil y discutido; lo decisivo es la versión existencial, el eterno retorno como criterio de la afirmación de la vida.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -666,7 +790,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -675,8 +800,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -690,6 +876,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -852,44 +1039,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -988,7 +1185,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-15.html" class="pagination-link" aria-label="Tema 15 · Marx">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 15 · Marx</span></span>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-07.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-08.html"><span class="chapter-title">Tema 8 · Descartes</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-08.html"><span class="chapter-title">Tema 8 · Descartes</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -493,10 +505,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-08.html"><span class="chapter-title">Tema 8 · Descartes</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-08.html"><span class="chapter-title">Tema 8 · Descartes</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 8 · Descartes</span></h1>
 </div>
@@ -522,8 +534,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="para-entrar-en-descartes">Para entrar en Descartes</h2>
 <p>Con René Descartes (1596-1650) suele decirse que empieza la filosofía moderna. La fórmula es justa, pero conviene entender por qué. No se trata de que Descartes descubriera una verdad nueva que nadie había visto, sino de algo más radical: decidió <em>empezar de cero</em>. Frente a veinte siglos de saber heredado, se preguntó si había siquiera una sola cosa de la que pudiera estar absolutamente seguro, y se propuso reconstruir todo el conocimiento sobre ese único cimiento, si es que lo encontraba. Esa voluntad de refundar el saber desde sus bases, fiándose solo de la propia razón, es lo que lo convierte en el primer filósofo moderno.</p>
 <p><strong>Vida y circunstancia.</strong> Descartes se educó en La Flèche, uno de los mejores colegios de la Francia de su tiempo, regido por los jesuitas. Recibió allí una formación doble: la escolástica heredada de la Edad Media y, a la vez, las matemáticas más avanzadas de la época. Y salió desconcertado. Había comprobado que sobre casi cualquier cuestión filosófica hombres inteligentísimos defendían una cosa con buenos argumentos, y otros igual de doctos sostenían lo contrario con argumentos no menos sólidos. Solo en las matemáticas había encontrado certeza y acuerdo. Esa diferencia —entre una filosofía que discute sin avanzar y una matemática que demuestra y convence— será la semilla de toda su obra.</p>
-<p><strong>Un pensador en una época en guerra.</strong> Descartes vivió como soldado los primeros años de la guerra de los Treinta Años, el gran conflicto entre católicos y protestantes que ensangrentó Europa tras la Reforma (<a href="tema-07.html#sec-32">§32</a>). Cuando dejó la vida militar, se instaló en los Países Bajos, que en aquel siglo eran un refugio para quien quería pensar con libertad. Allí escribió casi toda su obra. Era un católico ferviente y, prudente tras la reciente condena de Galileo (1564-1642) por defender el heliocentrismo (<a href="tema-07.html#sec-33">§33</a>), cuidó siempre de no chocar de frente con la Iglesia. Su gran libro, el <em>Discurso del método</em>, apareció en 1637, en plena revolución científica: Descartes busca para el pensamiento un método tan seguro como el que la nueva ciencia estaba dando al estudio de la naturaleza.</p>
-<p><strong>El mapa del tema.</strong> Vamos a recorrer su filosofía en el orden en que él mismo la construye. Primero, el programa común a todo el racionalismo, la corriente que Descartes inaugura (<a href="tema-08.html#sec-34">§34</a>). Después, el <em>método</em> con que se propone alcanzar la certeza (<a href="tema-08.html#sec-35">§35</a>). Luego, la puesta en marcha de ese método: la duda que lo destruye todo y la primera verdad que resiste, el <em>cogito</em> (<a href="tema-08.html#sec-36">§36</a>). Y, por último, lo que sobre esa primera verdad logra reconstruir: la existencia de Dios, del mundo y la división de la realidad en sustancias, con el célebre dualismo de alma y cuerpo (<a href="tema-08.html#sec-37">§37</a>). Empecemos por situar a Descartes en su corriente.</p>
+<p><strong>Un pensador en una época en guerra.</strong> Descartes vivió como soldado los primeros años de la guerra de los Treinta Años, el gran conflicto entre católicos y protestantes que ensangrentó Europa tras la Reforma (<a href="../chapters-web/tema-07.html#sec-32">§32</a>). Cuando dejó la vida militar, se instaló en los Países Bajos, que en aquel siglo eran un refugio para quien quería pensar con libertad. Allí escribió casi toda su obra. Era un católico ferviente y, prudente tras la reciente condena de Galileo (1564-1642) por defender el heliocentrismo (<a href="../chapters-web/tema-07.html#sec-33">§33</a>), cuidó siempre de no chocar de frente con la Iglesia. Su gran libro, el <em>Discurso del método</em>, apareció en 1637, en plena revolución científica: Descartes busca para el pensamiento un método tan seguro como el que la nueva ciencia estaba dando al estudio de la naturaleza.</p>
+<p><strong>El mapa del tema.</strong> Vamos a recorrer su filosofía en el orden en que él mismo la construye. Primero, el programa común a todo el racionalismo, la corriente que Descartes inaugura (<a href="../chapters-web/tema-08.html#sec-34">§34</a>). Después, el <em>método</em> con que se propone alcanzar la certeza (<a href="../chapters-web/tema-08.html#sec-35">§35</a>). Luego, la puesta en marcha de ese método: la duda que lo destruye todo y la primera verdad que resiste, el <em>cogito</em> (<a href="../chapters-web/tema-08.html#sec-36">§36</a>). Y, por último, lo que sobre esa primera verdad logra reconstruir: la existencia de Dios, del mundo y la división de la realidad en sustancias, con el célebre dualismo de alma y cuerpo (<a href="../chapters-web/tema-08.html#sec-37">§37</a>). Empecemos por situar a Descartes en su corriente.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-descartes.jpg" class="img-fluid figure-img"></p>
@@ -533,12 +545,12 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-34" class="level2">
 <h2 class="anchored" data-anchor-id="sec-34">§34 · Características generales del racionalismo</h2>
-<p>Toda la sección anterior desembocaba en una pregunta: si el criterio de la verdad ya no es la autoridad heredada, sino el propio sujeto, entonces «¿cómo conocemos?» (<a href="tema-07.html#sec-30">§30</a>, <a href="tema-07.html#sec-33">§33</a>). La filosofía moderna se parte en dos al responderla. Una corriente sostiene que la fuente y la garantía del conocimiento verdadero está en la <em>razón</em>; la otra, que está en la <em>experiencia</em>. A la primera la llamamos <em>racionalismo</em>; a la segunda, <em>empirismo</em>. Esta sección expone el programa racionalista, del que Descartes es el fundador; el empirismo lo veremos en <a href="tema-09.html#sec-38">§38</a>, redactado de forma comparable para que puedas confrontarlos.</p>
+<p>Toda la sección anterior desembocaba en una pregunta: si el criterio de la verdad ya no es la autoridad heredada, sino el propio sujeto, entonces «¿cómo conocemos?» (<a href="../chapters-web/tema-07.html#sec-30">§30</a>, <a href="../chapters-web/tema-07.html#sec-33">§33</a>). La filosofía moderna se parte en dos al responderla. Una corriente sostiene que la fuente y la garantía del conocimiento verdadero está en la <em>razón</em>; la otra, que está en la <em>experiencia</em>. A la primera la llamamos <em>racionalismo</em>; a la segunda, <em>empirismo</em>. Esta sección expone el programa racionalista, del que Descartes es el fundador; el empirismo lo veremos en <a href="../chapters-web/tema-09.html#sec-38">§38</a>, redactado de forma comparable para que puedas confrontarlos.</p>
 <p><strong>La razón como fuente del conocimiento.</strong> El racionalismo parte de una desconfianza: los sentidos engañan y nos dan, a lo sumo, lo particular y cambiante. El conocimiento verdadero —universal, necesario, seguro— no puede apoyarse en ellos, sino en la razón. Donde un teorema matemático vale siempre y en todas partes, lo que me muestran los sentidos vale aquí, ahora y quizá solo en apariencia. Por eso el racionalista busca en la razón, y no en la experiencia, el origen del saber.</p>
-<p><strong>Las ideas innatas.</strong> Si el conocimiento no viene de los sentidos, ¿de dónde saca la razón sus contenidos? De sí misma. Los racionalistas sostienen que la mente posee <em>ideas innatas</em>: ideas que no hemos recibido por los sentidos ni fabricado con la imaginación, sino con las que la razón cuenta por su propia naturaleza. La idea de infinito es el ejemplo típico: nadie ha visto nunca el infinito, de modo que esa idea no puede proceder de la vista ni del tacto. También lo son los axiomas de la geometría o el principio de que toda causa produce un efecto. La tesis de las ideas innatas será, precisamente, el primer blanco del empirismo (<a href="tema-09.html#sec-38">§38</a>), que la niega de raíz.</p>
+<p><strong>Las ideas innatas.</strong> Si el conocimiento no viene de los sentidos, ¿de dónde saca la razón sus contenidos? De sí misma. Los racionalistas sostienen que la mente posee <em>ideas innatas</em>: ideas que no hemos recibido por los sentidos ni fabricado con la imaginación, sino con las que la razón cuenta por su propia naturaleza. La idea de infinito es el ejemplo típico: nadie ha visto nunca el infinito, de modo que esa idea no puede proceder de la vista ni del tacto. También lo son los axiomas de la geometría o el principio de que toda causa produce un efecto. La tesis de las ideas innatas será, precisamente, el primer blanco del empirismo (<a href="../chapters-web/tema-09.html#sec-38">§38</a>), que la niega de raíz.</p>
 <p><strong>El modelo matemático.</strong> El racionalista no solo confía en la razón: confía en un modo concreto de usarla, el de las matemáticas. La geometría parte de unos pocos principios evidentes —los axiomas— y, por pura <em>deducción</em>, va extrayendo de ellos verdades cada vez más complejas, todas tan seguras como el punto de partida. Ese es el ideal del conocimiento racionalista: partir de principios evidentes y avanzar por deducción, encadenando certezas. De ahí que el racionalismo aspire a un saber de tipo demostrativo, no a la mera acumulación de observaciones.</p>
-<p><strong>La autonomía de la razón.</strong> Hay en todo esto un gesto típicamente moderno, el que vimos como hilo común de la época (<a href="tema-07.html#sec-30">§30</a>): la razón se declara <em>autónoma</em>. Ya no trabaja al servicio de la fe ni necesita el aval de una autoridad externa para validar sus conclusiones. Conviene no malentenderlo: los grandes racionalistas fueron creyentes —Descartes, sin ir más lejos—, pero su Dios y su modo de razonar sobre él son ya los de un pensador que se fía primero de su propia razón. La razón se basta a sí misma para conocer.</p>
-<p><strong>El alcance: un mundo inteligible.</strong> ¿Hasta dónde llega este conocimiento? Muy lejos, porque el racionalista da por supuesto que la realidad misma está ordenada racionalmente. Si el mundo obedece a un orden que la razón puede reconstruir, entonces el conocimiento verdadero es <em>objetivo</em>: no depende de mi cultura, mi biografía ni mi estado de ánimo, sino que capta cómo son las cosas. Esta confianza —la razón humana puede, por sí sola, conocer la estructura de lo real— es lo que un siglo después el empirismo de Hume (<a href="tema-09.html#sec-39">§39</a>) y, sobre todo, la filosofía crítica de Kant (<a href="tema-12.html#sec-50">§50</a>) pondrán seriamente en duda.</p>
+<p><strong>La autonomía de la razón.</strong> Hay en todo esto un gesto típicamente moderno, el que vimos como hilo común de la época (<a href="../chapters-web/tema-07.html#sec-30">§30</a>): la razón se declara <em>autónoma</em>. Ya no trabaja al servicio de la fe ni necesita el aval de una autoridad externa para validar sus conclusiones. Conviene no malentenderlo: los grandes racionalistas fueron creyentes —Descartes, sin ir más lejos—, pero su Dios y su modo de razonar sobre él son ya los de un pensador que se fía primero de su propia razón. La razón se basta a sí misma para conocer.</p>
+<p><strong>El alcance: un mundo inteligible.</strong> ¿Hasta dónde llega este conocimiento? Muy lejos, porque el racionalista da por supuesto que la realidad misma está ordenada racionalmente. Si el mundo obedece a un orden que la razón puede reconstruir, entonces el conocimiento verdadero es <em>objetivo</em>: no depende de mi cultura, mi biografía ni mi estado de ánimo, sino que capta cómo son las cosas. Esta confianza —la razón humana puede, por sí sola, conocer la estructura de lo real— es lo que un siglo después el empirismo de Hume (<a href="../chapters-web/tema-09.html#sec-39">§39</a>) y, sobre todo, la filosofía crítica de Kant (<a href="../chapters-web/tema-12.html#sec-50">§50</a>) pondrán seriamente en duda.</p>
 <p><strong>Los nombres.</strong> En la corriente racionalista, además de Descartes —el primero en sentido estricto—, se cuentan Baruch Spinoza (1632-1677) y Gottfried Leibniz (1646-1716), todos ellos pensadores de la Europa continental. Frente a ellos, en las islas británicas, se alza la corriente empirista, que culmina en David Hume y a la que dedicaremos el tema siguiente. Descartes es el mejor ejemplo del programa que acabamos de describir; veámoslo en acción, empezando por su método.</p>
 </section>
 <section id="sec-35" class="level2">
@@ -547,11 +559,11 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Las matemáticas como modelo.</strong> ¿Por qué las matemáticas y no otra ciencia? Porque en ellas Descartes encuentra lo que en ninguna otra parte había hallado: unos principios que <em>todos</em> aceptan —los axiomas— y un criterio claro para admitir o rechazar cualquier afirmación. En matemáticas no caben las opiniones encontradas que tanto le habían frustrado en filosofía. Así que Descartes se propone trasladar a todo el conocimiento el modo de proceder de las matemáticas: partir de lo evidente y avanzar paso a paso, sin admitir nada dudoso. El método que va a formular no es sino la generalización de ese ideal.</p>
 <p><strong>Las cuatro reglas.</strong> Descartes dejó constancia de su método en el texto que conviene leer, el <em>Discurso del método</em> (1637), donde lo reduce a cuatro reglas. La primera, y la más importante, es la regla de la <em>evidencia</em>: «no admitir como verdadera cosa alguna, como no supiese con evidencia que lo es», es decir, no aceptar sino lo que se presente a la mente «tan clara y distintamente» que no haya ocasión de ponerlo en duda. Las otras tres ordenan el trabajo: el <em>análisis</em>, «dividir cada una de las dificultades en cuantas partes fuere posible», descomponiendo lo complejo en sus elementos simples; la <em>síntesis</em>, «conducir ordenadamente los pensamientos, empezando por los objetos más simples» para ir reconstruyendo, peldaño a peldaño, lo complejo; y la <em>enumeración</em>, «hacer recuentos tan integrales y revisiones tan generales» que uno quede seguro de no haber omitido nada.</p>
 <p><strong>Claro y distinto.</strong> El centro de todo es la primera regla, porque en ella va el <em>criterio de verdad</em> del racionalismo: es verdadero lo que la mente concibe de forma evidente, esto es, <em>clara</em> y <em>distinta</em>. Y conviene precisar esos dos términos, porque Descartes los usa con rigor. Una idea es <em>clara</em> cuando está presente y patente a la mente que atiende, hasta poder definirla y comprenderla del todo. Y es <em>distinta</em> cuando está tan separada de las demás que no incluye nada que no sea ella misma, de modo que no la confundimos con ninguna otra. La idea matemática de triángulo es clara y distinta; la idea vaga de «lo que está bien» no lo es. Solo lo claro y distinto pasa el filtro.</p>
-<p><strong>Un método para pensar, no para experimentar.</strong> Fíjate en una diferencia decisiva respecto del método de la nueva ciencia que vimos en <a href="tema-07.html#sec-33">§33</a>. El método experimental de Bacon parte de la observación de la naturaleza; el de Descartes, en cambio, es un camino de la <em>razón</em> que opera sobre sus propias ideas: analiza, ordena y deduce, como en una demostración matemática. Es el método de un racionalista. Pero un método, por bueno que sea, necesita un punto de partida: un primer principio absolutamente cierto desde el cual deducir lo demás, como los axiomas en geometría. ¿Existe una verdad así, una que resista cualquier duda? Para averiguarlo, Descartes va a convertir su primera regla en un arma demoledora. De ello trata la sección siguiente.</p>
+<p><strong>Un método para pensar, no para experimentar.</strong> Fíjate en una diferencia decisiva respecto del método de la nueva ciencia que vimos en <a href="../chapters-web/tema-07.html#sec-33">§33</a>. El método experimental de Bacon parte de la observación de la naturaleza; el de Descartes, en cambio, es un camino de la <em>razón</em> que opera sobre sus propias ideas: analiza, ordena y deduce, como en una demostración matemática. Es el método de un racionalista. Pero un método, por bueno que sea, necesita un punto de partida: un primer principio absolutamente cierto desde el cual deducir lo demás, como los axiomas en geometría. ¿Existe una verdad así, una que resista cualquier duda? Para averiguarlo, Descartes va a convertir su primera regla en un arma demoledora. De ello trata la sección siguiente.</p>
 </section>
 <section id="sec-36" class="level2">
 <h2 class="anchored" data-anchor-id="sec-36">§36 · Descartes: la duda metódica, el cogito y las clases de ideas</h2>
-<p>La primera regla del método ordenaba no admitir nada que no fuera evidente. Descartes la toma al pie de la letra y la lleva hasta el extremo: en vez de esperar a tropezar con lo dudoso, decide <em>dudar de todo</em> por sistema, a ver si algo sobrevive. Es la <em>duda metódica</em>. Importa entender bien su sentido, porque se parece al escepticismo sin serlo. El escéptico duda para quedarse en la duda, porque cree que no hay verdad posible (<a href="tema-02.html#sec-05">§05</a>, <a href="tema-05.html#sec-23">§23</a>). Descartes duda exactamente por lo contrario: duda para <em>encontrar una certeza</em>, y la duda es solo su instrumento, no su meta. Es una duda provisional, voluntaria y dirigida.</p>
+<p>La primera regla del método ordenaba no admitir nada que no fuera evidente. Descartes la toma al pie de la letra y la lleva hasta el extremo: en vez de esperar a tropezar con lo dudoso, decide <em>dudar de todo</em> por sistema, a ver si algo sobrevive. Es la <em>duda metódica</em>. Importa entender bien su sentido, porque se parece al escepticismo sin serlo. El escéptico duda para quedarse en la duda, porque cree que no hay verdad posible (<a href="../chapters-web/tema-02.html#sec-05">§05</a>, <a href="../chapters-web/tema-05.html#sec-23">§23</a>). Descartes duda exactamente por lo contrario: duda para <em>encontrar una certeza</em>, y la duda es solo su instrumento, no su meta. Es una duda provisional, voluntaria y dirigida.</p>
 <p><strong>Primer motivo: los sentidos engañan.</strong> ¿De qué podemos dudar? En primer lugar, de todo lo que nos llega por los sentidos. Sabemos que alguna vez nos han engañado —un remo recto parece quebrado dentro del agua, una torre cuadrada se ve redonda a lo lejos—, y, lo decisivo, no tenemos un criterio seguro para saber <em>cuándo</em> nos engañan y cuándo no. Y si una fuente de conocimiento me ha mentido aunque sea una vez sin que yo pudiera advertirlo, la prudencia obliga a desconfiar de ella por entero.</p>
 <p><strong>Segundo motivo: el sueño.</strong> Podría objetarse que hay cosas que no engañan: que estoy aquí sentado, leyendo, con un cuerpo. Pero Descartes da un paso más con el argumento del sueño: muchas veces, dormido, he creído con total convicción estar viviendo cosas que no eran reales, y al despertar no había modo de haberlo sabido desde dentro del sueño. ¿Cómo estar seguro, entonces, de que no estoy soñando ahora mismo? Si no puedo descartarlo, también la existencia del mundo exterior y de mi propio cuerpo cae bajo la duda.</p>
 <p><strong>Tercer motivo: el genio maligno.</strong> Quedan, al menos, las verdades de la razón: dos y tres son cinco, sueñe yo o esté despierto. Aquí Descartes lleva la duda a su grado máximo, la hace <em>hiperbólica</em> —exagerada a propósito—, con una hipótesis extrema: imaginemos que existe un <em>genio maligno</em>, un ser todopoderoso empeñado en engañarme, capaz de hacer que me equivoque incluso al sumar o al contar los lados de un cuadrado. Mientras no pueda excluir esa hipótesis, ni siquiera las matemáticas se salvan. Tras este tercer golpe ya no queda nada en pie: la duda lo ha arrasado todo.</p>
@@ -567,7 +579,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Dios veraz: la garantía que levanta la duda.</strong> Aquí está el giro decisivo de toda la obra. Si Dios existe y es perfecto, entonces no puede ser un engañador, porque engañar es una imperfección. Y un Dios que no engaña no habría puesto en mí una razón radicalmente falsaria: luego puedo fiarme de ella, y lo que percibo con claridad y distinción es verdadero. Con esto se desvanece la hipótesis del genio maligno —Dios, veraz, ocupa el lugar que aquel amenazaba— y la duda deja de ser hiperbólica. La garantía del conocimiento, que el <em>cogito</em> aseguraba solo para sí mismo, queda ahora extendida a todo lo que la razón conciba con evidencia. Repara en lo que esto significa: en el sistema cartesiano, es Dios quien en última instancia garantiza la verdad de la razón humana.</p>
 <p><strong>¿De dónde viene entonces el error?</strong> Si Dios garantiza la razón, surge un problema: ¿cómo es que nos equivocamos? La respuesta de Descartes es elegante. El entendimiento, que concibe las ideas, es limitado, pero no nos engaña; el error nace de la <em>voluntad</em>, que es libre e ilimitada y se precipita a afirmar o negar más allá de lo que el entendimiento concibe con claridad. Erramos, pues, cuando juzgamos sobre lo que no comprendemos del todo. He aquí el límite del conocimiento racionalista: la verdad está asegurada <em>si</em> nos atenemos a lo claro y distinto y refrenamos el juicio en lo demás.</p>
 <p><strong>Las tres sustancias.</strong> Recuperada la confianza en la razón, Descartes puede ya ordenar la realidad. Lo hace con la noción de <em>sustancia</em>: aquello que existe por sí mismo, sin necesitar de otra cosa para ser. Distingue tres. La <em>res cogitans</em>, la cosa pensante —el yo, el alma—, cuya esencia es pensar. La <em>res infinita</em> —Dios—, infinita y perfecta. Y la <em>res extensa</em> —el mundo material—, cuya esencia es la <em>extensión</em>, ocupar espacio. Descartes las ha descubierto en este orden —yo, Dios, mundo—, pero el <em>orden del ser</em> es el inverso: primero Dios, que crea las otras dos. En rigor, solo Dios es sustancia en sentido pleno, porque solo él no depende de nada; pero Descartes sigue llamando sustancias al alma y al mundo porque son independientes entre sí: el yo puede existir sin el mundo, y el mundo sin el yo.</p>
-<p><strong>El mundo como un mecanismo.</strong> Si lo propio del mundo material es la pura extensión, entonces todo en él se reduce a piezas extensas en movimiento. De ahí la imagen <em>mecanicista</em> de Descartes: el universo es como un inmenso reloj, un juego de engranajes que se empujan unos a otros según leyes fijas, sin almas ni fines ocultos. Esta visión encaja a la perfección con la física de la revolución científica (<a href="tema-07.html#sec-33">§33</a>) y será enormemente fecunda para la ciencia; pero, llevada hasta el final, plantea un problema cuando llegamos al ser humano.</p>
+<p><strong>El mundo como un mecanismo.</strong> Si lo propio del mundo material es la pura extensión, entonces todo en él se reduce a piezas extensas en movimiento. De ahí la imagen <em>mecanicista</em> de Descartes: el universo es como un inmenso reloj, un juego de engranajes que se empujan unos a otros según leyes fijas, sin almas ni fines ocultos. Esta visión encaja a la perfección con la física de la revolución científica (<a href="../chapters-web/tema-07.html#sec-33">§33</a>) y será enormemente fecunda para la ciencia; pero, llevada hasta el final, plantea un problema cuando llegamos al ser humano.</p>
 <p><strong>El dualismo y la glándula pineal.</strong> Porque el ser humano es, a la vez, las dos sustancias creadas: <em>res cogitans</em> y <em>res extensa</em>, alma que piensa y cuerpo que ocupa espacio. Es el <em>dualismo</em> antropológico cartesiano. Y encierra una dificultad que el propio Descartes vio y no logró resolver: si alma y cuerpo son sustancias de naturaleza opuesta —una inmaterial, la otra extensa—, ¿cómo es que interactúan?, ¿cómo mueve mi voluntad un brazo, o cómo un dolor del cuerpo alcanza al alma? Descartes propuso que el punto de contacto era un pequeño órgano del cerebro, la <em>glándula pineal</em>. La solución no convenció casi a nadie, y el problema de la relación entre lo mental y lo físico quedó como una de las herencias más espinosas —y más vivas— de su filosofía.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -575,7 +587,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>La acción del cuerpo según Descartes: el calor del fuego tira de un «hilo» nervioso que llega al cerebro y provoca el movimiento, mientras la glándula pineal —en el centro de la cabeza— comunica el alma con el mecanismo corporal. Grabado de su <em>Tratado del hombre</em> (ed.&nbsp;1664). || Atribución: René Descartes, <em>L’Homme</em> (1664), dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Hacia el empirismo y Kant.</strong> Con Descartes, el racionalismo ha levantado un edificio entero —razón, método, yo, Dios, mundo— sobre el cimiento del <em>cogito</em>. Pero ese edificio descansa en dos piezas que pronto serán atacadas: las ideas innatas y la noción de sustancia. El empirismo (<a href="tema-09.html#sec-38">§38</a>) negará que tengamos ideas innatas y, con Hume (<a href="tema-09.html#sec-39">§39</a>), que podamos siquiera conocer las sustancias; y Kant (<a href="tema-12.html#sec-50">§50</a>) intentará superar el pulso entre razón y experiencia. Por eso el texto cartesiano sobre el origen del conocimiento es el primero de una serie que conviene leer en paralelo —Descartes, Hume, Kant—, tres respuestas rivales a una misma pregunta: ¿hasta dónde puede la razón conocer?</p>
+<p><strong>Hacia el empirismo y Kant.</strong> Con Descartes, el racionalismo ha levantado un edificio entero —razón, método, yo, Dios, mundo— sobre el cimiento del <em>cogito</em>. Pero ese edificio descansa en dos piezas que pronto serán atacadas: las ideas innatas y la noción de sustancia. El empirismo (<a href="../chapters-web/tema-09.html#sec-38">§38</a>) negará que tengamos ideas innatas y, con Hume (<a href="../chapters-web/tema-09.html#sec-39">§39</a>), que podamos siquiera conocer las sustancias; y Kant (<a href="../chapters-web/tema-12.html#sec-50">§50</a>) intentará superar el pulso entre razón y experiencia. Por eso el texto cartesiano sobre el origen del conocimiento es el primero de una serie que conviene leer en paralelo —Descartes, Hume, Kant—, tres respuestas rivales a una misma pregunta: ¿hasta dónde puede la razón conocer?</p>
 
 
 </section>
@@ -587,19 +599,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -678,7 +802,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -687,8 +812,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -702,6 +888,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -864,44 +1051,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1000,7 +1197,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-07.html" class="pagination-link" aria-label="Tema 7 · El nacimiento de la modernidad">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></span>

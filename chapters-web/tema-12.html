@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-11.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-12.html"><span class="chapter-title">Tema 12 · Kant</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-12.html"><span class="chapter-title">Tema 12 · Kant</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -491,10 +503,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-12.html"><span class="chapter-title">Tema 12 · Kant</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-12.html"><span class="chapter-title">Tema 12 · Kant</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 12 · Kant</span></h1>
 </div>
@@ -515,8 +527,8 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-kant" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-kant">Para entrar en Kant</h2>
-<p>En el tema anterior conocimos a Kant como la voz del proyecto ilustrado: el pensador que invitaba a atreverse a saber y a salir de la minoría de edad (<a href="tema-11.html#sec-47">§47</a>). Pero aquel manifiesto era solo la punta visible de una obra inmensa, la más influyente de la filosofía moderna. Llegamos ahora a su corazón. Y conviene recuperar también el hilo que dejamos abierto en el empirismo: Hume había llevado el análisis del conocimiento a una conclusión inquietante —la ciencia descansa en la costumbre, no en la razón— y confesó Kant que fue precisamente esa idea la que lo «despertó de su sueño dogmático» (<a href="tema-09.html#sec-39">§39</a>).</p>
-<p><strong>El mapa del tema.</strong> Kant dedicó su vida a responder, una tras otra, a unas pocas preguntas decisivas; dos de ellas organizan este tema. La primera es <em>¿qué puedo conocer?</em>: la veremos en su filosofía crítica, que en lugar de añadir un sistema más somete a juicio la propia facultad de conocer, fija sus límites y, con ellos, decide la vieja pretensión de la metafísica de ser una ciencia (<a href="tema-12.html#sec-50">§50</a>). La segunda es <em>¿qué debo hacer?</em>: la abordaremos en su ética, una de las más rigurosas y exigentes que se han pensado, construida sobre el deber, la autonomía y la dignidad de la persona (<a href="tema-12.html#sec-51">§51</a>). Las dos, la teórica y la práctica, forman un solo edificio, y veremos cómo la segunda recupera lo que la primera se había visto obligada a dejar fuera.</p>
+<p>En el tema anterior conocimos a Kant como la voz del proyecto ilustrado: el pensador que invitaba a atreverse a saber y a salir de la minoría de edad (<a href="../chapters-web/tema-11.html#sec-47">§47</a>). Pero aquel manifiesto era solo la punta visible de una obra inmensa, la más influyente de la filosofía moderna. Llegamos ahora a su corazón. Y conviene recuperar también el hilo que dejamos abierto en el empirismo: Hume había llevado el análisis del conocimiento a una conclusión inquietante —la ciencia descansa en la costumbre, no en la razón— y confesó Kant que fue precisamente esa idea la que lo «despertó de su sueño dogmático» (<a href="../chapters-web/tema-09.html#sec-39">§39</a>).</p>
+<p><strong>El mapa del tema.</strong> Kant dedicó su vida a responder, una tras otra, a unas pocas preguntas decisivas; dos de ellas organizan este tema. La primera es <em>¿qué puedo conocer?</em>: la veremos en su filosofía crítica, que en lugar de añadir un sistema más somete a juicio la propia facultad de conocer, fija sus límites y, con ellos, decide la vieja pretensión de la metafísica de ser una ciencia (<a href="../chapters-web/tema-12.html#sec-50">§50</a>). La segunda es <em>¿qué debo hacer?</em>: la abordaremos en su ética, una de las más rigurosas y exigentes que se han pensado, construida sobre el deber, la autonomía y la dignidad de la persona (<a href="../chapters-web/tema-12.html#sec-51">§51</a>). Las dos, la teórica y la práctica, forman un solo edificio, y veremos cómo la segunda recupera lo que la primera se había visto obligada a dejar fuera.</p>
 </section>
 <section id="sec-50" class="level2">
 <h2 class="anchored" data-anchor-id="sec-50">§50 · Kant: la filosofía crítica y el problema de la metafísica</h2>
@@ -527,46 +539,158 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Immanuel Kant (1724-1804), la cumbre de la filosofía moderna y la voz más rigurosa de la Ilustración. Retrato de Johann Gottlieb Becker, 1768. || Atribución: Johann Gottlieb Becker, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>El pleito entre racionalismo y empirismo.</strong> Kant hereda una disputa enquistada. Por un lado, el <em>racionalismo</em> de Descartes (<a href="tema-08.html#sec-36">§36</a>) confiaba en que la razón, con sus ideas innatas, alcanza por sí sola verdades necesarias y universales; pero, encerrado en la mente, se desentendía de la experiencia y se perdía en construcciones que nada garantizaba. Por otro, el <em>empirismo</em> de Hume (<a href="tema-09.html#sec-39">§39</a>) había mostrado que todas nuestras ideas proceden de la experiencia; pero, llevado hasta el final, ese principio disolvía la necesidad —la causalidad quedaba reducida a mera costumbre— y dejaba a la ciencia sin fundamento seguro. Kant juzga que ambos tienen una parte de razón y ninguno toda. Su diagnóstico se condensa en una fórmula célebre: «los pensamientos sin contenido son vacíos; las intuiciones sin conceptos son ciegas». El conocimiento no nace de una sola fuente, sino de la <em>colaboración</em> de dos: la experiencia, que aporta los materiales, y la mente, que los ordena.</p>
-<p><strong>El giro copernicano.</strong> ¿Cómo es posible esa colaboración? Aquí Kant da el paso que cambia la historia de la filosofía. Hasta entonces se había supuesto que, para conocer, nuestro pensamiento debe <em>ajustarse</em> a los objetos —la mente copia un mundo ya hecho—; y así no se entendía que pudiéramos saber nada con necesidad antes de mirar. Kant invierte la hipótesis: supongamos que son los objetos —tal como los conocemos— los que se ajustan a nuestra manera de conocer. Él mismo compara su jugada con la de Copérnico (<a href="tema-07.html#sec-33">§33</a>): así como el astrónomo, al no poder explicar los cielos suponiendo que giraban en torno al espectador, probó a poner al espectador a girar y al Sol en el centro, así Kant deja de poner al sujeto a girar en torno al objeto y pone el objeto a girar en torno al sujeto. No es que inventemos el mundo a capricho; es que todo lo que percibimos llega ya moldeado por unas estructuras que el sujeto pone de su parte. A esas estructuras, previas a toda experiencia, las llama <em>a priori</em>.</p>
+<p><strong>El pleito entre racionalismo y empirismo.</strong> Kant hereda una disputa enquistada. Por un lado, el <em>racionalismo</em> de Descartes (<a href="../chapters-web/tema-08.html#sec-36">§36</a>) confiaba en que la razón, con sus ideas innatas, alcanza por sí sola verdades necesarias y universales; pero, encerrado en la mente, se desentendía de la experiencia y se perdía en construcciones que nada garantizaba. Por otro, el <em>empirismo</em> de Hume (<a href="../chapters-web/tema-09.html#sec-39">§39</a>) había mostrado que todas nuestras ideas proceden de la experiencia; pero, llevado hasta el final, ese principio disolvía la necesidad —la causalidad quedaba reducida a mera costumbre— y dejaba a la ciencia sin fundamento seguro. Kant juzga que ambos tienen una parte de razón y ninguno toda. Su diagnóstico se condensa en una fórmula célebre: «los pensamientos sin contenido son vacíos; las intuiciones sin conceptos son ciegas». El conocimiento no nace de una sola fuente, sino de la <em>colaboración</em> de dos: la experiencia, que aporta los materiales, y la mente, que los ordena.</p>
+<p><strong>El giro copernicano.</strong> ¿Cómo es posible esa colaboración? Aquí Kant da el paso que cambia la historia de la filosofía. Hasta entonces se había supuesto que, para conocer, nuestro pensamiento debe <em>ajustarse</em> a los objetos —la mente copia un mundo ya hecho—; y así no se entendía que pudiéramos saber nada con necesidad antes de mirar. Kant invierte la hipótesis: supongamos que son los objetos —tal como los conocemos— los que se ajustan a nuestra manera de conocer. Él mismo compara su jugada con la de Copérnico (<a href="../chapters-web/tema-07.html#sec-33">§33</a>): así como el astrónomo, al no poder explicar los cielos suponiendo que giraban en torno al espectador, probó a poner al espectador a girar y al Sol en el centro, así Kant deja de poner al sujeto a girar en torno al objeto y pone el objeto a girar en torno al sujeto. No es que inventemos el mundo a capricho; es que todo lo que percibimos llega ya moldeado por unas estructuras que el sujeto pone de su parte. A esas estructuras, previas a toda experiencia, las llama <em>a priori</em>.</p>
 <p><strong>La sensibilidad: espacio y tiempo.</strong> Kant distingue dos facultades que cooperan en el conocimiento. La primera es la <em>sensibilidad</em>, por la que recibimos impresiones. Pero no las recibimos en bruto: las captamos siempre ordenadas en el <em>espacio</em> y en el <em>tiempo</em>. Y estos, sostiene Kant, no son cosas que existan ahí fuera ni propiedades de los objetos, sino las <em>formas a priori de la sensibilidad</em>, algo así como unas gafas que no podemos quitarnos: todo lo que percibimos aparece necesariamente en el espacio y en el tiempo porque somos nosotros quienes los ponemos. Por eso la matemática —que estudia precisamente las relaciones en el espacio y en el tiempo— puede ser a la vez necesaria y aplicarse al mundo: describe la forma con que forzosamente percibimos cualquier cosa.</p>
-<p><strong>El entendimiento: las categorías.</strong> Lo que la sensibilidad ofrece, todavía disperso, lo unifica y lo piensa la segunda facultad, el <em>entendimiento</em>, mediante una serie de conceptos puros que también son a priori: las <em>categorías</em> —unidad, realidad, sustancia, causa y otras—. Aquí Kant responde por fin a Hume. Hume tenía razón en una cosa: la conexión necesaria entre causa y efecto no está en las cosas, no la percibimos por los sentidos (<a href="tema-09.html#sec-39">§39</a>). Pero se equivocaba al concluir que es una mera costumbre sin valor. La necesidad no viene de fuera ni de la repetición: la pone el entendimiento, porque la <em>causa</em> es una categoría, una condición sin la cual no habría experiencia ordenada en absoluto, sino un puro desfile de impresiones sueltas. Que todo lo que sucede tiene una causa no es algo que aprendamos del mundo: es algo que el sujeto aporta para que pueda haber un mundo objetivo que conocer. Así rescata Kant la necesidad de la ciencia sin negar que todo nuestro conocimiento <em>empiece</em> con la experiencia.</p>
+<p><strong>El entendimiento: las categorías.</strong> Lo que la sensibilidad ofrece, todavía disperso, lo unifica y lo piensa la segunda facultad, el <em>entendimiento</em>, mediante una serie de conceptos puros que también son a priori: las <em>categorías</em> —unidad, realidad, sustancia, causa y otras—. Aquí Kant responde por fin a Hume. Hume tenía razón en una cosa: la conexión necesaria entre causa y efecto no está en las cosas, no la percibimos por los sentidos (<a href="../chapters-web/tema-09.html#sec-39">§39</a>). Pero se equivocaba al concluir que es una mera costumbre sin valor. La necesidad no viene de fuera ni de la repetición: la pone el entendimiento, porque la <em>causa</em> es una categoría, una condición sin la cual no habría experiencia ordenada en absoluto, sino un puro desfile de impresiones sueltas. Que todo lo que sucede tiene una causa no es algo que aprendamos del mundo: es algo que el sujeto aporta para que pueda haber un mundo objetivo que conocer. Así rescata Kant la necesidad de la ciencia sin negar que todo nuestro conocimiento <em>empiece</em> con la experiencia.</p>
 <p><strong>Los juicios sintéticos a priori.</strong> Toda esta maquinaria responde a una sola pregunta, la que vertebra la <em>Crítica de la razón pura</em>. Kant clasifica los juicios en tres clases. Los <em>analíticos</em> no hacen sino explicitar lo que ya estaba en el concepto del sujeto —«el soltero no está casado»—: son a priori, pero no amplían nuestro saber. Los <em>sintéticos a posteriori</em> sí lo amplían, pero dependen de la experiencia y carecen de necesidad —«esta mesa es marrón»—. Y hay un tercer tipo, decisivo: los <em>juicios sintéticos a priori</em>, que amplían el conocimiento <em>y</em> son universales y necesarios, como «todo lo que sucede tiene una causa» o «siete más cinco es doce». En ellos consiste el conocimiento científico genuino. La pregunta de Kant es: ¿cómo son posibles? Y su respuesta es todo lo anterior: son posibles porque el sujeto aporta las formas —espacio y tiempo, categorías— que hacen necesario y universal lo que, sin embargo, se refiere a la experiencia.</p>
 <p><strong>Fenómeno y noúmeno.</strong> Esta solución tiene un precio, y Kant lo paga sin disimulo. Si solo conocemos las cosas en la medida en que pasan por nuestras formas a priori, entonces no conocemos las cosas <em>tal como son en sí mismas</em>, sino tal como se nos <em>aparecen</em>. A lo primero lo llama <em>fenómeno</em> —la cosa para nosotros, lo único que podemos conocer—; a lo segundo, <em>noúmeno</em> o <em>cosa en sí</em> —la cosa al margen de nuestra manera de conocerla, que podemos <em>pensar</em> pero nunca <em>conocer</em>—. Hay, pues, una frontera infranqueable: el conocimiento llega exactamente hasta donde llega la experiencia posible, y ni un paso más allá.</p>
 <p><strong>El problema de la metafísica.</strong> De ahí se sigue la consecuencia que da título a la sección. La <em>metafísica</em> ha pretendido siempre conocer objetos que están más allá de toda experiencia posible: el <em>alma</em>, el <em>mundo</em> como totalidad y <em>Dios</em>. Kant las llama las tres <em>ideas trascendentales</em> de la razón. Y aquí hace una observación finísima: la razón tiende a ellas de manera inevitable —preguntar por el principio de todo, por el alma o por Dios es una <em>disposición natural</em> del ser humano, no un capricho que podamos suprimir—. El problema surge cuando, para responder, aplicamos a esos objetos las categorías —causa, sustancia— que solo valen <em>dentro</em> de la experiencia. Entonces la razón se enreda en contradicciones: puede demostrar con igual rigor una tesis y la contraria. Es lo que Kant llama una <em>antinomia</em>: cabe probar que el mundo tiene un comienzo en el tiempo y probar que no lo tiene, sin que ninguna de las dos pruebas pueda vencer a la otra. Esa paradoja es la señal de que la razón se ha extralimitado. La conclusión es tajante: la metafísica no es —no puede ser— una ciencia.</p>
-<p><strong>Lo que queda de la metafísica.</strong> Ahora bien, Kant no destruye la metafísica para abandonarnos en el escepticismo de Hume. Las ideas de alma, mundo y Dios no nos dan conocimiento, pero no son inútiles: funcionan como ideales que orientan y unifican la investigación, empujándonos a buscar siempre explicaciones más completas. Y, sobre todo, no quedan canceladas, sino <em>desplazadas</em>. La frase con que Kant resume su obra lo dice mejor que ninguna paráfrasis: «tuve que limitar el saber para dejar sitio a la fe». Lo que la razón <em>teórica</em> no logra probar —la libertad, la inmortalidad del alma, la existencia de Dios— reaparecerá por otra puerta, la de la razón <em>práctica</em>, es decir, la de la moral. A ese segundo Kant, el de la pregunta «¿qué debo hacer?», dedicamos la sección siguiente (<a href="tema-12.html#sec-51">§51</a>).</p>
+<p><strong>Lo que queda de la metafísica.</strong> Ahora bien, Kant no destruye la metafísica para abandonarnos en el escepticismo de Hume. Las ideas de alma, mundo y Dios no nos dan conocimiento, pero no son inútiles: funcionan como ideales que orientan y unifican la investigación, empujándonos a buscar siempre explicaciones más completas. Y, sobre todo, no quedan canceladas, sino <em>desplazadas</em>. La frase con que Kant resume su obra lo dice mejor que ninguna paráfrasis: «tuve que limitar el saber para dejar sitio a la fe». Lo que la razón <em>teórica</em> no logra probar —la libertad, la inmortalidad del alma, la existencia de Dios— reaparecerá por otra puerta, la de la razón <em>práctica</em>, es decir, la de la moral. A ese segundo Kant, el de la pregunta «¿qué debo hacer?», dedicamos la sección siguiente (<a href="../chapters-web/tema-12.html#sec-51">§51</a>).</p>
 </section>
 <section id="sec-51" class="level2">
 <h2 class="anchored" data-anchor-id="sec-51">§51 · La ética kantiana</h2>
-<p><strong>De la razón teórica a la razón práctica.</strong> La razón no sirve solo para conocer: también manda. Por eso, junto a la razón <em>teórica</em> que examinamos en <a href="tema-12.html#sec-50">§50</a>, Kant estudia la razón <em>práctica</em>, la que dirige la acción, y le dedica obras como la <em>Fundamentación de la metafísica de las costumbres</em> (1785) y la <em>Crítica de la razón práctica</em> (1788). La pregunta cambia: ya no «¿qué puedo conocer?», sino «¿qué debo hacer?». Y la respuesta de Kant ha marcado para siempre la ética: una moral del <em>deber</em>, exigente y universal, levantada sobre la misma confianza ilustrada en la razón.</p>
+<p><strong>De la razón teórica a la razón práctica.</strong> La razón no sirve solo para conocer: también manda. Por eso, junto a la razón <em>teórica</em> que examinamos en <a href="../chapters-web/tema-12.html#sec-50">§50</a>, Kant estudia la razón <em>práctica</em>, la que dirige la acción, y le dedica obras como la <em>Fundamentación de la metafísica de las costumbres</em> (1785) y la <em>Crítica de la razón práctica</em> (1788). La pregunta cambia: ya no «¿qué puedo conocer?», sino «¿qué debo hacer?». Y la respuesta de Kant ha marcado para siempre la ética: una moral del <em>deber</em>, exigente y universal, levantada sobre la misma confianza ilustrada en la razón.</p>
 <p><strong>La buena voluntad.</strong> Kant arranca con una afirmación rotunda: no hay nada en el mundo que pueda considerarse bueno sin restricción, salvo una <em>buena voluntad</em>. La inteligencia, el valor, la riqueza e incluso la felicidad pueden volverse malos en manos de quien tiene mala voluntad —la sangre fría es una virtud en el cirujano y un agravante en el asesino—. Lo único bueno en sí mismo es una voluntad que quiere el bien, y la quiere <em>por deber</em>. De ahí un desplazamiento decisivo: el valor moral de una acción no está en sus <em>resultados</em> —que muchas veces no dependen de nosotros—, sino en la <em>intención</em> con que se obra, en el respeto al deber.</p>
 <p><strong>Deber frente a inclinación.</strong> Para precisarlo, Kant distingue obrar <em>conforme al deber</em> y obrar <em>por deber</em>. Imagina a un comerciante que no engaña a sus clientes: si no lo hace por honradez, sino porque engañar le arruinaría el negocio, su conducta es conforme al deber, pero su móvil es el interés, no la moral. Imagina ahora a alguien que ayuda a otro: si lo hace por simpatía o porque disfruta haciéndolo, su acción es buena y amable, pero —dirá Kant— el valor moral <em>pleno</em> se muestra sobre todo allí donde alguien ayuda <em>porque debe</em>, aun cuando no le apetezca. No es que Kant desprecie los buenos sentimientos; es que la moralidad no puede descansar en algo tan variable como la inclinación —el deseo, la simpatía, el provecho—, sino solo en el deber.</p>
 <p><strong>Éticas materiales y ética formal.</strong> Esta es la gran novedad de Kant frente a la tradición. Casi todas las morales anteriores eran <em>éticas materiales</em>: proponían un fin concreto —el placer, la felicidad, la salvación— y de él deducían normas. Tienen, según Kant, tres defectos: son <em>empíricas</em> (sacan sus fines de la experiencia), son <em>hipotéticas</em> (solo valen si uno acepta ese fin: «si quieres ser feliz, haz esto») y son <em>heterónomas</em> (la norma viene impuesta desde fuera de la voluntad). Kant busca lo contrario: una <em>ética formal</em>, que no prescriba <em>qué</em> fines perseguir, sino la <em>forma</em> que ha de tener cualquier acción para ser moral; una ley universal, a priori, válida para todo ser racional. Esa ley es el <em>imperativo categórico</em>.</p>
 <p><strong>Imperativos hipotéticos y categórico.</strong> Un <em>imperativo</em> es un mandato. Los <em>hipotéticos</em> ordenan algo como <em>medio</em> para un fin: «si quieres aprobar, estudia»; dejan de obligar en cuanto uno renuncia al fin. El <em>categórico</em>, en cambio, manda de manera incondicional, sin ningún «si»: vale por sí mismo, siempre y para todos. Solo un imperativo categórico puede expresar una exigencia propiamente moral. Kant lo enuncia en varias <em>formulaciones</em> que dicen lo mismo desde distintos ángulos; conviene ver las tres principales.</p>
 <p><em>Primera formulación: la ley universal.</em> «Obra solo según una máxima tal que puedas querer al mismo tiempo que se convierta en ley universal». Una <em>máxima</em> es la regla privada que sigue mi acción; la prueba consiste en preguntarme si podría querer que <em>todos</em> obraran según ella. Tomemos un ejemplo del propio Kant: ¿puedo hacer una promesa falsa para salir de un apuro? Universalicemos la máxima «promete en falso cuando te convenga». El resultado se destruye a sí mismo: si todos prometieran en falso, nadie creería ya ninguna promesa, y la institución misma de prometer desaparecería. La máxima no puede <em>quererse</em> como ley universal sin contradecirse; por eso es inmoral. Fíjate en que es la <em>forma</em> —la universalizabilidad—, y no el contenido, la que decide.</p>
 <p><em>Segunda formulación: la humanidad como fin.</em> «Obra de tal modo que trates a la humanidad, tanto en tu persona como en la de cualquier otro, siempre al mismo tiempo como un fin y nunca solamente como un medio». Los seres racionales no son cosas ni instrumentos intercambiables: tienen un valor absoluto. Usar a alguien <em>solo</em> como medio —engañándolo, manipulándolo, explotándolo— es tratarlo como un objeto y vulnera la ley moral. Kant no prohíbe que nos sirvamos unos de otros —el panadero es un medio para mi pan—, sino que reduzcamos a la persona a <em>mero</em> medio, ignorando que es también, siempre, un fin en sí misma.</p>
-<p><em>Tercera formulación: el reino de los fines y la autonomía.</em> «Obra como si por tus máximas fueras siempre un miembro legislador en un reino universal de los fines». Cada ser racional es a la vez <em>autor</em> y <em>súbdito</em> de la ley moral: no la recibe de fuera, sino que se la da a sí mismo. Aquí aflora el concepto que sostiene toda la ética kantiana, la <em>autonomía</em> —de <em>autós</em>, uno mismo, y <em>nómos</em>, ley—: la voluntad que se da su propia ley, frente a la <em>heteronomía</em> de quien obedece una norma impuesta por el deseo, la autoridad o la costumbre. Y aquí se cierra el círculo con la Ilustración: obrar moralmente es la forma más alta de aquel «atrévete a pensar por ti mismo» (<a href="tema-11.html#sec-47">§47</a>). Ser libre no es hacer lo que apetece, sino darse uno la ley y obedecerla.</p>
-<p><strong>Dignidad.</strong> De la autonomía brota el concepto kantiano más perdurable. Lo que tiene un equivalente, aquello por lo que cabe cambiar otra cosa, tiene <em>precio</em>; lo que no admite equivalente alguno tiene <em>dignidad</em>. Las cosas tienen precio; las personas, dignidad: un valor absoluto que las hace insustituibles y prohíbe tratarlas como mercancía. Esta idea —la dignidad incondicional de todo ser humano por el solo hecho de ser racional— se convertiría en uno de los cimientos filosóficos de los derechos humanos que vimos proclamarse en la Ilustración (<a href="tema-11.html#sec-48">§48</a>).</p>
-<p><strong>Los postulados de la razón práctica.</strong> Queda un último paso, el que enlaza esta sección con la anterior. La moral, para tener sentido, debe <em>suponer</em> tres cosas que la razón teórica no había podido demostrar (<a href="tema-12.html#sec-50">§50</a>). Primero, la <em>libertad</em>: si tengo el deber de obrar de cierto modo, he de poder hacerlo —«debes, luego puedes»—; sin libertad, el deber sería absurdo. Segundo, la <em>inmortalidad del alma</em>: la perfección moral que la ley me exige no se alcanza en una vida, de modo que la razón práctica postula su continuación. Tercero, la <em>existencia de Dios</em>, como garantía de que, al final, la virtud y la felicidad lleguen a coincidir. No son conocimientos teóricos —Kant ha mostrado que no podemos probarlos—, sino <em>postulados</em>: condiciones que la razón práctica necesita admitir para que la moral no sea una quimera. Así, lo que Kant había expulsado de la metafísica como ciencia regresa por la puerta de la ética. Era esto lo que quería decir al afirmar que limitaba el saber «para dejar sitio a la fe».</p>
-<p>Con Kant, la filosofía moderna alcanza su cumbre y la Ilustración, su expresión más rigurosa: una razón que se conoce a sí misma y una libertad que se da su propia ley. Pero esa cumbre será también el blanco de quienes vienen después. El siglo XIX discutirá su ética del deber con una moral rival que mide el bien por sus consecuencias y por la felicidad que produce —el utilitarismo (<a href="tema-13.html#sec-53">§53</a>)—, y pondrá en cuestión, con Marx y con Nietzsche, la confianza misma en la razón que Kant había llevado tan lejos.</p>
+<p><em>Tercera formulación: el reino de los fines y la autonomía.</em> «Obra como si por tus máximas fueras siempre un miembro legislador en un reino universal de los fines». Cada ser racional es a la vez <em>autor</em> y <em>súbdito</em> de la ley moral: no la recibe de fuera, sino que se la da a sí mismo. Aquí aflora el concepto que sostiene toda la ética kantiana, la <em>autonomía</em> —de <em>autós</em>, uno mismo, y <em>nómos</em>, ley—: la voluntad que se da su propia ley, frente a la <em>heteronomía</em> de quien obedece una norma impuesta por el deseo, la autoridad o la costumbre. Y aquí se cierra el círculo con la Ilustración: obrar moralmente es la forma más alta de aquel «atrévete a pensar por ti mismo» (<a href="../chapters-web/tema-11.html#sec-47">§47</a>). Ser libre no es hacer lo que apetece, sino darse uno la ley y obedecerla.</p>
+<p><strong>Dignidad.</strong> De la autonomía brota el concepto kantiano más perdurable. Lo que tiene un equivalente, aquello por lo que cabe cambiar otra cosa, tiene <em>precio</em>; lo que no admite equivalente alguno tiene <em>dignidad</em>. Las cosas tienen precio; las personas, dignidad: un valor absoluto que las hace insustituibles y prohíbe tratarlas como mercancía. Esta idea —la dignidad incondicional de todo ser humano por el solo hecho de ser racional— se convertiría en uno de los cimientos filosóficos de los derechos humanos que vimos proclamarse en la Ilustración (<a href="../chapters-web/tema-11.html#sec-48">§48</a>).</p>
+<p><strong>Los postulados de la razón práctica.</strong> Queda un último paso, el que enlaza esta sección con la anterior. La moral, para tener sentido, debe <em>suponer</em> tres cosas que la razón teórica no había podido demostrar (<a href="../chapters-web/tema-12.html#sec-50">§50</a>). Primero, la <em>libertad</em>: si tengo el deber de obrar de cierto modo, he de poder hacerlo —«debes, luego puedes»—; sin libertad, el deber sería absurdo. Segundo, la <em>inmortalidad del alma</em>: la perfección moral que la ley me exige no se alcanza en una vida, de modo que la razón práctica postula su continuación. Tercero, la <em>existencia de Dios</em>, como garantía de que, al final, la virtud y la felicidad lleguen a coincidir. No son conocimientos teóricos —Kant ha mostrado que no podemos probarlos—, sino <em>postulados</em>: condiciones que la razón práctica necesita admitir para que la moral no sea una quimera. Así, lo que Kant había expulsado de la metafísica como ciencia regresa por la puerta de la ética. Era esto lo que quería decir al afirmar que limitaba el saber «para dejar sitio a la fe».</p>
+<p>Con Kant, la filosofía moderna alcanza su cumbre y la Ilustración, su expresión más rigurosa: una razón que se conoce a sí misma y una libertad que se da su propia ley. Pero esa cumbre será también el blanco de quienes vienen después. El siglo XIX discutirá su ética del deber con una moral rival que mide el bien por sus consecuencias y por la felicidad que produce —el utilitarismo (<a href="../chapters-web/tema-13.html#sec-53">§53</a>)—, y pondrá en cuestión, con Marx y con Nietzsche, la confianza misma en la razón que Kant había llevado tan lejos.</p>
 
 
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -645,7 +769,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -654,8 +779,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -669,6 +855,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -831,44 +1018,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -967,7 +1164,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-11.html" class="pagination-link" aria-label="Tema 11 · La Ilustración">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 11 · La Ilustración</span></span>

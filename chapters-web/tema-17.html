@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../parte-5.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-17.html"><span class="chapter-title">Tema 17 · El existencialismo</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-17.html"><span class="chapter-title">Tema 17 · El existencialismo</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-17.html"><span class="chapter-title">Tema 17 · El existencialismo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-17.html"><span class="chapter-title">Tema 17 · El existencialismo</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 17 · El existencialismo</span></h1>
 </div>
@@ -516,25 +528,25 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-el-existencialismo" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-el-existencialismo">Para entrar en el existencialismo</h2>
-<p>Nietzsche dejó al ser humano del siglo XX ante un cielo vacío: «Dios ha muerto», y con él se desfondaba el suelo que sostenía los valores de Occidente (<a href="tema-16.html#sec-61">§61</a>). La pregunta que quedaba abierta era inquietante: si nadie ha escrito de antemano para qué existimos, ¿quién decide entonces lo que hemos de ser? El <em>existencialismo</em> es la corriente que recoge ese guante. No es una escuela con un manual común, sino un aire de familia entre pensadores muy distintos —algunos cristianos, otros ateos— que comparten un punto de partida: empezar a filosofar no por las esencias eternas, sino por la existencia concreta de cada cual, ese individuo de carne y hueso que nace sin pedirlo, ha de elegir sin garantías y sabe que va a morir.</p>
-<p>Lo veremos en tres pasos. Primero, las <em>ideas comunes</em> a toda la corriente: la existencia que precede a la esencia, la libertad y la angustia, la autenticidad frente a la masa (<a href="tema-17.html#sec-62">§62</a>). Después, su versión más honda y difícil, la de <em>Martin Heidegger</em>, que devuelve a la filosofía la vieja pregunta por el ser y la plantea desde el único ente que se la hace, el ser humano (<a href="tema-17.html#sec-63">§63</a>). Y, por último, la formulación más pública y combativa, la de <em>Jean-Paul Sartre</em>, que llevó el existencialismo a los cafés, al teatro y a la calle, y lo resumió en una fórmula célebre: estamos «condenados a ser libres» (<a href="tema-17.html#sec-64">§64</a>).</p>
-<p>Conviene retener desde ya que esta corriente no se agota aquí. Su análisis de la libertad situada es el cimiento sobre el que Simone de Beauvoir construirá, pocos años después, la pregunta por la condición de la mujer (<a href="tema-21.html#sec-77">§77</a>); y sus motivos —la existencia, la vida, el individuo frente a los sistemas— resuenan en el pensamiento español que veremos a continuación, en la congoja de Unamuno y en la razón vital de Ortega (<a href="tema-18.html#sec-65">§65</a>-<a href="tema-18.html#sec-66">§66</a>).</p>
+<p>Nietzsche dejó al ser humano del siglo XX ante un cielo vacío: «Dios ha muerto», y con él se desfondaba el suelo que sostenía los valores de Occidente (<a href="../chapters-web/tema-16.html#sec-61">§61</a>). La pregunta que quedaba abierta era inquietante: si nadie ha escrito de antemano para qué existimos, ¿quién decide entonces lo que hemos de ser? El <em>existencialismo</em> es la corriente que recoge ese guante. No es una escuela con un manual común, sino un aire de familia entre pensadores muy distintos —algunos cristianos, otros ateos— que comparten un punto de partida: empezar a filosofar no por las esencias eternas, sino por la existencia concreta de cada cual, ese individuo de carne y hueso que nace sin pedirlo, ha de elegir sin garantías y sabe que va a morir.</p>
+<p>Lo veremos en tres pasos. Primero, las <em>ideas comunes</em> a toda la corriente: la existencia que precede a la esencia, la libertad y la angustia, la autenticidad frente a la masa (<a href="../chapters-web/tema-17.html#sec-62">§62</a>). Después, su versión más honda y difícil, la de <em>Martin Heidegger</em>, que devuelve a la filosofía la vieja pregunta por el ser y la plantea desde el único ente que se la hace, el ser humano (<a href="../chapters-web/tema-17.html#sec-63">§63</a>). Y, por último, la formulación más pública y combativa, la de <em>Jean-Paul Sartre</em>, que llevó el existencialismo a los cafés, al teatro y a la calle, y lo resumió en una fórmula célebre: estamos «condenados a ser libres» (<a href="../chapters-web/tema-17.html#sec-64">§64</a>).</p>
+<p>Conviene retener desde ya que esta corriente no se agota aquí. Su análisis de la libertad situada es el cimiento sobre el que Simone de Beauvoir construirá, pocos años después, la pregunta por la condición de la mujer (<a href="../chapters-web/tema-21.html#sec-77">§77</a>); y sus motivos —la existencia, la vida, el individuo frente a los sistemas— resuenan en el pensamiento español que veremos a continuación, en la congoja de Unamuno y en la razón vital de Ortega (<a href="../chapters-web/tema-18.html#sec-65">§65</a>-<a href="../chapters-web/tema-18.html#sec-66">§66</a>).</p>
 </section>
 <section id="sec-62" class="level2">
 <h2 class="anchored" data-anchor-id="sec-62">§62 · El existencialismo: ideas principales</h2>
 <p><strong>Una filosofía de la existencia, no de la esencia.</strong> Toda la tradición anterior, desde Platón, había puesto la <em>esencia</em> por delante: primero está la naturaleza de las cosas —lo que un caballo, un triángulo o un ser humano <em>son</em>— y después los individuos concretos, que no hacen sino realizar ese modelo. El existencialismo invierte el orden para el caso humano: en el ser humano la <em>existencia precede a la esencia</em>. Quiere decir que no venimos al mundo con una naturaleza fijada de antemano, como el cuchillo viene fijado por la idea de cortar; primero existimos —nos encontramos arrojados a una vida que no elegimos— y solo después, eligiendo y actuando, vamos haciéndonos lo que somos. No hay, pues, un plano previo del «ser humano ideal» que cada cual deba copiar. Somos, antes que nada, un proyecto por hacer.</p>
-<p><strong>Filosofar desde la vida concreta.</strong> De ahí que el existencialismo desconfíe de los grandes sistemas abstractos. Su primer impulso lo da en el siglo XIX el danés <em>Søren Kierkegaard</em> (1813-1855), que se rebela contra la filosofía de Hegel: de nada sirve —viene a decir— un sistema majestuoso que lo explica todo en general si no dice nada al individuo singular que sufre, duda y ha de decidir su vida aquí y ahora. La filosofía vuelve así a ser lo que fue para Sócrates o para los estoicos (<a href="tema-05.html#sec-22">§22</a>): no un saber teórico sobre el mundo, sino un <em>modo de vida</em>, una manera de habérselas con la propia existencia. Las verdades que importan no son las que se demuestran en una pizarra, sino aquellas por las que uno está dispuesto a vivir y a morir.</p>
+<p><strong>Filosofar desde la vida concreta.</strong> De ahí que el existencialismo desconfíe de los grandes sistemas abstractos. Su primer impulso lo da en el siglo XIX el danés <em>Søren Kierkegaard</em> (1813-1855), que se rebela contra la filosofía de Hegel: de nada sirve —viene a decir— un sistema majestuoso que lo explica todo en general si no dice nada al individuo singular que sufre, duda y ha de decidir su vida aquí y ahora. La filosofía vuelve así a ser lo que fue para Sócrates o para los estoicos (<a href="../chapters-web/tema-05.html#sec-22">§22</a>): no un saber teórico sobre el mundo, sino un <em>modo de vida</em>, una manera de habérselas con la propia existencia. Las verdades que importan no son las que se demuestran en una pizarra, sino aquellas por las que uno está dispuesto a vivir y a morir.</p>
 <p><strong>La libertad y la angustia.</strong> Si nada nos define de antemano, entonces somos radicalmente <em>libres</em>: en cada situación nos toca elegir, y no podemos no elegir, porque incluso dejarse llevar es ya una elección. Pero esa libertad no es ligera; pesa. El vértigo de saberse responsable de la propia vida, sin barandilla a la que agarrarse, es lo que Kierkegaard llamó <em>angustia</em>. Conviene distinguirla del miedo: el miedo siempre tiene un objeto —se teme al perro, a la enfermedad, al examen—, mientras que la angustia no tiene objeto, porque lo que la provoca es la libertad misma, la posibilidad abierta de ser cualquier cosa. Quien se asoma al abismo de sus propias posibilidades siente ese mareo. La angustia, lejos de ser una avería que haya que medicar, es reveladora: nos descubre que estamos solos ante nuestra libertad.</p>
 <p><strong>La autenticidad frente a la masa.</strong> La salida fácil de la angustia es huir de ella: refugiarse en lo que «se hace», pensar lo que «se piensa», vivir como vive «todo el mundo». A esa existencia diluida en el anonimato, en la que nadie es nadie porque todos son intercambiables, los existencialistas la llaman vida <em>inauténtica</em>. Frente a ella, la <em>autenticidad</em> consiste en asumir la propia existencia como tarea intransferible: hacerse cargo de que esta vida es mía, de que estas elecciones son mías y de que su sentido no me lo va a regalar la multitud. No se trata de un capricho insolidario, sino de lo contrario: solo quien se posee a sí mismo puede de verdad responder ante los demás. La masa diluye la responsabilidad; la autenticidad la reclama.</p>
-<p><strong>El absurdo y los dos linajes de la corriente.</strong> Queda un último motivo, el del <em>absurdo</em>: el desajuste entre nuestra sed de sentido y un universo que calla. El ser humano pide razones, y el mundo no responde; de ese divorcio nace la sensación de que la existencia es, en el fondo, gratuita, injustificada. Ante este diagnóstico común, el existencialismo se bifurca en dos linajes. Uno, <em>creyente</em>, que arranca en Kierkegaard y sigue en Gabriel Marcel o Karl Jaspers, ve en el salto de la fe la respuesta a la angustia. Otro, <em>ateo</em>, que hereda de Nietzsche la muerte de Dios (<a href="tema-16.html#sec-61">§61</a>), niega todo refugio trascendente y deja al ser humano solo con su libertad. Será este segundo linaje —el de Heidegger, con matices, y sobre todo el de Sartre y Camus— el que domine el siglo XX, en buena parte como respuesta a la experiencia de las dos guerras mundiales, que volvieron muy concretas las preguntas por el sentido, la muerte y la responsabilidad. A esos autores nos asomamos a continuación <a href="tema-17.html#tbl-heidegger-y-sartre">Tabla 13</a>.</p>
+<p><strong>El absurdo y los dos linajes de la corriente.</strong> Queda un último motivo, el del <em>absurdo</em>: el desajuste entre nuestra sed de sentido y un universo que calla. El ser humano pide razones, y el mundo no responde; de ese divorcio nace la sensación de que la existencia es, en el fondo, gratuita, injustificada. Ante este diagnóstico común, el existencialismo se bifurca en dos linajes. Uno, <em>creyente</em>, que arranca en Kierkegaard y sigue en Gabriel Marcel o Karl Jaspers, ve en el salto de la fe la respuesta a la angustia. Otro, <em>ateo</em>, que hereda de Nietzsche la muerte de Dios (<a href="../chapters-web/tema-16.html#sec-61">§61</a>), niega todo refugio trascendente y deja al ser humano solo con su libertad. Será este segundo linaje —el de Heidegger, con matices, y sobre todo el de Sartre y Camus— el que domine el siglo XX, en buena parte como respuesta a la experiencia de las dos guerras mundiales, que volvieron muy concretas las preguntas por el sentido, la muerte y la responsabilidad. A esos autores nos asomamos a continuación <a href="../chapters-web/tema-17.html#tbl-heidegger-y-sartre">Tabla 13</a>.</p>
 </section>
 <section id="sec-63" class="level2">
 <h2 class="anchored" data-anchor-id="sec-63">§63 · Martin Heidegger</h2>
 <p><strong>La pregunta olvidada.</strong> <em>Martin Heidegger</em> (1889-1976) es, con permiso de Sartre, el filósofo más influyente del existencialismo, y también el más arduo. Su obra mayor, <em>Ser y tiempo</em> (1927), arranca de una pregunta que él considera la más antigua y la más olvidada de la filosofía: la pregunta <em>por el ser</em>. ¿Qué queremos decir cuando decimos que algo «es»? La tradición, según Heidegger, se ocupó sin descanso de los entes —las cosas, los objetos, Dios— pero dejó en la sombra el ser mismo que hace que un ente sea. Recuperar esa pregunta exige un nuevo punto de partida; y ese punto solo puede ser el único ente que se la hace, que se pregunta por su propio ser: el ser humano.</p>
-<p><strong>El Dasein, un ser-en-el-mundo.</strong> Para no arrastrar las viejas etiquetas —«sujeto», «alma», «conciencia», cargadas de supuestos—, Heidegger nombra al ser humano con un término nuevo: <em>Dasein</em>, literalmente «ser-ahí» o «estar-ahí». El Dasein no es una cosa entre las cosas, ni una mente encerrada que mira el mundo desde fuera, como en el cogito de Descartes (<a href="tema-08.html#sec-36">§36</a>). Su rasgo primero es ser un <em>ser-en-el-mundo</em>: existir es estar ya volcado en un mundo de tareas, de útiles y de relaciones, ocupándose de las cosas y conviviendo con los demás. No hay primero un yo y luego un mundo al que asomarse; estar-en-el-mundo es la condición de la que el Dasein nunca sale. Y es, además, un ser <em>abierto</em>: el único al que, existiendo, «le va su propio ser», le importa lo que hace de sí mismo.</p>
-<p><strong>La caída en el «uno».</strong> En su trato cotidiano, sin embargo, el Dasein tiende a perderse. Absorbido por las ocupaciones y por la convivencia, vive por lo común como vive cualquiera: hace lo que <em>se</em> hace, dice lo que <em>se</em> dice, opina lo que <em>se</em> opina. Heidegger llama a este sujeto anónimo <em>das Man</em>, «el uno» o «el se» impersonal —el de «se dice», «se lleva», «la gente»—. Es la versión heideggeriana de la masa inauténtica (<a href="tema-17.html#sec-62">§62</a>): en el «uno», nadie carga con su existencia porque la responsabilidad se reparte entre todos y se evapora. A esta tendencia a diluirse en lo impersonal la llama <em>caída</em>. No es un pecado ni una catástrofe, sino el modo habitual, casi inevitable, en que existimos casi siempre.</p>
+<p><strong>El Dasein, un ser-en-el-mundo.</strong> Para no arrastrar las viejas etiquetas —«sujeto», «alma», «conciencia», cargadas de supuestos—, Heidegger nombra al ser humano con un término nuevo: <em>Dasein</em>, literalmente «ser-ahí» o «estar-ahí». El Dasein no es una cosa entre las cosas, ni una mente encerrada que mira el mundo desde fuera, como en el cogito de Descartes (<a href="../chapters-web/tema-08.html#sec-36">§36</a>). Su rasgo primero es ser un <em>ser-en-el-mundo</em>: existir es estar ya volcado en un mundo de tareas, de útiles y de relaciones, ocupándose de las cosas y conviviendo con los demás. No hay primero un yo y luego un mundo al que asomarse; estar-en-el-mundo es la condición de la que el Dasein nunca sale. Y es, además, un ser <em>abierto</em>: el único al que, existiendo, «le va su propio ser», le importa lo que hace de sí mismo.</p>
+<p><strong>La caída en el «uno».</strong> En su trato cotidiano, sin embargo, el Dasein tiende a perderse. Absorbido por las ocupaciones y por la convivencia, vive por lo común como vive cualquiera: hace lo que <em>se</em> hace, dice lo que <em>se</em> dice, opina lo que <em>se</em> opina. Heidegger llama a este sujeto anónimo <em>das Man</em>, «el uno» o «el se» impersonal —el de «se dice», «se lleva», «la gente»—. Es la versión heideggeriana de la masa inauténtica (<a href="../chapters-web/tema-17.html#sec-62">§62</a>): en el «uno», nadie carga con su existencia porque la responsabilidad se reparte entre todos y se evapora. A esta tendencia a diluirse en lo impersonal la llama <em>caída</em>. No es un pecado ni una catástrofe, sino el modo habitual, casi inevitable, en que existimos casi siempre.</p>
 <p><strong>La angustia y el ser-para-la-muerte.</strong> ¿Qué puede arrancar al Dasein de esa rutina anónima? Una experiencia límite: la <em>angustia</em>. A diferencia del miedo, que siempre teme algo concreto, la angustia no tiene objeto: en ella se nos viene abajo la familiaridad del mundo cotidiano y quedamos frente a la nada, frente al hecho desnudo de existir. Y lo que esa nada nos revela, en el fondo, es nuestra finitud. Porque el Dasein es constitutivamente un <em>ser-para-la-muerte</em> (<em>Sein-zum-Tode</em>): la muerte no es un suceso lejano que ocurrirá algún día, sino la posibilidad más propia y segura que define mi existencia entera desde ahora. Huir de ella —pensando que «se muere», sí, pero en abstracto, como les pasa a otros— es la coartada del «uno». Asumirla, en cambio, anticiparla como <em>mi</em> muerte, es lo que devuelve al Dasein a sí mismo: solo quien mira de frente que su tiempo es finito y suyo puede vivir de manera <em>auténtica</em>, eligiendo de veras su vida en vez de dejarla transcurrir.</p>
-<p><strong>Una sombra que conviene no callar.</strong> La hondura de Heidegger convive con una mancha grave: en 1933 se afilió al partido nazi y aceptó el rectorado de la Universidad de Friburgo, y nunca ofreció después una retractación clara. A diferencia de Nietzsche, cuyo nombre fue tergiversado por sus herederos (<a href="tema-16.html#sec-61">§61</a>), aquí fue el propio filósofo quien se comprometió con el régimen. El caso obliga a una de las preguntas más serias que puede hacerse un lector de filosofía: ¿hasta qué punto contamina una vida a su obra? No hay respuesta cómoda. Conviene leer a Heidegger —su influencia sobre Sartre, Arendt (<a href="tema-19.html#sec-69">§69</a>) o la hermenéutica posterior es enorme— sin dejar por ello de tener presente esa sombra<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p><strong>Una sombra que conviene no callar.</strong> La hondura de Heidegger convive con una mancha grave: en 1933 se afilió al partido nazi y aceptó el rectorado de la Universidad de Friburgo, y nunca ofreció después una retractación clara. A diferencia de Nietzsche, cuyo nombre fue tergiversado por sus herederos (<a href="../chapters-web/tema-16.html#sec-61">§61</a>), aquí fue el propio filósofo quien se comprometió con el régimen. El caso obliga a una de las preguntas más serias que puede hacerse un lector de filosofía: ¿hasta qué punto contamina una vida a su obra? No hay respuesta cómoda. Conviene leer a Heidegger —su influencia sobre Sartre, Arendt (<a href="../chapters-web/tema-19.html#sec-69">§69</a>) o la hermenéutica posterior es enorme— sin dejar por ello de tener presente esa sombra<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </section>
 <section id="sec-64" class="level2">
 <h2 class="anchored" data-anchor-id="sec-64">§64 · Jean-Paul Sartre</h2>
@@ -545,10 +557,10 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Jean-Paul Sartre (1905-1980), que llevó el existencialismo a la vida pública francesa y lo resumió en la tesis de que «estamos condenados a ser libres». || Atribución: Anefo / Nationaal Archief, CC0 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Sin Dios, sin coartadas.</strong> Esta tesis se apoya en un ateísmo declarado. Si existiera un Dios creador, podríamos pensar que nos hizo conforme a una idea, como el artesano al abrecartas, y tendríamos una naturaleza dada de antemano. Pero, muerto Dios (<a href="tema-16.html#sec-61">§61</a>), no hay tal idea ni tal naturaleza: «no hay naturaleza humana, porque no hay Dios para concebirla». Y de ahí extrae Sartre una consecuencia desnuda: el ser humano se queda <em>sin excusas</em>. No puede escudarse en su carácter, en sus pasiones, en su educación o en un destino para justificar lo que hace, porque todo eso lo asume —o lo rechaza— al elegir. Estamos enteramente entregados a nuestra propia responsabilidad.</p>
+<p><strong>Sin Dios, sin coartadas.</strong> Esta tesis se apoya en un ateísmo declarado. Si existiera un Dios creador, podríamos pensar que nos hizo conforme a una idea, como el artesano al abrecartas, y tendríamos una naturaleza dada de antemano. Pero, muerto Dios (<a href="../chapters-web/tema-16.html#sec-61">§61</a>), no hay tal idea ni tal naturaleza: «no hay naturaleza humana, porque no hay Dios para concebirla». Y de ahí extrae Sartre una consecuencia desnuda: el ser humano se queda <em>sin excusas</em>. No puede escudarse en su carácter, en sus pasiones, en su educación o en un destino para justificar lo que hace, porque todo eso lo asume —o lo rechaza— al elegir. Estamos enteramente entregados a nuestra propia responsabilidad.</p>
 <p><strong>Condenados a ser libres.</strong> De ahí la sentencia más famosa de Sartre: el ser humano está <em>condenado a ser libre</em>. «Condenado», porque no eligió existir ni ser libre; «a ser libre», porque, una vez arrojado al mundo, no hay un solo instante en que pueda dejar de elegir. Y al elegir, sostiene Sartre, cada cual elige un modelo de hombre: cuando opto por algo como bueno para mí, afirmo a la vez que es bueno para cualquiera en mi lugar, de modo que mi elección compromete, en cierto modo, a toda la humanidad. Por eso la libertad sartreana no es un capricho, sino una carga inmensa, y la <em>angustia</em> es su acompañante inevitable: la siente quien comprende que, al decidir por sí mismo, está decidiendo por todos, y que no hay nadie por encima que pueda confirmarle que acierta.</p>
-<p><strong>La mala fe.</strong> Como esa responsabilidad agobia, lo más común es huir de ella mediante lo que Sartre llama la <em>mala fe</em> (<em>mauvaise foi</em>): el autoengaño con que fingimos no ser libres, pretendiendo ser una cosa fija para no cargar con nuestras elecciones. Su ejemplo célebre es el del camarero de café que actúa exageradamente «de camarero» —los gestos rígidos, el movimiento un punto demasiado vivo—, como si su oficio fuera su esencia y no un papel que ha elegido y podría dejar. En mala fe está quien dice «yo soy así, no puedo cambiar», o «no tuve más remedio»: convierte en naturaleza inamovible lo que en verdad es decisión suya. La mala fe es, así, la traición existencial por excelencia, lo contrario de la autenticidad (<a href="tema-17.html#sec-62">§62</a>): negar la libertad para no responder de ella.</p>
-<p><strong>El compromiso y el balance.</strong> El reverso luminoso de todo esto es el <em>compromiso</em> (<em>engagement</em>). Si nos hacemos con nuestros actos y cada elección dibuja una imagen del ser humano, entonces vivir es comprometerse, tomar partido en el mundo: el propio Sartre fue un intelectual militante, implicado en las grandes causas políticas de su siglo. A su filosofía se le ha reprochado un individualismo extremo y una idea de libertad casi sin límites, que parece olvidar el peso de las circunstancias materiales y sociales. Es precisamente ahí donde su compañera de vida, <em>Simone de Beauvoir</em>, dará el paso decisivo: tomar esta libertad situada y mostrar cómo opera —y cómo se niega— en una condición concreta, la de la mujer, abriendo con <em>El segundo sexo</em> el gran capítulo del pensamiento feminista contemporáneo (<a href="tema-21.html#sec-77">§77</a>). Y, mientras tanto, en la España de esos mismos años, otros pensadores habían hecho de la vida y la existencia el centro de su filosofía por un camino propio: a ellos, a Unamuno, Ortega y Zambrano, dedicamos el tema siguiente (<a href="tema-18.html#sec-65">§65</a>).</p>
+<p><strong>La mala fe.</strong> Como esa responsabilidad agobia, lo más común es huir de ella mediante lo que Sartre llama la <em>mala fe</em> (<em>mauvaise foi</em>): el autoengaño con que fingimos no ser libres, pretendiendo ser una cosa fija para no cargar con nuestras elecciones. Su ejemplo célebre es el del camarero de café que actúa exageradamente «de camarero» —los gestos rígidos, el movimiento un punto demasiado vivo—, como si su oficio fuera su esencia y no un papel que ha elegido y podría dejar. En mala fe está quien dice «yo soy así, no puedo cambiar», o «no tuve más remedio»: convierte en naturaleza inamovible lo que en verdad es decisión suya. La mala fe es, así, la traición existencial por excelencia, lo contrario de la autenticidad (<a href="../chapters-web/tema-17.html#sec-62">§62</a>): negar la libertad para no responder de ella.</p>
+<p><strong>El compromiso y el balance.</strong> El reverso luminoso de todo esto es el <em>compromiso</em> (<em>engagement</em>). Si nos hacemos con nuestros actos y cada elección dibuja una imagen del ser humano, entonces vivir es comprometerse, tomar partido en el mundo: el propio Sartre fue un intelectual militante, implicado en las grandes causas políticas de su siglo. A su filosofía se le ha reprochado un individualismo extremo y una idea de libertad casi sin límites, que parece olvidar el peso de las circunstancias materiales y sociales. Es precisamente ahí donde su compañera de vida, <em>Simone de Beauvoir</em>, dará el paso decisivo: tomar esta libertad situada y mostrar cómo opera —y cómo se niega— en una condición concreta, la de la mujer, abriendo con <em>El segundo sexo</em> el gran capítulo del pensamiento feminista contemporáneo (<a href="../chapters-web/tema-21.html#sec-77">§77</a>). Y, mientras tanto, en la España de esos mismos años, otros pensadores habían hecho de la vida y la existencia el centro de su filosofía por un camino propio: a ellos, a Unamuno, Ortega y Zambrano, dedicamos el tema siguiente (<a href="../chapters-web/tema-18.html#sec-65">§65</a>).</p>
 <span id="tbl-heidegger-y-sartre" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>Heidegger y Sartre: el núcleo existencialista dicho en dos vocabularios.</caption>
@@ -598,19 +610,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -689,7 +813,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -698,8 +823,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -713,6 +899,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -875,44 +1062,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1011,7 +1208,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../parte-5.html" class="pagination-link" aria-label="Parte V · Siglos XX y XXI">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Parte V · Siglos XX y XXI</span>

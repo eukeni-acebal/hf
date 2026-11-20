@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-03.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -114,7 +115,7 @@ window.Quarto = {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -137,6 +138,7 @@ window.Quarto = {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -166,13 +168,19 @@ window.Quarto = {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -266,6 +274,7 @@ window.Quarto = {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -280,13 +289,13 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-04.html"><span class="chapter-title">Tema 4 · Aristóteles de Estagira</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-04.html"><span class="chapter-title">Tema 4 · Aristóteles de Estagira</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -297,17 +306,14 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -331,12 +337,12 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -367,12 +373,12 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -383,12 +389,12 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -424,12 +430,12 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -455,12 +461,12 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -505,11 +511,17 @@ window.Quarto = {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -524,10 +536,10 @@ window.Quarto = {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-04.html"><span class="chapter-title">Tema 4 · Aristóteles de Estagira</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-04.html"><span class="chapter-title">Tema 4 · Aristóteles de Estagira</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 4 · Aristóteles de Estagira</span></h1>
 </div>
@@ -549,8 +561,8 @@ window.Quarto = {
 <section id="para-entrar-en-aristóteles" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-aristóteles">Para entrar en Aristóteles</h2>
 <p>Con Aristóteles (384-322 a. e. c.) la filosofía griega alcanza su madurez y, a la vez, da un giro. Discípulo de Platón (h. 427-h. 347 a. e. c.) durante veinte años, hereda de su maestro la ambición de un saber sistemático, pero invierte su dirección: donde Platón miraba hacia un mundo de Formas separado, Aristóteles devuelve la mirada a este mundo, el de las cosas concretas y cambiantes, y se propone explicarlo desde dentro. Por eso le dedicamos, como a Platón, un tema entero, y construido en paralelo al suyo: realidad, conocimiento, alma, virtud y política, los mismos asuntos, casi siempre con la respuesta contraria.</p>
-<p><strong>Un autor, un sistema.</strong> La pieza que articula todo su pensamiento es una decisión de fondo: la forma no habita un cielo aparte, sino que está <em>en</em> las cosas. Lo que hace que algo sea lo que es, su esencia, le es inmanente, no trascendente (<a href="tema-04.html#sec-14">§14</a>). De ahí se sigue lo demás. Si la forma está en lo sensible, conocer no será recordar otro mundo, sino partir de los sentidos y abstraer de ellos lo universal (<a href="tema-04.html#sec-15">§15</a>); si el alma es la forma del cuerpo vivo, no será una sustancia separada que lo habita, sino su principio vital (<a href="tema-04.html#sec-16">§16</a>); si el bien del ser humano consiste en realizar bien su función propia, la virtud será un hábito que se forja viviendo (<a href="tema-04.html#sec-17">§17</a>), y la felicidad, la actividad de una vida entera conforme a la razón (<a href="tema-04.html#sec-18">§18</a>); y como esa vida solo se logra en común, la ética desemboca en la política (<a href="tema-04.html#sec-19">§19</a>). Un mismo gesto recorre el sistema de arriba abajo: traer lo ideal y separado al terreno de lo real y concreto. Quien entiende ese gesto entiende a Aristóteles.</p>
-<p><strong>Vida y circunstancia.</strong> Aristóteles nació en Estagira, una pequeña ciudad del norte de Grecia, hijo del médico del rey de Macedonia; de ese origen, lejos de Atenas y cercano a la medicina, suele hacerse derivar el interés por la observación de la naturaleza que lo acompañará toda la vida. A los diecisiete años entró en la Academia de Platón, donde permaneció unos veinte, hasta la muerte del maestro. Más tarde fue llamado a la corte de Macedonia para educar al joven Alejandro (356-323 a. e. c.), el futuro conquistador. De vuelta en Atenas fundó su propia escuela. Y cuando, muerto Alejandro, la ciudad se llenó de hostilidad hacia todo lo macedonio, Aristóteles se retiró a Calcis, según la frase que la tradición le atribuye, para no dejar que los atenienses pecaran dos veces contra la filosofía, en alusión a la condena de Sócrates (<a href="tema-02.html#sec-06">§06</a>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Murió allí al año siguiente.</p>
+<p><strong>Un autor, un sistema.</strong> La pieza que articula todo su pensamiento es una decisión de fondo: la forma no habita un cielo aparte, sino que está <em>en</em> las cosas. Lo que hace que algo sea lo que es, su esencia, le es inmanente, no trascendente (<a href="../chapters-web/tema-04.html#sec-14">§14</a>). De ahí se sigue lo demás. Si la forma está en lo sensible, conocer no será recordar otro mundo, sino partir de los sentidos y abstraer de ellos lo universal (<a href="../chapters-web/tema-04.html#sec-15">§15</a>); si el alma es la forma del cuerpo vivo, no será una sustancia separada que lo habita, sino su principio vital (<a href="../chapters-web/tema-04.html#sec-16">§16</a>); si el bien del ser humano consiste en realizar bien su función propia, la virtud será un hábito que se forja viviendo (<a href="../chapters-web/tema-04.html#sec-17">§17</a>), y la felicidad, la actividad de una vida entera conforme a la razón (<a href="../chapters-web/tema-04.html#sec-18">§18</a>); y como esa vida solo se logra en común, la ética desemboca en la política (<a href="../chapters-web/tema-04.html#sec-19">§19</a>). Un mismo gesto recorre el sistema de arriba abajo: traer lo ideal y separado al terreno de lo real y concreto. Quien entiende ese gesto entiende a Aristóteles.</p>
+<p><strong>Vida y circunstancia.</strong> Aristóteles nació en Estagira, una pequeña ciudad del norte de Grecia, hijo del médico del rey de Macedonia; de ese origen, lejos de Atenas y cercano a la medicina, suele hacerse derivar el interés por la observación de la naturaleza que lo acompañará toda la vida. A los diecisiete años entró en la Academia de Platón, donde permaneció unos veinte, hasta la muerte del maestro. Más tarde fue llamado a la corte de Macedonia para educar al joven Alejandro (356-323 a. e. c.), el futuro conquistador. De vuelta en Atenas fundó su propia escuela. Y cuando, muerto Alejandro, la ciudad se llenó de hostilidad hacia todo lo macedonio, Aristóteles se retiró a Calcis, según la frase que la tradición le atribuye, para no dejar que los atenienses pecaran dos veces contra la filosofía, en alusión a la condena de Sócrates (<a href="../chapters-web/tema-02.html#sec-06">§06</a>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Murió allí al año siguiente.</p>
 <p><strong>El Liceo.</strong> La escuela que Aristóteles fundó hacia el 335 a. e. c.&nbsp;en Atenas se llamó el <em>Liceo</em>, por el santuario de Apolo Liceo en cuyas inmediaciones se hallaba; a sus miembros se los llamó <em>peripatéticos</em>, quizá por la costumbre de enseñar paseando (<em>peripatein</em>) por sus jardines. A diferencia de la Academia, vuelta hacia las matemáticas y la dialéctica, el Liceo fue sobre todo un centro de investigación empírica: reunió una enorme biblioteca y vastas colecciones de datos, y emprendió la descripción sistemática de cuanto existe, de la lógica a la biología y de la física a la política. La obra de Aristóteles que ha llegado hasta nosotros nace en buena parte de esa labor de escuela, y con ella inaugura el modelo del saber repartido en disciplinas que todavía hoy ordena el conocimiento.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -587,34 +599,34 @@ window.Quarto = {
 <p><strong>Acto y potencia.</strong> Queda el problema que la teoría platónica no supo resolver: el cambio. Aristóteles lo explica con un par de conceptos correlativos. La potencia (<em>dýnamis</em>) es la capacidad de ser o de llegar a ser algo que todavía no se es. El acto (<em>enérgeia</em>) es la realización efectiva de esa capacidad. La semilla es trigo en potencia; la planta crecida, trigo en acto.</p>
 <p>No es lo mismo no ver por ser ciego que no ver por tener los ojos cerrados. Solo el segundo es vidente en potencia, y lo será en acto en cuanto los abra. Todo cambio es, entonces, el paso de la potencia al acto, y la materia se entiende como la potencia que la forma actualiza. A la plena realización de algo, cuando ha alcanzado su fin, Aristóteles la llama <em>entelequia</em>: la perfección actualizada. El acto es anterior a la potencia, en valor y en ser, porque la potencia solo se comprende por referencia al acto que la define.</p>
 <p><strong>La teleología y el primer motor.</strong> Si la naturaleza entera es un sistema de procesos orientados a fines, según el principio de que «la naturaleza no hace nada en vano», el conjunto del cosmos reclama una explicación última del movimiento. Todo lo que se mueve es movido por otro. Para no remontarse al infinito, ha de haber un <em>primer motor inmóvil</em>, que mueva sin ser movido.</p>
-<p>Ese primer motor no mueve empujando, sino como objeto de deseo: «mueve como lo amado mueve al amante». Es <em>acto puro</em>, sin materia ni potencia, eterno e inmutable, y su única actividad es el pensamiento que se piensa a sí mismo. Este es el «dios» de Aristóteles: no un creador que hace el mundo, sino el fin que lo atrae y le confiere orden. La distinción entre acto y potencia y la prueba del motor inmóvil serán, siglos más tarde, la cantera de la que Tomás de Aquino extraiga sus cinco vías para demostrar la existencia de Dios (<a href="tema-06.html#sec-27">§27</a>).</p>
+<p>Ese primer motor no mueve empujando, sino como objeto de deseo: «mueve como lo amado mueve al amante». Es <em>acto puro</em>, sin materia ni potencia, eterno e inmutable, y su única actividad es el pensamiento que se piensa a sí mismo. Este es el «dios» de Aristóteles: no un creador que hace el mundo, sino el fin que lo atrae y le confiere orden. La distinción entre acto y potencia y la prueba del motor inmóvil serán, siglos más tarde, la cantera de la que Tomás de Aquino extraiga sus cinco vías para demostrar la existencia de Dios (<a href="../chapters-web/tema-06.html#sec-27">§27</a>).</p>
 </section>
 <section id="sec-15" class="level2">
 <h2 class="anchored" data-anchor-id="sec-15">§15 · Aristóteles: el conocimiento</h2>
 <p>Si en metafísica Aristóteles devuelve la forma a las cosas, en teoría del conocimiento extrae la consecuencia. Si lo universal está <em>en</em> lo sensible y no en un mundo aparte, conocer no podrá consistir en apartarse de los sentidos para recordar otro mundo, sino en partir de ellos. Aquí se juega el contraste más limpio con Platón, y conviene leer ambas secciones a la par<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p><strong>El origen: nada en el entendimiento que no pase por los sentidos.</strong> Para Platón, conocer es <em>recordar</em>: el saber está ya en el alma, que contempló las Formas antes de nacer, y los sentidos solo ocasionan su evocación (<a href="tema-03.html#sec-10">§10</a>). Aristóteles invierte el planteamiento. El alma, al nacer, no contiene saber alguno: es como una tablilla de escribir en la que aún nada hay escrito. No hay ideas innatas. Todo el material del conocimiento entra por la <em>sensación</em>; sin sentidos, nada aprenderíamos. La sensibilidad capta lo singular —este color, este sonido—; el entendimiento capta lo universal, pero no lo toma de un mundo separado, sino de lo que los sentidos le ofrecen. La máxima escolástica que más tarde condensará esta tesis —«nada hay en el entendimiento que no haya estado antes en los sentidos»— no es de Aristóteles, pero recoge con fidelidad su punto de partida<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p><strong>El origen: nada en el entendimiento que no pase por los sentidos.</strong> Para Platón, conocer es <em>recordar</em>: el saber está ya en el alma, que contempló las Formas antes de nacer, y los sentidos solo ocasionan su evocación (<a href="../chapters-web/tema-03.html#sec-10">§10</a>). Aristóteles invierte el planteamiento. El alma, al nacer, no contiene saber alguno: es como una tablilla de escribir en la que aún nada hay escrito. No hay ideas innatas. Todo el material del conocimiento entra por la <em>sensación</em>; sin sentidos, nada aprenderíamos. La sensibilidad capta lo singular —este color, este sonido—; el entendimiento capta lo universal, pero no lo toma de un mundo separado, sino de lo que los sentidos le ofrecen. La máxima escolástica que más tarde condensará esta tesis —«nada hay en el entendimiento que no haya estado antes en los sentidos»— no es de Aristóteles, pero recoge con fidelidad su punto de partida<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 <p><strong>El proceso: de la sensación al universal por abstracción.</strong> ¿Cómo se asciende de lo singular sentido a lo universal sabido? Por una escala gradual. De la <em>sensación</em> repetida queda la <em>memoria</em>; de muchos recuerdos de lo mismo nace la <em>experiencia</em>, que sabe que las cosas son así en los casos observados; y de la experiencia, por <em>inducción</em>, el entendimiento alcanza el principio <em>universal</em>, que sabe que son así siempre y por qué. La operación decisiva es la <em>abstracción</em>: el entendimiento separa la forma universal que se halla presente —mezclada con la materia y con lo individual— en los particulares, y la considera por sí sola. El universal no se inventa ni se recuerda: se <em>extrae</em> de lo dado. Existe realmente en las cosas, y el entendimiento se limita a aislarlo<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Tal es el reverso exacto de la reminiscencia platónica: no se desciende desde un saber previo, se asciende desde la experiencia.</p>
 <p><strong>El alcance: ciencia, principios e intuición.</strong> ¿Hasta dónde llega este conocimiento y en qué se apoya? Lo que se sabe en sentido propio es lo universal y necesario: hay <em>ciencia</em> —<em>episteme</em>— de lo que no puede ser de otro modo, no de lo singular en cuanto singular; de este hombre concreto no hay ciencia, sino de lo que vale para todo hombre. Y la ciencia es <em>demostrativa</em>: deduce sus conclusiones, por silogismo, a partir de principios. Pero esos principios no pueden a su vez demostrarse, so pena de regresión al infinito: se captan por <em>intuición intelectual</em> —el <em>nous</em>—, una vez que la inducción a partir de la experiencia los ha vuelto manifiestos. De ahí, a la vez, la garantía y el límite del saber aristotélico. La garantía: como las formas están en las cosas y no en un mundo aparte, la ciencia versa sobre la realidad sensible misma y no sobre sus copias; conocer el mundo es posible porque su estructura inteligible le es interna. El límite: todo saber demostrado reposa, en último término, sobre unos primeros principios que no se demuestran, sino que se ven; y de lo puramente individual no hay ciencia. Frente a Platón, que aseguraba el conocimiento anclándolo en un mundo eterno y separado, Aristóteles lo ancla en la experiencia del único mundo en que vivimos, al precio de hacerlo descansar, en última instancia, en la intuición de los principios.</p>
 </section>
 <section id="sec-16" class="level2">
 <h2 class="anchored" data-anchor-id="sec-16">§16 · Aristóteles: la psique</h2>
-<p>La doctrina aristotélica del alma es la aplicación del hilemorfismo (<a href="tema-04.html#sec-14">§14</a>) al ser vivo. Si toda sustancia sensible es un compuesto de materia y forma, el ser vivo es un cuerpo, que es su materia, animado por un alma (<em>psyché</em>), que es su forma<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
+<p>La doctrina aristotélica del alma es la aplicación del hilemorfismo (<a href="../chapters-web/tema-04.html#sec-14">§14</a>) al ser vivo. Si toda sustancia sensible es un compuesto de materia y forma, el ser vivo es un cuerpo, que es su materia, animado por un alma (<em>psyché</em>), que es su forma<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
 <p><strong>El alma como acto del cuerpo.</strong> El alma no es una sustancia separada que habite el cuerpo, sino la forma de un cuerpo vivo: aquello que lo hace estar vivo y ser lo que es. Aristóteles la define como el acto, la entelequia, de un cuerpo natural orgánico, esto es, dotado de órganos. Alma y cuerpo no son dos cosas yuxtapuestas, sino la forma y la materia de una única sustancia. Por eso carece de sentido preguntar si el alma y el cuerpo son uno, como carece de sentido preguntar si lo son la cera y la figura impresa en ella.</p>
-<p>Aquí Aristóteles rompe con su maestro. Para Platón, el alma es una realidad separable, anterior y superior al cuerpo, que preexiste, se reencarna y le sobrevive; el cuerpo es su cárcel (<a href="tema-03.html#sec-11">§11</a>). Para Aristóteles, el alma es la forma del cuerpo, y forma y materia son inseparables: en general, el alma no sobrevive al cuerpo, igual que la visión no sobrevive al ojo. No hay transmigración ni preexistencia. El viviente es una unidad.</p>
+<p>Aquí Aristóteles rompe con su maestro. Para Platón, el alma es una realidad separable, anterior y superior al cuerpo, que preexiste, se reencarna y le sobrevive; el cuerpo es su cárcel (<a href="../chapters-web/tema-03.html#sec-11">§11</a>). Para Aristóteles, el alma es la forma del cuerpo, y forma y materia son inseparables: en general, el alma no sobrevive al cuerpo, igual que la visión no sobrevive al ojo. No hay transmigración ni preexistencia. El viviente es una unidad.</p>
 <p><strong>Los grados del alma.</strong> El alma no es una sola facultad, sino un conjunto jerarquizado de funciones. Aristóteles distingue tres grados, cada uno de los cuales incluye al anterior:</p>
 <ol type="1">
 <li><strong>Alma vegetativa</strong>, o nutritiva. La propia de las plantas. Cumple las funciones de la nutrición, el crecimiento y la reproducción.</li>
 <li><strong>Alma sensitiva.</strong> La propia de los animales. Añade a lo anterior la sensación, el deseo y el movimiento.</li>
 <li><strong>Alma racional</strong>, o intelectiva. La propia del ser humano. Añade el entendimiento (<em>nous</em>), la capacidad de pensar y de conocer lo universal.</li>
 </ol>
-<p>El ser humano posee los tres grados: vive, siente y piensa. Su especificidad está en el tercero, la razón, que es lo que lo distingue del resto de los vivientes y la raíz de su ética (<a href="tema-04.html#sec-17">§17</a>) y de su vida en la polis (<a href="tema-04.html#sec-19">§19</a>).</p>
-<p><strong>El entendimiento.</strong> ¿Cómo conoce el alma racional? Para captar las formas universales (<a href="tema-04.html#sec-15">§15</a>), el entendimiento ha de poder recibirlas todas; y para recibirlas todas, no ha de ser ninguna de ellas de antemano. Por eso Aristóteles lo compara con una tablilla en blanco. Pero junto a ese entendimiento que recibe las formas, el <em>entendimiento paciente</em>, Aristóteles postula un <em>entendimiento agente</em>, que las hace inteligibles abstrayéndolas de lo sensible, como la luz hace visibles los colores. De ese entendimiento agente afirma, en un pasaje tan breve como discutido, que es separable, inmortal y eterno. Es el único resquicio por el que algo del alma podría sobrevivir al cuerpo, y sobre su sentido exacto los intérpretes discuten desde la Antigüedad.</p>
+<p>El ser humano posee los tres grados: vive, siente y piensa. Su especificidad está en el tercero, la razón, que es lo que lo distingue del resto de los vivientes y la raíz de su ética (<a href="../chapters-web/tema-04.html#sec-17">§17</a>) y de su vida en la polis (<a href="../chapters-web/tema-04.html#sec-19">§19</a>).</p>
+<p><strong>El entendimiento.</strong> ¿Cómo conoce el alma racional? Para captar las formas universales (<a href="../chapters-web/tema-04.html#sec-15">§15</a>), el entendimiento ha de poder recibirlas todas; y para recibirlas todas, no ha de ser ninguna de ellas de antemano. Por eso Aristóteles lo compara con una tablilla en blanco. Pero junto a ese entendimiento que recibe las formas, el <em>entendimiento paciente</em>, Aristóteles postula un <em>entendimiento agente</em>, que las hace inteligibles abstrayéndolas de lo sensible, como la luz hace visibles los colores. De ese entendimiento agente afirma, en un pasaje tan breve como discutido, que es separable, inmortal y eterno. Es el único resquicio por el que algo del alma podría sobrevivir al cuerpo, y sobre su sentido exacto los intérpretes discuten desde la Antigüedad.</p>
 </section>
 <section id="sec-17" class="level2">
 <h2 class="anchored" data-anchor-id="sec-17">§17 · Aristóteles: las virtudes</h2>
-<p>La ética de Aristóteles se pregunta por la vida buena, por aquello en que consiste vivir bien y ser feliz. Esa pregunta se responde en <a href="tema-04.html#sec-18">§18</a>, con el concepto de eudaimonía. Esta sección responde a la anterior: ¿cómo llega el ser humano a ser bueno? La respuesta es: por la virtud. Y la virtud, para Aristóteles, no es un saber ni un don, sino un hábito<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
+<p>La ética de Aristóteles se pregunta por la vida buena, por aquello en que consiste vivir bien y ser feliz. Esa pregunta se responde en <a href="../chapters-web/tema-04.html#sec-18">§18</a>, con el concepto de eudaimonía. Esta sección responde a la anterior: ¿cómo llega el ser humano a ser bueno? La respuesta es: por la virtud. Y la virtud, para Aristóteles, no es un saber ni un don, sino un hábito<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
 <p><strong>La virtud como hábito.</strong> La virtud (<em>areté</em>) es una disposición estable del carácter, un hábito (<em>héxis</em>), que se adquiere por repetición. No nacemos virtuosos, ni nos volvemos virtuosos por el mero hecho de saber qué está bien. Nos hacemos justos practicando actos justos, y valientes practicando actos valientes, igual que el músico se hace tocando. El carácter es el sedimento de los actos: somos lo que repetidamente hacemos.</p>
-<p>En esto Aristóteles corrige a Sócrates y a Platón. Para el intelectualismo socrático-platónico, conocer el bien basta para obrar bien, y nadie hace el mal a sabiendas (<a href="tema-02.html#sec-07">§07</a>). Aristóteles observa que eso es falso: podemos saber qué es lo correcto y, sin embargo, no hacerlo, vencidos por el deseo. La virtud no es solo cuestión de saber, sino de querer, y de haber educado el deseo mediante el hábito.</p>
+<p>En esto Aristóteles corrige a Sócrates y a Platón. Para el intelectualismo socrático-platónico, conocer el bien basta para obrar bien, y nadie hace el mal a sabiendas (<a href="../chapters-web/tema-02.html#sec-07">§07</a>). Aristóteles observa que eso es falso: podemos saber qué es lo correcto y, sin embargo, no hacerlo, vencidos por el deseo. La virtud no es solo cuestión de saber, sino de querer, y de haber educado el deseo mediante el hábito.</p>
 <p><strong>Virtud ética y virtud dianoética.</strong> Aristóteles distingue dos clases de virtud, según la parte del alma que perfeccionan. Las <em>virtudes éticas</em>, o del carácter, como el valor, la templanza o la justicia, se adquieren por costumbre y residen en la parte del alma que obedece a la razón. Las <em>virtudes dianoéticas</em>, o intelectuales, como la sabiduría (<em>sophía</em>) y la prudencia (<em>phrónesis</em>), perfeccionan a la razón misma y se adquieren mediante la enseñanza.</p>
 <p><strong>El término medio.</strong> ¿En qué consiste una virtud ética? En un término medio entre dos vicios, uno por exceso y otro por defecto. El valor es el medio entre la cobardía, que peca por defecto, y la temeridad, que peca por exceso; la generosidad, entre la tacañería y el despilfarro; la templanza, entre la insensibilidad y el desenfreno.</p>
 <p>Ese medio no es un punto fijo ni una media aritmética, sino un medio relativo a cada persona y a cada situación: lo que la razón determinaría, y como lo determinaría el hombre prudente. No se trata de sentir o de actuar a medias, sino de hacerlo en el momento oportuno, ante quien corresponde y del modo debido. Por eso no toda acción admite término medio: no hay un modo correcto de cometer un asesinato o de sentir envidia. Algunos actos y pasiones son malos en sí mismos.</p>
@@ -624,23 +636,23 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="sec-18">§18 · La eudaimonía</h2>
 <p>La eudaimonía, que solemos traducir por «felicidad», es el concepto central de la ética antigua y el fin al que toda la doctrina de Aristóteles se ordena<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>.</p>
 <p><strong>La felicidad como bien supremo.</strong> Toda acción y toda elección tienden a algún bien. Pero si deseáramos cada cosa en vista de otra, y esta en vista de una tercera, el deseo no tendría término. Ha de haber, por tanto, un fin último que queramos por sí mismo y no por otra cosa: el bien supremo. Ese fin, dice Aristóteles, es la eudaimonía. En el nombre todos coinciden, porque todos quieren ser felices; el desacuerdo empieza al decir en qué consiste. Unos la ponen en el placer, otros en los honores, otros en la riqueza. Aristóteles buscará la respuesta en aquello que es propio del ser humano.</p>
-<p><strong>El argumento de la función.</strong> ¿Cuál es el bien del ser humano? Aristóteles razona por analogía. El bien del flautista o del escultor está en realizar bien su función propia (<em>érgon</em>). Si el ser humano tiene una función propia, su bien estará en realizarla bien. Y su función propia no es vivir, que comparte con las plantas, ni sentir, que comparte con los animales, sino la actividad de la parte racional del alma (<a href="tema-04.html#sec-16">§16</a>). Por tanto, el bien humano, la eudaimonía, es la actividad del alma conforme a la virtud, ejercida a lo largo de una vida entera.</p>
+<p><strong>El argumento de la función.</strong> ¿Cuál es el bien del ser humano? Aristóteles razona por analogía. El bien del flautista o del escultor está en realizar bien su función propia (<em>érgon</em>). Si el ser humano tiene una función propia, su bien estará en realizarla bien. Y su función propia no es vivir, que comparte con las plantas, ni sentir, que comparte con los animales, sino la actividad de la parte racional del alma (<a href="../chapters-web/tema-04.html#sec-16">§16</a>). Por tanto, el bien humano, la eudaimonía, es la actividad del alma conforme a la virtud, ejercida a lo largo de una vida entera.</p>
 <p>De aquí se sigue una consecuencia decisiva: la felicidad no es un estado ni un sentimiento, sino una <em>actividad</em>. No basta con poseer la virtud; hay que ejercerla. No es feliz quien duerme toda su vida, por virtuoso que sea, sino quien actúa bien.</p>
 <p><strong>Placer y bienes exteriores.</strong> Esa actividad virtuosa va acompañada de placer, porque cada cual se complace en aquello que ama, y el bueno se complace en las acciones buenas. El placer no es el fin, pero corona la actividad lograda. Aristóteles añade un rasgo realista: la felicidad necesita también un mínimo de bienes exteriores, como la salud, los amigos o una cierta holgura. No porque la virtud no baste para ser bueno, sino porque ciertas desgracias pueden estorbar el ejercicio pleno de la vida buena. En esto se aparta de un idealismo que hiciera a la felicidad del todo independiente de la fortuna.</p>
 <p><strong>Vida política y vida contemplativa.</strong> ¿Qué actividad realiza más plenamente esa felicidad? Aristóteles distingue dos formas de vida buena. La <em>vida política</em>, o práctica, es la del ejercicio de las virtudes éticas en la comunidad: la del ciudadano que delibera y actúa con justicia y valor. La <em>vida contemplativa</em>, o teorética, es la de la actividad más alta, la del entendimiento que contempla la verdad por sí misma. Aristóteles considera esta última la forma suprema de felicidad, porque es la actividad de lo más divino que hay en nosotros, la más continua y autosuficiente; pero reconoce que es la vida política la que está al alcance de la mayoría, y la llama feliz en segundo grado.</p>
-<p><strong>Del antecedente platónico a las éticas de la felicidad.</strong> Aristóteles hereda de Sócrates y de Platón la convicción de que el fin de la vida es la eudaimonía y de que la razón ha de gobernarla (<a href="tema-02.html#sec-07">§07</a>, <a href="tema-03.html#sec-12">§12</a>). Pero transforma esa herencia en tres puntos:</p>
+<p><strong>Del antecedente platónico a las éticas de la felicidad.</strong> Aristóteles hereda de Sócrates y de Platón la convicción de que el fin de la vida es la eudaimonía y de que la razón ha de gobernarla (<a href="../chapters-web/tema-02.html#sec-07">§07</a>, <a href="../chapters-web/tema-03.html#sec-12">§12</a>). Pero transforma esa herencia en tres puntos:</p>
 <ol type="1">
-<li>Niega que el bien sea una Forma separada y única (<a href="tema-04.html#sec-14">§14</a>): el bien se dice de muchas maneras, y el bien humano es alcanzable en esta vida.</li>
-<li>Sustituye el intelectualismo por una ética del hábito: ser feliz no es solo saber, sino haber forjado el carácter (<a href="tema-04.html#sec-17">§17</a>).</li>
+<li>Niega que el bien sea una Forma separada y única (<a href="../chapters-web/tema-04.html#sec-14">§14</a>): el bien se dice de muchas maneras, y el bien humano es alcanzable en esta vida.</li>
+<li>Sustituye el intelectualismo por una ética del hábito: ser feliz no es solo saber, sino haber forjado el carácter (<a href="../chapters-web/tema-04.html#sec-17">§17</a>).</li>
 <li>Admite el peso de la fortuna y de los bienes exteriores en la vida lograda.</li>
 </ol>
-<p>Con ello, Aristóteles fija el modelo de las <em>éticas de la felicidad</em>, que ponen el criterio moral en el bien y en el fin. Siglos más tarde, ese modelo se enfrentará a las <em>éticas del deber</em>, que lo ponen en la forma de la obligación (<a href="tema-13.html#sec-52">§52</a>).</p>
+<p>Con ello, Aristóteles fija el modelo de las <em>éticas de la felicidad</em>, que ponen el criterio moral en el bien y en el fin. Siglos más tarde, ese modelo se enfrentará a las <em>éticas del deber</em>, que lo ponen en la forma de la obligación (<a href="../chapters-web/tema-13.html#sec-52">§52</a>).</p>
 </section>
 <section id="sec-19" class="level2">
 <h2 class="anchored" data-anchor-id="sec-19">§19 · Aristóteles: la política</h2>
-<p>La política es, para Aristóteles, la continuación de la ética. Si el fin del ser humano es la vida buena (<a href="tema-04.html#sec-18">§18</a>), y esa vida solo es posible en comunidad, entonces la ciencia que se ocupa de la comunidad, la política, es la más alta de las ciencias prácticas: la que busca el bien no de uno, sino de todos<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</p>
+<p>La política es, para Aristóteles, la continuación de la ética. Si el fin del ser humano es la vida buena (<a href="../chapters-web/tema-04.html#sec-18">§18</a>), y esa vida solo es posible en comunidad, entonces la ciencia que se ocupa de la comunidad, la política, es la más alta de las ciencias prácticas: la que busca el bien no de uno, sino de todos<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</p>
 <p><strong>La polis por naturaleza.</strong> El ser humano es, por naturaleza, un animal político (<em>zóon politikón</em>). No solo vive en grupo, como otros animales, sino en una comunidad políticamente organizada, la polis, porque solo en ella puede alcanzar la autosuficiencia, la autarquía, y con ella la vida buena. Dotado de palabra (<em>lógos</em>), puede discutir lo justo y lo injusto, y esa capacidad lo destina a la vida política. De ahí la sentencia famosa: quien no puede vivir en comunidad, o no la necesita porque se basta a sí mismo, no es parte de la polis; es una bestia o un dios.</p>
-<p>La polis es, además, anterior por naturaleza al individuo, como el todo es anterior a la parte. Un ser humano aislado de la comunidad no podría desarrollar su naturaleza, igual que una mano separada del cuerpo deja de ser una mano. No es que la polis se forme por un pacto entre individuos previos a ella, como sostendrá más tarde la teoría moderna del contrato (<a href="tema-10.html#sec-43">§43</a>); es que el individuo solo llega a ser plenamente humano dentro de ella.</p>
+<p>La polis es, además, anterior por naturaleza al individuo, como el todo es anterior a la parte. Un ser humano aislado de la comunidad no podría desarrollar su naturaleza, igual que una mano separada del cuerpo deja de ser una mano. No es que la polis se forme por un pacto entre individuos previos a ella, como sostendrá más tarde la teoría moderna del contrato (<a href="../chapters-web/tema-10.html#sec-43">§43</a>); es que el individuo solo llega a ser plenamente humano dentro de ella.</p>
 <p><strong>La ciudadanía.</strong> No todos los habitantes de la polis son ciudadanos. Ciudadano, para Aristóteles, es quien participa en las funciones de gobierno y de justicia, quien delibera y juzga, y gobierna y es gobernado por turno. Quedan excluidos las mujeres, los extranjeros y los esclavos, y también, en su versión más restrictiva, los trabajadores manuales, a quienes el trabajo no deja el ocio que la vida política requiere.</p>
 <p>La parte más cuestionable de su doctrina es la justificación de la esclavitud. Aristóteles sostiene que algunos seres humanos son esclavos por naturaleza, nacidos para obedecer, y que la esclavitud les conviene. Es una tesis que choca con sus propios principios, pues niega a una parte de la humanidad la racionalidad que él mismo había hecho definitoria del ser humano, y que delata hasta qué punto su pensamiento político sigue atado a los límites de su época.</p>
 <p><strong>Las formas de gobierno.</strong> El núcleo de la teoría política de Aristóteles es su clasificación de las constituciones, fruto del estudio comparado de las de muchas ciudades. Las clasifica según dos criterios: cuántos gobiernan, si uno, pocos o muchos, y en interés de quién gobiernan, si del bien común o del suyo propio. Del cruce de ambos resultan seis formas, tres rectas y tres desviadas<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>:</p>
@@ -678,8 +690,8 @@ window.Quarto = {
 </tbody>
 </table>
 <p>Las formas rectas buscan el bien de toda la ciudad; las desviadas, el de quienes gobiernan. Aristóteles precisa además el sentido económico de dos de ellas: la oligarquía es, de hecho, el gobierno de los ricos, y la democracia el de los pobres. Conviene advertir que su «democracia» no es la nuestra: nombra el gobierno de la mayoría pobre en su propio interés, no el gobierno representativo bajo el imperio de la ley, que se acercaría más bien a lo que él llama república<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>.</p>
-<p><strong>La mejor constitución.</strong> ¿Cuál es la mejor forma de gobierno? En sentido absoluto lo serían la monarquía o la aristocracia, si existiera un hombre o un grupo de virtud excepcional. Pero como eso casi nunca se da, Aristóteles, realista, sostiene que la mejor constitución posible para la mayoría de las ciudades es la república (<em>politeia</em>): un régimen mixto que combina rasgos de la oligarquía y de la democracia, sostenido por una amplia clase media y por el imperio de la ley. La clase media es la clave de su estabilidad: ni tan necesitada como los pobres ni tan soberbia como los ricos, es la más capaz de obedecer y de mandar con mesura. Es el término medio (<a href="tema-04.html#sec-17">§17</a>) aplicado a la política.</p>
-<p><strong>Aristóteles frente a Platón.</strong> El contraste con el proyecto político de Platón (<a href="tema-03.html#sec-13">§13</a>) ilumina a ambos. Platón parte de una idea de la justicia y diseña desde ella la ciudad perfecta, gobernada por los filósofos, los únicos que conocen el Bien; su régimen ideal es la aristocracia en sentido estricto, el gobierno de los mejores, y las demás formas son etapas de una degradación. Aristóteles parte de las ciudades tal como son, las compara y las clasifica; desconfía de concentrar el poder en manos de unos sabios ideales y critica abiertamente la comunidad de bienes y de mujeres que Platón proponía para sus guardianes. Donde Platón busca la ciudad perfecta, Aristóteles busca la mejor ciudad posible; donde Platón confía en la sabiduría de unos pocos, Aristóteles confía en el equilibrio de las clases y en la ley. Es el mismo desplazamiento que recorre toda su filosofía: de lo ideal y separado a lo real y concreto.</p>
+<p><strong>La mejor constitución.</strong> ¿Cuál es la mejor forma de gobierno? En sentido absoluto lo serían la monarquía o la aristocracia, si existiera un hombre o un grupo de virtud excepcional. Pero como eso casi nunca se da, Aristóteles, realista, sostiene que la mejor constitución posible para la mayoría de las ciudades es la república (<em>politeia</em>): un régimen mixto que combina rasgos de la oligarquía y de la democracia, sostenido por una amplia clase media y por el imperio de la ley. La clase media es la clave de su estabilidad: ni tan necesitada como los pobres ni tan soberbia como los ricos, es la más capaz de obedecer y de mandar con mesura. Es el término medio (<a href="../chapters-web/tema-04.html#sec-17">§17</a>) aplicado a la política.</p>
+<p><strong>Aristóteles frente a Platón.</strong> El contraste con el proyecto político de Platón (<a href="../chapters-web/tema-03.html#sec-13">§13</a>) ilumina a ambos. Platón parte de una idea de la justicia y diseña desde ella la ciudad perfecta, gobernada por los filósofos, los únicos que conocen el Bien; su régimen ideal es la aristocracia en sentido estricto, el gobierno de los mejores, y las demás formas son etapas de una degradación. Aristóteles parte de las ciudades tal como son, las compara y las clasifica; desconfía de concentrar el poder en manos de unos sabios ideales y critica abiertamente la comunidad de bienes y de mujeres que Platón proponía para sus guardianes. Donde Platón busca la ciudad perfecta, Aristóteles busca la mejor ciudad posible; donde Platón confía en la sabiduría de unos pocos, Aristóteles confía en el equilibrio de las clases y en la ley. Es el mismo desplazamiento que recorre toda su filosofía: de lo ideal y separado a lo real y concreto.</p>
 
 
 </section>
@@ -687,11 +699,11 @@ window.Quarto = {
 <hr>
 <ol>
 <li id="fn1"><p>La anécdota del «segundo crimen contra la filosofía» procede de fuentes tardías y es probablemente apócrifa, pero retrata bien su situación: como meteco macedonio, Aristóteles no era ciudadano de Atenas y quedaba expuesto cuando el clima político se volvía contra Macedonia.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>La fórmula, <em>tò òn légetai pollachôs</em>, vertebra la <em>Metafísica</em>; ver <a href="tema-06.html#sec-27">§27</a> para su larga descendencia medieval.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><em>Forma</em> nombra aquí el <em>eidos</em> o <em>morphé</em> aristotélico: el principio inmanente que constituye la esencia de cada cosa desde dentro de ella. No ha de confundirse con la <strong>Forma platónica</strong> (<a href="tema-03.html#sec-09">§09</a>), separada y trascendente; cuando en este tema se aluda a esta última se empleará siempre el sintagma completo «Forma platónica».<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Ver <a href="tema-03.html#sec-10">§10</a>. El origen del conocimiento en Platón y en Aristóteles —reminiscencia frente a abstracción— es una de las parejas de perspectivas incompatibles que la disertación invita a confrontar.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>La fórmula, <em>tò òn légetai pollachôs</em>, vertebra la <em>Metafísica</em>; ver <a href="../chapters-web/tema-06.html#sec-27">§27</a> para su larga descendencia medieval.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><em>Forma</em> nombra aquí el <em>eidos</em> o <em>morphé</em> aristotélico: el principio inmanente que constituye la esencia de cada cosa desde dentro de ella. No ha de confundirse con la <strong>Forma platónica</strong> (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), separada y trascendente; cuando en este tema se aluda a esta última se empleará siempre el sintagma completo «Forma platónica».<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Ver <a href="../chapters-web/tema-03.html#sec-10">§10</a>. El origen del conocimiento en Platón y en Aristóteles —reminiscencia frente a abstracción— es una de las parejas de perspectivas incompatibles que la disertación invita a confrontar.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>La fórmula <em>nihil est in intellectu quod prius non fuerit in sensu</em> es acuñación escolástica posterior; su raíz aristotélica está en el <em>De Anima</em>, de donde procede también la imagen de la tablilla en blanco, después célebre como <em>tabula rasa</em>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>La facultad por la que el entendimiento aísla y actualiza los inteligibles a partir de lo sensible —el intelecto agente— pertenece a la doctrina del alma; ver <a href="tema-04.html#sec-16">§16</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>La facultad por la que el entendimiento aísla y actualiza los inteligibles a partir de lo sensible —el intelecto agente— pertenece a la doctrina del alma; ver <a href="../chapters-web/tema-04.html#sec-16">§16</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>La doctrina del alma se expone en el tratado <em>Sobre el alma</em> (<em>De Anima</em>).<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>La fuente es la <em>Ética a Nicómaco</em>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p><em>Eudaimonía</em> se traduce por «felicidad», pero su sentido es más bien el de «florecimiento» o vida lograda: no un estado de ánimo, sino una vida que se realiza bien.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -702,19 +714,131 @@ window.Quarto = {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -793,7 +917,8 @@ window.Quarto = {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -802,8 +927,69 @@ window.Quarto = {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -817,6 +1003,7 @@ window.Quarto = {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -979,44 +1166,54 @@ window.Quarto = {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1115,7 +1312,10 @@ window.Quarto = {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-03.html" class="pagination-link" aria-label="Tema 3 · Platón de Atenas">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 3 · Platón de Atenas</span></span>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-10.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-11.html"><span class="chapter-title">Tema 11 · La Ilustración</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-11.html"><span class="chapter-title">Tema 11 · La Ilustración</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-11.html"><span class="chapter-title">Tema 11 · La Ilustración</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-11.html"><span class="chapter-title">Tema 11 · La Ilustración</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 11 · La Ilustración</span></h1>
 </div>
@@ -516,40 +528,40 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-la-ilustración" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-la-ilustración">Para entrar en la Ilustración</h2>
-<p>En el tema anterior seguimos a la modernidad buscando en los propios seres humanos —y ya no en Dios— el fundamento del poder político, hasta desembocar en el liberalismo y en la nueva sociedad capitalista (<a href="tema-10.html#sec-46">§46</a>). Aquel atrevimiento no fue un episodio aislado de la teoría del Estado: era la punta de lanza de un movimiento mucho más amplio que, durante los siglos XVII y XVIII, se propuso someterlo todo —la naturaleza, la sociedad, la religión, la moral— al tribunal de la razón. Ese movimiento es la <em>Ilustración</em>, el «Siglo de las Luces», y este tema lo recorre por dentro.</p>
-<p><strong>Un movimiento que se atreve a pensar.</strong> La Ilustración es un movimiento cultural, filosófico y político europeo que comparte tres grandes objetivos: combatir la superstición, el dogma y el peso muerto de la tradición; buscar explicaciones racionales del mundo y de la sociedad; y <em>divulgar</em> el saber para emancipar a quien hasta entonces vivía en la ignorancia —de ahí empresas como la <em>Enciclopedia</em> francesa de Diderot y d’Alembert—. Sus raíces están en el humanismo y en la nueva ciencia del Renacimiento (<a href="tema-07.html#sec-30">§30</a>, <a href="tema-07.html#sec-33">§33</a>), que ya habían puesto al ser humano en el centro de la reflexión; su impulso político viene de la Inglaterra parlamentaria, pasa por la Holanda que dio refugio a los pensadores perseguidos —el propio Descartes entre ellos— y prende en la Francia que desembocará en la Revolución de 1789. Su epígono, el pensador que mejor condensó su espíritu, fue Immanuel Kant.</p>
-<p><strong>El mapa del tema.</strong> Empezaremos por el corazón del proyecto ilustrado, leído a través del breve y célebre texto en que Kant se preguntó qué era la Ilustración: la confianza en la razón, la salida de la «minoría de edad» y, también, los límites de esa razón (<a href="tema-11.html#sec-47">§47</a>). Veremos luego su gran fruto político, la proclamación de los Derechos del Hombre, y la distancia entre su universalismo y su alcance real (<a href="tema-11.html#sec-48">§48</a>). Y cerraremos con quienes tomaron en serio ese universalismo hasta sus últimas consecuencias y denunciaron que dejaba fuera a media humanidad: las primeras voces del feminismo ilustrado, Olympe de Gouges y Mary Wollstonecraft (<a href="tema-11.html#sec-49">§49</a>).</p>
+<p>En el tema anterior seguimos a la modernidad buscando en los propios seres humanos —y ya no en Dios— el fundamento del poder político, hasta desembocar en el liberalismo y en la nueva sociedad capitalista (<a href="../chapters-web/tema-10.html#sec-46">§46</a>). Aquel atrevimiento no fue un episodio aislado de la teoría del Estado: era la punta de lanza de un movimiento mucho más amplio que, durante los siglos XVII y XVIII, se propuso someterlo todo —la naturaleza, la sociedad, la religión, la moral— al tribunal de la razón. Ese movimiento es la <em>Ilustración</em>, el «Siglo de las Luces», y este tema lo recorre por dentro.</p>
+<p><strong>Un movimiento que se atreve a pensar.</strong> La Ilustración es un movimiento cultural, filosófico y político europeo que comparte tres grandes objetivos: combatir la superstición, el dogma y el peso muerto de la tradición; buscar explicaciones racionales del mundo y de la sociedad; y <em>divulgar</em> el saber para emancipar a quien hasta entonces vivía en la ignorancia —de ahí empresas como la <em>Enciclopedia</em> francesa de Diderot y d’Alembert—. Sus raíces están en el humanismo y en la nueva ciencia del Renacimiento (<a href="../chapters-web/tema-07.html#sec-30">§30</a>, <a href="../chapters-web/tema-07.html#sec-33">§33</a>), que ya habían puesto al ser humano en el centro de la reflexión; su impulso político viene de la Inglaterra parlamentaria, pasa por la Holanda que dio refugio a los pensadores perseguidos —el propio Descartes entre ellos— y prende en la Francia que desembocará en la Revolución de 1789. Su epígono, el pensador que mejor condensó su espíritu, fue Immanuel Kant.</p>
+<p><strong>El mapa del tema.</strong> Empezaremos por el corazón del proyecto ilustrado, leído a través del breve y célebre texto en que Kant se preguntó qué era la Ilustración: la confianza en la razón, la salida de la «minoría de edad» y, también, los límites de esa razón (<a href="../chapters-web/tema-11.html#sec-47">§47</a>). Veremos luego su gran fruto político, la proclamación de los Derechos del Hombre, y la distancia entre su universalismo y su alcance real (<a href="../chapters-web/tema-11.html#sec-48">§48</a>). Y cerraremos con quienes tomaron en serio ese universalismo hasta sus últimas consecuencias y denunciaron que dejaba fuera a media humanidad: las primeras voces del feminismo ilustrado, Olympe de Gouges y Mary Wollstonecraft (<a href="../chapters-web/tema-11.html#sec-49">§49</a>).</p>
 </section>
 <section id="sec-47" class="level2">
 <h2 class="anchored" data-anchor-id="sec-47">§47 · El proyecto ilustrado: potencia y límites de la razón</h2>
 <p><strong>Una época que se pregunta por sí misma.</strong> Pocas épocas se han puesto a sí mismas un nombre y han discutido qué significaba. La Ilustración fue una de ellas. En 1784, una revista de Berlín lanzó a sus lectores una pregunta —¿qué es la Ilustración?— y, entre las respuestas, hubo una breve, casi de circunstancias, que acabaría convertida en el manifiesto de toda una época: la de Immanuel Kant (1724-1804)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Conviene leerla despacio, porque en ella late lo mejor —y lo más discutible— del proyecto ilustrado.</p>
 <p><strong>«Sapere aude»: salir de la minoría de edad.</strong> Kant arranca con una definición que se ha hecho célebre: «La Ilustración es la salida del hombre de su autoculpable minoría de edad». Hay que entender bien los términos. La <em>minoría de edad</em> no es aquí una cuestión de años, sino «la incapacidad de servirse del propio entendimiento sin la guía de otro»: la de quien necesita que alguien piense por él. Y es <em>autoculpable</em> porque su causa no está en la falta de inteligencia, sino en la falta de decisión y de valor para usar la que se tiene. De ahí el lema que Kant toma del poeta latino Horacio y convierte en divisa de la época: «<em>Sapere aude!</em>», «¡atrévete a saber!», ¡ten el valor de servirte de tu propio entendimiento! Lo que nos mantiene menores de edad, dice, no es la dificultad del mundo, sino nuestra propia <em>pereza</em> y <em>cobardía</em>.</p>
 <p><strong>Los tutores.</strong> ¿Por qué cuesta tanto pensar por uno mismo? Porque es cómodo no hacerlo. Si tengo un libro que piensa por mí, un director espiritual que me hace de conciencia y un médico que me dicta la dieta, no necesito esforzarme: otros cargan con esa tarea fastidiosa. Kant llama <em>tutores</em> a quienes se erigen en guías y nos persuaden de que pensar por cuenta propia es difícil y hasta peligroso. Lo compara con el ganado al que se mantiene en las andaderas y se asusta con los riesgos de caminar solo, cuando lo cierto es que aprendería a hacerlo tras unas pocas caídas. La sociedad entera vive así en una infancia prolongada, no porque le falten luces, sino porque se ha acostumbrado a la tutela. La meta de la Ilustración es que alcance la <em>mayoría de edad</em>.</p>
-<p><strong>Autonomía frente a heteronomía.</strong> Esa mayoría de edad tiene un nombre filosófico: <em>autonomía</em> —de <em>autós</em>, uno mismo, y <em>nómos</em>, ley o norma—, darse uno la propia regla y pensar y decidir por sí mismo. Su contrario es la <em>heteronomía</em> —de <em>héteros</em>, otro—, regirse por la norma que otro impone. Es uno de los conceptos más fecundos que nos deja Kant, y reaparecerá con toda su fuerza en su ética, donde la autonomía de la voluntad será la clave misma de la dignidad moral (<a href="tema-12.html#sec-51">§51</a>).</p>
+<p><strong>Autonomía frente a heteronomía.</strong> Esa mayoría de edad tiene un nombre filosófico: <em>autonomía</em> —de <em>autós</em>, uno mismo, y <em>nómos</em>, ley o norma—, darse uno la propia regla y pensar y decidir por sí mismo. Su contrario es la <em>heteronomía</em> —de <em>héteros</em>, otro—, regirse por la norma que otro impone. Es uno de los conceptos más fecundos que nos deja Kant, y reaparecerá con toda su fuerza en su ética, donde la autonomía de la voluntad será la clave misma de la dignidad moral (<a href="../chapters-web/tema-12.html#sec-51">§51</a>).</p>
 <p><strong>La libertad y el doble uso de la razón.</strong> Para que cada cual se atreva a pensar hace falta una condición que no depende solo del individuo: la <em>libertad</em>. Pero Kant la entiende de un modo preciso y, a primera vista, desconcertante<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Distingue dos usos de la razón. El <em>uso público</em> es el que uno hace «como docto», esto es, dirigiéndose por escrito al gran público de los lectores; ese uso debe ser <em>siempre libre</em>, porque solo él hace avanzar a la humanidad. El <em>uso privado</em> es el que uno hace desde un cargo o una función determinados, y ese sí puede —y a veces debe— limitarse para que la maquinaria social funcione.</p>
 <p><strong>Razonad, pero obedeced.</strong> Los ejemplos de Kant lo aclaran. El oficial debe obedecer la orden de sus superiores en el cuartel —ahí no le toca discutir—, pero, como hombre culto, puede publicar por escrito una crítica de los defectos del servicio militar. El contribuyente debe pagar el impuesto que le corresponde, pero puede denunciar públicamente su injusticia. El sacerdote debe enseñar a su comunidad según el credo de su iglesia, pero, como docto, puede exponer ante el mundo sus reparos a ese mismo credo. La idea se resume en la divisa que Kant atribuye a Federico II de Prusia: «¡Razonad todo lo que queráis y sobre lo que queráis, pero obedeced!». Y la divisa obliga en las dos direcciones: al monarca que pretende dictaminar con su sola autoridad en materia de doctrina, Kant le recuerda el viejo reproche <em>Caesar non est supra grammaticos</em> —«el César no está por encima de los gramáticos»—, porque tampoco el poder supremo manda sobre lo que solo la razón pública puede juzgar. Lo que la Ilustración reclama, por tanto, no es la desobediencia ni el desorden, sino algo más concreto y más poderoso: la libertad de discusión pública, sin la cual ninguna sociedad puede corregirse ni progresar.</p>
 <p><strong>Una época <em>de</em> Ilustración, no una época <em>ilustrada</em>.</strong> Kant es lúcido sobre su propio tiempo. ¿Vivimos —se pregunta— en una época ilustrada? Su respuesta es no. ¿En una época <em>de</em> Ilustración? Sí: las condiciones para la emancipación ya están en marcha, los obstáculos disminuyen, el espacio para pensar libremente se ha abierto. La Ilustración no es un estado alcanzado, sino una <em>tarea</em> en curso —un matiz que conviene retener, porque vacuna contra la idea ingenua de que basta proclamar la razón para que el mundo se vuelva razonable—.</p>
 <p><strong>Progreso y dignidad.</strong> De ahí su optimismo de fondo: la confianza en que la razón, usada con libertad, puede construir una sociedad mejor y devolver al ser humano su <em>dignidad</em>. Kant cierra su texto con una imagen esperanzada: el espíritu del libre pensar acaba calando en el sentir del pueblo y, con el tiempo, hasta en los principios de gobierno, que aprenden a tratar al ser humano —«que es algo más que una máquina»— conforme a su dignidad. La misma esperanza late en el lema con que la Revolución Francesa de 1789 resumiría sus aspiraciones: «libertad, igualdad, fraternidad».</p>
-<p><strong>Potencia y límites de la razón.</strong> Hasta aquí la <em>potencia</em> de la razón: su capacidad de liberar, criticar y hacer progresar. Pero el título de esta sección habla también de <em>límites</em>, y conviene distinguir dos. El primero es interno: el mismo Kant que ensalza la razón será quien marque sus fronteras, porque una razón verdaderamente madura tiene que examinarse a sí misma y reconocer hasta dónde alcanza su conocimiento. Ese es el corazón de su filosofía crítica, y lo veremos en el próximo tema (<a href="tema-12.html#sec-50">§50</a>); la razón ilustrada, bien entendida, no es ingenua, sino autocrítica. El segundo límite es histórico: el optimismo ilustrado encontró pronto resistencia. El <em>Romanticismo</em> opuso al universalismo de la razón el valor del sentimiento, la historia y lo particular de cada pueblo; y, ya en el siglo XX, Horkheimer y Adorno denunciarían en su <em>Dialéctica de la Ilustración</em> que una razón reducida a puro cálculo —razón <em>instrumental</em>— podía volverse contra la emancipación que prometía y recaer en nuevas formas de dominio (<a href="tema-19.html#sec-68">§68</a>). Tener presentes esos límites no rebaja el proyecto ilustrado: lo vuelve más honesto.</p>
-<p>Porque, con todos sus claroscuros, la Ilustración no se quedó en la conciencia de cada individuo. Su confianza en una razón común a todos cristalizó en un fruto político de enorme alcance: la proclamación de que los seres humanos nacen libres e iguales en derechos (<a href="tema-11.html#sec-48">§48</a>).</p>
+<p><strong>Potencia y límites de la razón.</strong> Hasta aquí la <em>potencia</em> de la razón: su capacidad de liberar, criticar y hacer progresar. Pero el título de esta sección habla también de <em>límites</em>, y conviene distinguir dos. El primero es interno: el mismo Kant que ensalza la razón será quien marque sus fronteras, porque una razón verdaderamente madura tiene que examinarse a sí misma y reconocer hasta dónde alcanza su conocimiento. Ese es el corazón de su filosofía crítica, y lo veremos en el próximo tema (<a href="../chapters-web/tema-12.html#sec-50">§50</a>); la razón ilustrada, bien entendida, no es ingenua, sino autocrítica. El segundo límite es histórico: el optimismo ilustrado encontró pronto resistencia. El <em>Romanticismo</em> opuso al universalismo de la razón el valor del sentimiento, la historia y lo particular de cada pueblo; y, ya en el siglo XX, Horkheimer y Adorno denunciarían en su <em>Dialéctica de la Ilustración</em> que una razón reducida a puro cálculo —razón <em>instrumental</em>— podía volverse contra la emancipación que prometía y recaer en nuevas formas de dominio (<a href="../chapters-web/tema-19.html#sec-68">§68</a>). Tener presentes esos límites no rebaja el proyecto ilustrado: lo vuelve más honesto.</p>
+<p>Porque, con todos sus claroscuros, la Ilustración no se quedó en la conciencia de cada individuo. Su confianza en una razón común a todos cristalizó en un fruto político de enorme alcance: la proclamación de que los seres humanos nacen libres e iguales en derechos (<a href="../chapters-web/tema-11.html#sec-48">§48</a>).</p>
 </section>
 <section id="sec-48" class="level2">
 <h2 class="anchored" data-anchor-id="sec-48">§48 · Los Derechos del Hombre</h2>
-<p><strong>De la autonomía individual a los derechos de todos.</strong> Si cada ser humano es capaz de pensar por sí mismo y debe poder hacerlo (<a href="tema-11.html#sec-47">§47</a>), entonces ninguno vale por nacimiento más que otro: todos comparten una misma razón y, con ella, una misma dignidad. De esa intuición tan ilustrada nace la idea moderna de los <em>derechos humanos</em>: derechos que no concede el rey ni la costumbre, sino que se tienen <em>por el mero hecho de ser persona</em>. Y esa idea no se quedó en los libros de filosofía: se escribió en documentos solemnes que aún hoy nos rigen.</p>
-<p><strong>Una herencia filosófica: los derechos naturales.</strong> El cimiento teórico lo habíamos visto ya en John Locke (<a href="tema-10.html#sec-44">§44</a>). Frente a quienes hacían descender el poder de Dios, Locke sostuvo que los seres humanos poseemos por naturaleza ciertos <em>derechos naturales</em> —la vida, la libertad, la propiedad—, anteriores a toda sociedad e <em>inalienables</em>: nadie puede arrebatárnoslos ni nosotros cederlos del todo. Las declaraciones de derechos son, en buena medida, esa filosofía convertida en ley: traducen la teoría del contrato y de los derechos naturales al lenguaje jurídico de un Estado.</p>
-<p><strong>Tres declaraciones.</strong> El proceso fue acumulativo. En Inglaterra, la <em>Declaración de Derechos</em> (<em>Bill of Rights</em>) de 1689 puso límites al poder del rey en favor del parlamento, tras la revolución que sirvió de telón de fondo a Locke (<a href="tema-10.html#sec-44">§44</a>). En América, la <em>Declaración de Derechos de Virginia</em> y la <em>Declaración de Independencia</em>, ambas de 1776, proclamaron que «todos los hombres son creados iguales» y dotados de derechos inalienables. Y en Francia, la <em>Declaración de los Derechos del Hombre y del Ciudadano</em> de 1789 se convirtió en el emblema de la Revolución, con su afirmación rotunda: «los hombres nacen y permanecen libres e iguales en derechos». Las tres comparten un mismo núcleo: la igualdad ante la ley, la libertad, la propiedad, la soberanía que reside en la nación y no en el monarca, y la idea —de raíz plenamente ilustrada— de que el poder existe para garantizar esos derechos, no para pisotearlos.</p>
+<p><strong>De la autonomía individual a los derechos de todos.</strong> Si cada ser humano es capaz de pensar por sí mismo y debe poder hacerlo (<a href="../chapters-web/tema-11.html#sec-47">§47</a>), entonces ninguno vale por nacimiento más que otro: todos comparten una misma razón y, con ella, una misma dignidad. De esa intuición tan ilustrada nace la idea moderna de los <em>derechos humanos</em>: derechos que no concede el rey ni la costumbre, sino que se tienen <em>por el mero hecho de ser persona</em>. Y esa idea no se quedó en los libros de filosofía: se escribió en documentos solemnes que aún hoy nos rigen.</p>
+<p><strong>Una herencia filosófica: los derechos naturales.</strong> El cimiento teórico lo habíamos visto ya en John Locke (<a href="../chapters-web/tema-10.html#sec-44">§44</a>). Frente a quienes hacían descender el poder de Dios, Locke sostuvo que los seres humanos poseemos por naturaleza ciertos <em>derechos naturales</em> —la vida, la libertad, la propiedad—, anteriores a toda sociedad e <em>inalienables</em>: nadie puede arrebatárnoslos ni nosotros cederlos del todo. Las declaraciones de derechos son, en buena medida, esa filosofía convertida en ley: traducen la teoría del contrato y de los derechos naturales al lenguaje jurídico de un Estado.</p>
+<p><strong>Tres declaraciones.</strong> El proceso fue acumulativo. En Inglaterra, la <em>Declaración de Derechos</em> (<em>Bill of Rights</em>) de 1689 puso límites al poder del rey en favor del parlamento, tras la revolución que sirvió de telón de fondo a Locke (<a href="../chapters-web/tema-10.html#sec-44">§44</a>). En América, la <em>Declaración de Derechos de Virginia</em> y la <em>Declaración de Independencia</em>, ambas de 1776, proclamaron que «todos los hombres son creados iguales» y dotados de derechos inalienables. Y en Francia, la <em>Declaración de los Derechos del Hombre y del Ciudadano</em> de 1789 se convirtió en el emblema de la Revolución, con su afirmación rotunda: «los hombres nacen y permanecen libres e iguales en derechos». Las tres comparten un mismo núcleo: la igualdad ante la ley, la libertad, la propiedad, la soberanía que reside en la nación y no en el monarca, y la idea —de raíz plenamente ilustrada— de que el poder existe para garantizar esos derechos, no para pisotearlos.</p>
 <p><strong>El universalismo y su letra pequeña.</strong> Aquí, sin embargo, hay que leer con cuidado y no idealizar. Las declaraciones hablan del «Hombre» en términos universales, pero ese sujeto universal fue, en la práctica, mucho más estrecho de lo que las palabras prometían. El mismo movimiento que proclamaba la igualdad convivió con exclusiones profundas. Tres, sobre todo:</p>
 <ol type="1">
-<li><em>Las mujeres.</em> El «Hombre» de las declaraciones era, demasiado a menudo, el varón. Las mujeres quedaron al margen de la ciudadanía política —sin voto, sin acceso a los cargos, sin plena personalidad jurídica—. Es la exclusión que denunciarán las primeras feministas (<a href="tema-11.html#sec-49">§49</a>).</li>
+<li><em>Las mujeres.</em> El «Hombre» de las declaraciones era, demasiado a menudo, el varón. Las mujeres quedaron al margen de la ciudadanía política —sin voto, sin acceso a los cargos, sin plena personalidad jurídica—. Es la exclusión que denunciarán las primeras feministas (<a href="../chapters-web/tema-11.html#sec-49">§49</a>).</li>
 <li><em>Las personas esclavizadas y los pueblos colonizados.</em> Francia y los nacientes Estados Unidos proclamaban la libertad mientras mantenían la esclavitud y sus imperios coloniales. La contradicción era flagrante, y estallaría pronto: la independencia de Haití (1804), nacida de una rebelión de esclavos que tomaron al pie de la letra la Declaración, la dejó al descubierto.</li>
-<li><em>Los no propietarios.</em> El derecho al voto se ató durante mucho tiempo a la riqueza —el <em>sufragio censitario</em>—: la Francia revolucionaria llegó a distinguir entre ciudadanos «activos», que votaban, y «pasivos», que no. Quien nada poseía, poco contaba. Es la otra cara del liberalismo que vimos nacer de la mano de Locke y de la nueva economía (<a href="tema-10.html#sec-46">§46</a>).</li>
+<li><em>Los no propietarios.</em> El derecho al voto se ató durante mucho tiempo a la riqueza —el <em>sufragio censitario</em>—: la Francia revolucionaria llegó a distinguir entre ciudadanos «activos», que votaban, y «pasivos», que no. Quien nada poseía, poco contaba. Es la otra cara del liberalismo que vimos nacer de la mano de Locke y de la nueva economía (<a href="../chapters-web/tema-10.html#sec-46">§46</a>).</li>
 </ol>
-<p><strong>Un principio más grande que su época.</strong> Que las declaraciones no cumplieran lo que prometían no las invalida; al contrario. Al proclamar un principio <em>universal</em> —todos los seres humanos son libres e iguales—, pusieron en manos de los excluidos el arma más eficaz para reclamar su sitio: bastaba con exigir que la regla se aplicara de verdad a todos, sin excepción. Y eso es justamente lo que hicieron, ya en 1791, las primeras pensadoras que se atrevieron a reescribir la Declaración en femenino. A ellas dedicamos la última sección (<a href="tema-11.html#sec-49">§49</a>).</p>
+<p><strong>Un principio más grande que su época.</strong> Que las declaraciones no cumplieran lo que prometían no las invalida; al contrario. Al proclamar un principio <em>universal</em> —todos los seres humanos son libres e iguales—, pusieron en manos de los excluidos el arma más eficaz para reclamar su sitio: bastaba con exigir que la regla se aplicara de verdad a todos, sin excepción. Y eso es justamente lo que hicieron, ya en 1791, las primeras pensadoras que se atrevieron a reescribir la Declaración en femenino. A ellas dedicamos la última sección (<a href="../chapters-web/tema-11.html#sec-49">§49</a>).</p>
 </section>
 <section id="sec-49" class="level2">
 <h2 class="anchored" data-anchor-id="sec-49">§49 · El feminismo ilustrado: Olympe de Gouges y Mary Wollstonecraft</h2>
-<p><strong>Tomarle la palabra a la Ilustración.</strong> La Ilustración había proclamado que todos los seres humanos son iguales en razón y en derechos (<a href="tema-11.html#sec-47">§47</a>, <a href="tema-11.html#sec-48">§48</a>). Bastaba aplicar ese principio con coherencia para que saltara una contradicción incómoda: ¿por qué quedaban fuera las mujeres? Las primeras en señalarlo con fuerza fueron dos contemporáneas de la Revolución Francesa, una en Francia y otra en Inglaterra. A su pensamiento lo llamamos <em>feminismo ilustrado</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>: <em>feminismo</em> porque reivindica la igualdad de las mujeres; <em>ilustrado</em> porque lo hace con las armas de la propia Ilustración. No eran las primeras en defender a las mujeres —ya Platón había admitido mujeres entre los guardianes de su ciudad ideal (<a href="tema-03.html#sec-11">§11</a>)—, pero sí las primeras en convertir esa defensa en un programa razonado y público.</p>
-<p><strong>Olympe de Gouges (1748-1793).</strong> Autodidacta, dramaturga y activista, Olympe de Gouges llevó el principio revolucionario hasta su conclusión lógica. En 1791 escribió la <em>Declaración de los derechos de la mujer y de la ciudadana</em>, calcada de la Declaración de 1789 (<a href="tema-11.html#sec-48">§48</a>) pero reescrita en femenino, precisamente para hacer visible lo que aquella callaba: que las mujeres no estaban incluidas en su «Hombre». Su artículo primero no deja lugar a dudas: «La mujer nace libre y permanece igual al hombre en derechos». Reclamó la igualdad jurídica plena —el voto, el acceso a los cargos, la propiedad, el divorcio— y fue, además, abolicionista, contraria a la esclavitud. Una de sus frases se volvió tristemente profética: si la mujer «tiene derecho a subir al cadalso, debe tener igualmente el de subir a la tribuna». Murió en la guillotina en 1793, durante el Terror, condenada en buena parte por sus ideas.</p>
+<p><strong>Tomarle la palabra a la Ilustración.</strong> La Ilustración había proclamado que todos los seres humanos son iguales en razón y en derechos (<a href="../chapters-web/tema-11.html#sec-47">§47</a>, <a href="../chapters-web/tema-11.html#sec-48">§48</a>). Bastaba aplicar ese principio con coherencia para que saltara una contradicción incómoda: ¿por qué quedaban fuera las mujeres? Las primeras en señalarlo con fuerza fueron dos contemporáneas de la Revolución Francesa, una en Francia y otra en Inglaterra. A su pensamiento lo llamamos <em>feminismo ilustrado</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>: <em>feminismo</em> porque reivindica la igualdad de las mujeres; <em>ilustrado</em> porque lo hace con las armas de la propia Ilustración. No eran las primeras en defender a las mujeres —ya Platón había admitido mujeres entre los guardianes de su ciudad ideal (<a href="../chapters-web/tema-03.html#sec-11">§11</a>)—, pero sí las primeras en convertir esa defensa en un programa razonado y público.</p>
+<p><strong>Olympe de Gouges (1748-1793).</strong> Autodidacta, dramaturga y activista, Olympe de Gouges llevó el principio revolucionario hasta su conclusión lógica. En 1791 escribió la <em>Declaración de los derechos de la mujer y de la ciudadana</em>, calcada de la Declaración de 1789 (<a href="../chapters-web/tema-11.html#sec-48">§48</a>) pero reescrita en femenino, precisamente para hacer visible lo que aquella callaba: que las mujeres no estaban incluidas en su «Hombre». Su artículo primero no deja lugar a dudas: «La mujer nace libre y permanece igual al hombre en derechos». Reclamó la igualdad jurídica plena —el voto, el acceso a los cargos, la propiedad, el divorcio— y fue, además, abolicionista, contraria a la esclavitud. Una de sus frases se volvió tristemente profética: si la mujer «tiene derecho a subir al cadalso, debe tener igualmente el de subir a la tribuna». Murió en la guillotina en 1793, durante el Terror, condenada en buena parte por sus ideas.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-gouges.png" class="img-fluid figure-img"></p>
@@ -564,7 +576,7 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>La razón no tiene sexo.</strong> Su tesis es de raíz plenamente ilustrada: las mujeres son tan capaces de <em>razón</em> como los varones —la verdad, al fin y al cabo, es una para todos— y, por eso mismo, <em>deben ser educadas racionalmente</em>, no adiestradas para agradar. Si la sociedad enseña a las niñas desde la infancia que su única arma es la belleza y las mantiene en la frivolidad, no es porque sean incapaces, sino porque se les niega la educación que las haría libres. Wollstonecraft defendió la <em>coeducación</em> —niñas y niños formándose juntos— y sostuvo que la mujer puede ser <em>compañera</em>, y no solo esposa, del varón, y emprender una profesión si así lo desea. La buena educación, escribió, es la que fortalece el entendimiento «para que el individuo adquiera hábitos de virtud que lo hagan <em>independiente</em>»; y «individuo», subrayaba, incluye a las mujeres tanto como a los varones.</p>
-<p><strong>Una crítica que apuntaba alto.</strong> Lo notable es que su denuncia no se dirigía contra los enemigos de la Ilustración, sino contra la propia Ilustración cuando se contradecía. Su blanco principal fue nada menos que Rousseau (<a href="tema-10.html#sec-45">§45</a>), que había sostenido que a la mujer debía educársela para el placer y el servicio del varón. Que semejante idea viniera de uno de los grandes campeones de la libertad y la democracia fue, para Wollstonecraft, lo más indignante: demostraba que el universalismo ilustrado se detenía, sin razón alguna, en las puertas de la mitad de la humanidad.</p>
+<p><strong>Una crítica que apuntaba alto.</strong> Lo notable es que su denuncia no se dirigía contra los enemigos de la Ilustración, sino contra la propia Ilustración cuando se contradecía. Su blanco principal fue nada menos que Rousseau (<a href="../chapters-web/tema-10.html#sec-45">§45</a>), que había sostenido que a la mujer debía educársela para el placer y el servicio del varón. Que semejante idea viniera de uno de los grandes campeones de la libertad y la democracia fue, para Wollstonecraft, lo más indignante: demostraba que el universalismo ilustrado se detenía, sin razón alguna, en las puertas de la mitad de la humanidad.</p>
 <p><strong>Límites y contradicciones.</strong> Con todo, su pensamiento tiene fronteras que conviene reconocer.</p>
 <ol type="1">
 <li><em>Roles diferenciados.</em> Pese a su audacia, Wollstonecraft no llegó a cuestionar del todo que mujeres y varones tuvieran caracteres y papeles sociales distintos; defendía, más bien, que cada sexo cultivara con dignidad su propio ámbito.</li>
@@ -590,7 +602,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Interlocutor</td>
-<td>La <em>Declaración</em> francesa de 1789, que excluía a las mujeres (<a href="tema-11.html#sec-48">§48</a>)</td>
+<td>La <em>Declaración</em> francesa de 1789, que excluía a las mujeres (<a href="../chapters-web/tema-11.html#sec-48">§48</a>)</td>
 <td>Talleyrand, que defendía solo una educación doméstica para las mujeres</td>
 </tr>
 <tr class="odd">
@@ -610,35 +622,147 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p><strong>La semilla y las olas.</strong> Gouges y Wollstonecraft no fundaron un movimiento organizado, pero plantaron una semilla difícil de arrancar. Sus dos grandes reivindicaciones —la igualdad jurídica y el derecho a la educación— alimentarían todo el feminismo posterior: la <em>primera ola</em> sufragista del siglo XIX, que conquistaría el voto; y, más tarde, la reflexión de Simone de Beauvoir y las olas contemporáneas, que se estudian al final del manual (<a href="tema-21.html#sec-76">§76</a>-<a href="tema-21.html#sec-77">§77</a>). Habían hecho lo más difícil: tomarle la palabra a la Ilustración y exigir que su razón universal lo fuera de verdad, sin excepciones. &nbsp;&nbsp;</p>
+<p><strong>La semilla y las olas.</strong> Gouges y Wollstonecraft no fundaron un movimiento organizado, pero plantaron una semilla difícil de arrancar. Sus dos grandes reivindicaciones —la igualdad jurídica y el derecho a la educación— alimentarían todo el feminismo posterior: la <em>primera ola</em> sufragista del siglo XIX, que conquistaría el voto; y, más tarde, la reflexión de Simone de Beauvoir y las olas contemporáneas, que se estudian al final del manual (<a href="../chapters-web/tema-21.html#sec-76">§76</a>-<a href="../chapters-web/tema-21.html#sec-77">§77</a>). Habían hecho lo más difícil: tomarle la palabra a la Ilustración y exigir que su razón universal lo fuera de verdad, sin excepciones. &nbsp;&nbsp;</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Kant tendrá tratamiento propio más adelante, porque su filosofía crítica abre una etapa entera del pensamiento (<a href="tema-12.html#sec-50">§50</a>). Aquí nos interesa solo como el pensador que dio voz al programa ilustrado.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Kant tendrá tratamiento propio más adelante, porque su filosofía crítica abre una etapa entera del pensamiento (<a href="../chapters-web/tema-12.html#sec-50">§50</a>). Aquí nos interesa solo como el pensador que dio voz al programa ilustrado.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>El reparto kantiano invierte el sentido que hoy damos a las palabras: para nosotros «público» suele ser lo oficial o estatal y «privado» lo personal, mientras que en Kant es casi al revés. Conviene fijarse en cómo define él los términos —se explican enseguida— y no dar por supuesto su significado corriente.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>La historiografía —y el propio currículo— lo llaman a veces «primera ola» del feminismo. Aquí reservamos esa etiqueta para el movimiento sufragista del siglo XIX (<a href="tema-21.html#sec-76">§76</a>) y hablamos de «feminismo ilustrado» para estas pensadoras anteriores, que aplican a la condición de la mujer las herramientas de la Ilustración: razón, autonomía y derechos. La tabla de correspondencias conserva «primera ola» para la trazabilidad con el decreto.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>La historiografía —y el propio currículo— lo llaman a veces «primera ola» del feminismo. Aquí reservamos esa etiqueta para el movimiento sufragista del siglo XIX (<a href="../chapters-web/tema-21.html#sec-76">§76</a>) y hablamos de «feminismo ilustrado» para estas pensadoras anteriores, que aplican a la condición de la mujer las herramientas de la Ilustración: razón, autonomía y derechos. La tabla de correspondencias conserva «primera ola» para la trazabilidad con el decreto.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Es decir, una educación orientada solo a las tareas del hogar y al cuidado de la familia, sin formación general y mucho menos universitaria.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Murió pocos días después de dar a luz a su hija, también llamada Mary: Mary Shelley, que años más tarde escribiría una novela pionera de la ciencia ficción que sin duda te suena, <em>Frankenstein</em> (1818).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -717,7 +841,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -726,8 +851,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -741,6 +927,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -903,44 +1090,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1039,7 +1236,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-10.html" class="pagination-link" aria-label="Tema 10 · La filosofía política moderna: del contrato social al liberalismo">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 10 · La filosofía política moderna: del contrato social al liberalismo</span></span>

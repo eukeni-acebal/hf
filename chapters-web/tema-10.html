@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-09.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-10.html"><span class="chapter-title">Tema 10 · La filosofía política moderna: del contrato social al liberalismo</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-10.html"><span class="chapter-title">Tema 10 · La filosofía política moderna: del contrato social al liberalismo</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -495,10 +507,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-10.html"><span class="chapter-title">Tema 10 · La filosofía política moderna: del contrato social al liberalismo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-3.html">Parte III · Edad Moderna</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-10.html"><span class="chapter-title">Tema 10 · La filosofía política moderna: del contrato social al liberalismo</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 10 · La filosofía política moderna: del contrato social al liberalismo</span></h1>
 </div>
@@ -519,15 +531,15 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-la-filosofía-política-moderna" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-la-filosofía-política-moderna">Para entrar en la filosofía política moderna</h2>
-<p>En el tema anterior dejamos a Hobbes reduciendo el universo —y al propio ser humano— a cuerpos en movimiento (<a href="tema-09.html#sec-40">§40</a>). Esa mirada desengañada no se quedó en la metafísica: el mismo Hobbes la volvió sobre la vida en común, y de ahí salió una de las grandes teorías políticas de la modernidad. Con ella se abre este tema, que cambia de terreno —de cómo conocemos el mundo a cómo debemos organizar la convivencia— pero conserva el gesto moderno de fondo: no dar nada por supuesto y buscarle a todo un fundamento que la razón pueda examinar.</p>
-<p><strong>El mapa del tema.</strong> La pregunta que recorre estas páginas es tan vieja como la filosofía y tan actual como la última campaña electoral: ¿de dónde viene el poder político y por qué debemos obedecerlo? Empezaremos viendo cómo la Edad Moderna hereda y rompe con la respuesta medieval, que hacía descender el poder de Dios (<a href="tema-10.html#sec-41">§41</a>). Nos detendremos luego en la primera gran ruptura, la de Maquiavelo, que separa la política de la moral y la religión para mirarla tal como es (<a href="tema-10.html#sec-42">§42</a>). El núcleo del tema son las tres grandes versiones de la teoría del contrato social —<em>Thomas Hobbes</em> (<a href="tema-10.html#sec-43">§43</a>), <em>John Locke</em> (<a href="tema-10.html#sec-44">§44</a>) y <em>Jean-Jacques Rousseau</em> (<a href="tema-10.html#sec-45">§45</a>)—, que imaginan a los seres humanos antes de toda sociedad para deducir de ahí qué Estado debemos construir y con qué límites. Y cerraremos con el liberalismo político, que de la mano de Locke y de la nueva economía alumbra la sociedad capitalista (<a href="tema-10.html#sec-46">§46</a>).</p>
+<p>En el tema anterior dejamos a Hobbes reduciendo el universo —y al propio ser humano— a cuerpos en movimiento (<a href="../chapters-web/tema-09.html#sec-40">§40</a>). Esa mirada desengañada no se quedó en la metafísica: el mismo Hobbes la volvió sobre la vida en común, y de ahí salió una de las grandes teorías políticas de la modernidad. Con ella se abre este tema, que cambia de terreno —de cómo conocemos el mundo a cómo debemos organizar la convivencia— pero conserva el gesto moderno de fondo: no dar nada por supuesto y buscarle a todo un fundamento que la razón pueda examinar.</p>
+<p><strong>El mapa del tema.</strong> La pregunta que recorre estas páginas es tan vieja como la filosofía y tan actual como la última campaña electoral: ¿de dónde viene el poder político y por qué debemos obedecerlo? Empezaremos viendo cómo la Edad Moderna hereda y rompe con la respuesta medieval, que hacía descender el poder de Dios (<a href="../chapters-web/tema-10.html#sec-41">§41</a>). Nos detendremos luego en la primera gran ruptura, la de Maquiavelo, que separa la política de la moral y la religión para mirarla tal como es (<a href="../chapters-web/tema-10.html#sec-42">§42</a>). El núcleo del tema son las tres grandes versiones de la teoría del contrato social —<em>Thomas Hobbes</em> (<a href="../chapters-web/tema-10.html#sec-43">§43</a>), <em>John Locke</em> (<a href="../chapters-web/tema-10.html#sec-44">§44</a>) y <em>Jean-Jacques Rousseau</em> (<a href="../chapters-web/tema-10.html#sec-45">§45</a>)—, que imaginan a los seres humanos antes de toda sociedad para deducir de ahí qué Estado debemos construir y con qué límites. Y cerraremos con el liberalismo político, que de la mano de Locke y de la nueva economía alumbra la sociedad capitalista (<a href="../chapters-web/tema-10.html#sec-46">§46</a>).</p>
 </section>
 <section id="sec-41" class="level2">
 <h2 class="anchored" data-anchor-id="sec-41">§41 · Del pensamiento político medieval al moderno</h2>
-<p><strong>El poder venía de Dios.</strong> Durante toda la Edad Media, la pregunta por el origen del poder político tenía una respuesta firme: el poder viene de Dios. San Agustín había dividido la historia en dos ciudades —la terrena, edificada sobre el amor de sí, y la de Dios, sobre el amor a Dios (<a href="tema-06.html#sec-26">§26</a>)—, y, aunque el poder temporal tenía su lugar, su sentido último dependía de ese orden divino. Siglos más tarde, Tomás de Aquino integraría la política de Aristóteles en el marco cristiano (<a href="tema-06.html#sec-27">§27</a>): la autoridad es natural y necesaria, cierto, pero está ordenada a un fin que la trasciende y queda sometida a la ley eterna de Dios. De un modo u otro, gobernar era administrar un poder recibido de lo alto, y la teología tenía la última palabra sobre la política. Reyes y emperadores justificaban su mando como una delegación divina, y esa idea cristalizaría en la fórmula del «derecho divino de los reyes», con la que el absolutismo se proclamaba responsable solo ante Dios.</p>
-<p><strong>Una pregunta que se vuelve humana.</strong> La Edad Moderna no inventa la pregunta por el poder, pero la cambia de raíz: deja de buscar su fundamento en el cielo y lo busca en los propios seres humanos. El poder político pasa a ser algo que hay que explicar a partir de los hombres —de sus necesidades, sus miedos, sus pactos, sus intereses—, y no de la voluntad de Dios. Es el mismo gesto secularizador que recorre toda la modernidad: así como la nueva ciencia se había propuesto explicar la naturaleza sin recurrir a causas sobrenaturales (<a href="tema-07.html#sec-33">§33</a>), la nueva política se propone explicar el Estado sin apoyarlo en la religión. No es que estos pensadores sean todos incrédulos —Locke es un cristiano sincero—, sino que la legitimidad del poder ya no se hace bajar de Dios: se busca abajo, en el consentimiento, el contrato o el cálculo de los gobernados. El centro de gravedad de la política se ha desplazado del cielo a la tierra.</p>
-<p><strong>Un antecedente antiguo.</strong> Conviene recordar que esta idea, tan nueva frente al mundo medieval, tenía un antecedente muy lejano. Ya en la Grecia del siglo V a. e. c., los sofistas habían sostenido que las leyes no son obra de los dioses ni de la naturaleza, sino <em>convención</em> humana: un acuerdo —<em>nomos</em>— que los hombres establecen y pueden modificar, por oposición a lo que es por naturaleza —<em>physis</em>— (<a href="tema-02.html#sec-05">§05</a>). Protágoras, en particular, veía en la ley un producto del pacto y de la voluntad de la comunidad, no un mandato sagrado e intocable. Aquella intuición, sepultada durante siglos bajo el pensamiento cristiano, reaparece en la Edad Moderna con una fuerza nueva: si el orden político es cosa humana, entonces los humanos podemos —y debemos— preguntarnos cómo debería ser.</p>
-<p><strong>Del orden natural al artificio: el experimento mental del contrato.</strong> ¿Cómo responde la modernidad a la pregunta por el origen del poder? Sobre todo con una herramienta de pensamiento de enorme fecundidad: el contrato social. Para Aristóteles, el ser humano era «un animal político» por naturaleza, y la ciudad, el medio en que ese animal se realiza (<a href="tema-04.html#sec-19">§19</a>); la sociedad no se elige, se reconoce como nuestro elemento propio, igual que el agua lo es del pez. Los modernos invierten el planteamiento: la sociedad no es un dato de la naturaleza, sino un <em>artificio</em>, algo que los seres humanos construimos. Y para mostrarlo imaginan cómo seríamos al margen de toda sociedad, en una condición a la que llaman el <em>estado de naturaleza</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. No se trata de una hipótesis histórica —ninguno de ellos cree que existiera de verdad un día en que unos hombres se reunieron a firmar un pacto—, sino de un <em>experimento mental</em>: si despojamos al ser humano de todo lo que la vida en común le ha añadido, ¿qué queda?, ¿cómo nos comportaríamos?, ¿qué nos empujaría a abandonar esa condición y a someternos a un poder? De la respuesta a esas preguntas cada filósofo deduce qué clase de Estado debemos construir y dentro de qué límites. El contrato social es, en suma, la forma moderna de plantear la vieja cuestión del origen y el fundamento de la sociedad y del poder.</p>
+<p><strong>El poder venía de Dios.</strong> Durante toda la Edad Media, la pregunta por el origen del poder político tenía una respuesta firme: el poder viene de Dios. San Agustín había dividido la historia en dos ciudades —la terrena, edificada sobre el amor de sí, y la de Dios, sobre el amor a Dios (<a href="../chapters-web/tema-06.html#sec-26">§26</a>)—, y, aunque el poder temporal tenía su lugar, su sentido último dependía de ese orden divino. Siglos más tarde, Tomás de Aquino integraría la política de Aristóteles en el marco cristiano (<a href="../chapters-web/tema-06.html#sec-27">§27</a>): la autoridad es natural y necesaria, cierto, pero está ordenada a un fin que la trasciende y queda sometida a la ley eterna de Dios. De un modo u otro, gobernar era administrar un poder recibido de lo alto, y la teología tenía la última palabra sobre la política. Reyes y emperadores justificaban su mando como una delegación divina, y esa idea cristalizaría en la fórmula del «derecho divino de los reyes», con la que el absolutismo se proclamaba responsable solo ante Dios.</p>
+<p><strong>Una pregunta que se vuelve humana.</strong> La Edad Moderna no inventa la pregunta por el poder, pero la cambia de raíz: deja de buscar su fundamento en el cielo y lo busca en los propios seres humanos. El poder político pasa a ser algo que hay que explicar a partir de los hombres —de sus necesidades, sus miedos, sus pactos, sus intereses—, y no de la voluntad de Dios. Es el mismo gesto secularizador que recorre toda la modernidad: así como la nueva ciencia se había propuesto explicar la naturaleza sin recurrir a causas sobrenaturales (<a href="../chapters-web/tema-07.html#sec-33">§33</a>), la nueva política se propone explicar el Estado sin apoyarlo en la religión. No es que estos pensadores sean todos incrédulos —Locke es un cristiano sincero—, sino que la legitimidad del poder ya no se hace bajar de Dios: se busca abajo, en el consentimiento, el contrato o el cálculo de los gobernados. El centro de gravedad de la política se ha desplazado del cielo a la tierra.</p>
+<p><strong>Un antecedente antiguo.</strong> Conviene recordar que esta idea, tan nueva frente al mundo medieval, tenía un antecedente muy lejano. Ya en la Grecia del siglo V a. e. c., los sofistas habían sostenido que las leyes no son obra de los dioses ni de la naturaleza, sino <em>convención</em> humana: un acuerdo —<em>nomos</em>— que los hombres establecen y pueden modificar, por oposición a lo que es por naturaleza —<em>physis</em>— (<a href="../chapters-web/tema-02.html#sec-05">§05</a>). Protágoras, en particular, veía en la ley un producto del pacto y de la voluntad de la comunidad, no un mandato sagrado e intocable. Aquella intuición, sepultada durante siglos bajo el pensamiento cristiano, reaparece en la Edad Moderna con una fuerza nueva: si el orden político es cosa humana, entonces los humanos podemos —y debemos— preguntarnos cómo debería ser.</p>
+<p><strong>Del orden natural al artificio: el experimento mental del contrato.</strong> ¿Cómo responde la modernidad a la pregunta por el origen del poder? Sobre todo con una herramienta de pensamiento de enorme fecundidad: el contrato social. Para Aristóteles, el ser humano era «un animal político» por naturaleza, y la ciudad, el medio en que ese animal se realiza (<a href="../chapters-web/tema-04.html#sec-19">§19</a>); la sociedad no se elige, se reconoce como nuestro elemento propio, igual que el agua lo es del pez. Los modernos invierten el planteamiento: la sociedad no es un dato de la naturaleza, sino un <em>artificio</em>, algo que los seres humanos construimos. Y para mostrarlo imaginan cómo seríamos al margen de toda sociedad, en una condición a la que llaman el <em>estado de naturaleza</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. No se trata de una hipótesis histórica —ninguno de ellos cree que existiera de verdad un día en que unos hombres se reunieron a firmar un pacto—, sino de un <em>experimento mental</em>: si despojamos al ser humano de todo lo que la vida en común le ha añadido, ¿qué queda?, ¿cómo nos comportaríamos?, ¿qué nos empujaría a abandonar esa condición y a someternos a un poder? De la respuesta a esas preguntas cada filósofo deduce qué clase de Estado debemos construir y dentro de qué límites. El contrato social es, en suma, la forma moderna de plantear la vieja cuestión del origen y el fundamento de la sociedad y del poder.</p>
 <p><strong>Dos caminos hacia lo político moderno.</strong> Antes de recorrer esa gran tradición, hay que detenerse en un pensador que se adelantó a abrir el camino por otra vía. Mientras los contractualistas preguntan cómo <em>debería</em> fundarse el poder para ser legítimo, un florentino de comienzos del siglo XVI se había hecho una pregunta más incómoda y más terrenal: cómo se <em>conquista</em> y se <em>conserva</em> de hecho el poder, al margen de cómo debería ser. Con él, la política se desgaja de la moral y de la religión y reclama por primera vez sus propias reglas. A ese giro —y a su autor, Maquiavelo— dedicamos la sección siguiente.</p>
 </section>
 <section id="sec-42" class="level2">
@@ -539,17 +551,17 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Retrato de Nicolás Maquiavelo, fundador del realismo político, por Santi di Tito. || Atribución: Santi di Tito, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>La autonomía de lo político.</strong> Ahí reside su ruptura. La tradición clásica y medieval había preguntado siempre cómo <em>debe</em> gobernar el buen gobernante: la política era un capítulo de la ética y de la teología, y los tratados «de regimine principum» enseñaban al rey a ser justo, prudente y piadoso (<a href="tema-10.html#sec-41">§41</a>). Maquiavelo invierte la pregunta. No le interesa cómo debería ser el poder para ser virtuoso, sino cómo se <em>conquista</em> y se <em>conserva</em> de hecho; y declara que va a atenerse a «la verdad efectiva de la cosa» y no a las repúblicas imaginarias «que nunca se han visto ni se ha sabido que existieran». Con ese gesto la política se separa de la moral y de la religión y pasa a regirse por una lógica propia: la del mantenimiento del poder. No es que Maquiavelo niegue la moral —distingue perfectamente el bien del mal—, sino que sostiene que el gobernante que quiera conservar el Estado no puede atarse siempre a ella, porque «un hombre que quiera hacer en todo profesión de bueno fracasará entre tantos que no lo son». Esta <em>autonomía de lo político</em> es su aportación duradera, y lo convierte en el fundador del realismo político.</p>
+<p><strong>La autonomía de lo político.</strong> Ahí reside su ruptura. La tradición clásica y medieval había preguntado siempre cómo <em>debe</em> gobernar el buen gobernante: la política era un capítulo de la ética y de la teología, y los tratados «de regimine principum» enseñaban al rey a ser justo, prudente y piadoso (<a href="../chapters-web/tema-10.html#sec-41">§41</a>). Maquiavelo invierte la pregunta. No le interesa cómo debería ser el poder para ser virtuoso, sino cómo se <em>conquista</em> y se <em>conserva</em> de hecho; y declara que va a atenerse a «la verdad efectiva de la cosa» y no a las repúblicas imaginarias «que nunca se han visto ni se ha sabido que existieran». Con ese gesto la política se separa de la moral y de la religión y pasa a regirse por una lógica propia: la del mantenimiento del poder. No es que Maquiavelo niegue la moral —distingue perfectamente el bien del mal—, sino que sostiene que el gobernante que quiera conservar el Estado no puede atarse siempre a ella, porque «un hombre que quiera hacer en todo profesión de bueno fracasará entre tantos que no lo son». Esta <em>autonomía de lo político</em> es su aportación duradera, y lo convierte en el fundador del realismo político.</p>
 <p><strong>Virtù y fortuna.</strong> Dos conceptos articulan ese análisis. El primero es la <em>virtù</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, que en Maquiavelo no significa virtud moral, sino la energía, la destreza y la audacia del gobernante: la capacidad de decidir, de aprovechar la ocasión y de imponer su voluntad a las circunstancias. El segundo es la <em>fortuna</em>: el azar, lo imprevisible, todo lo que no está en nuestra mano. La política es el pulso entre ambos. La fortuna —escribe en una imagen famosa— es como un río crecido que lo arrasa todo, pero contra cuyas avenidas cabe levantar diques y reparos cuando las aguas están tranquilas; de ese modo, el hombre de <em>virtù</em> puede dominar buena parte de lo que parecía dejado al puro azar. Maquiavelo calcula que la fortuna gobierna acaso la mitad de nuestros actos y deja la otra mitad, o casi, a nuestra propia decisión. El gobernante hábil es el que sabe leer el momento y adaptarse a él.</p>
 <p><strong>El león y el zorro.</strong> De ahí su consejo más escandaloso. El príncipe debe «aprender a no ser bueno» y a usar esa capacidad según la necesidad: ha de combinar la fuerza del <em>león</em>, que espanta a los lobos, con la astucia del <em>zorro</em>, que esquiva las trampas. Si no puede ser a la vez amado y temido, más le vale ser temido —el miedo es más fiable que el agradecimiento—, aunque cuidando siempre de no ser <em>odiado</em>, porque el odio del pueblo es lo que de verdad derriba a los gobernantes. Y la religión y la moral, vistas desde el poder, valen sobre todo como instrumentos de cohesión: lo importante no es que el príncipe sea piadoso, sino que lo parezca. En esta lógica se resume la frase que la posteridad le atribuyó —«el fin justifica los medios»—, que Maquiavelo no escribió con esas palabras, pero que condensa bien su idea de que, en política, los actos se juzgan por sus resultados<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <p><strong>«Maquiavélico»: una fama discutida.</strong> Pocos adjetivos han sido tan injustos con su autor como <em>maquiavélico</em>, sinónimo de retorcido y sin escrúpulos. Conviene matizarlo. Maquiavelo fue, ante todo, un republicano convencido: en los <em>Discursos</em> admira la libertad de la Roma antigua y desconfía de los tiranos, y muchos lectores han visto en <em>El Príncipe</em> no un manual de déspotas, sino el diagnóstico frío de quien describe la enfermedad para que se la reconozca. Lo que de verdad inaugura no es la maldad en política —tan vieja como la política misma—, sino el atrevimiento de <em>mirarla de frente</em> y describirla sin el velo piadoso con que solía cubrirse. Por eso su figura abre la edad moderna del pensamiento político.</p>
-<p><strong>Lo que Maquiavelo deja sin responder.</strong> Con todo, su realismo se detiene en una pregunta que no llega a plantear. Maquiavelo explica cómo se gana y se conserva el poder, pero no por qué <em>debemos</em> obedecerlo: describe la mecánica de la política, no su fundamento legítimo. Esa otra pregunta —¿de dónde nace la autoridad y qué nos obliga a someternos a ella?— quedaba abierta, y será la que aborde la gran tradición que ocupa el resto del tema. El primero en responderla, con una mirada sobre la naturaleza humana no menos desengañada que la del florentino, será Thomas Hobbes (<a href="tema-10.html#sec-43">§43</a>).</p>
+<p><strong>Lo que Maquiavelo deja sin responder.</strong> Con todo, su realismo se detiene en una pregunta que no llega a plantear. Maquiavelo explica cómo se gana y se conserva el poder, pero no por qué <em>debemos</em> obedecerlo: describe la mecánica de la política, no su fundamento legítimo. Esa otra pregunta —¿de dónde nace la autoridad y qué nos obliga a someternos a ella?— quedaba abierta, y será la que aborde la gran tradición que ocupa el resto del tema. El primero en responderla, con una mirada sobre la naturaleza humana no menos desengañada que la del florentino, será Thomas Hobbes (<a href="../chapters-web/tema-10.html#sec-43">§43</a>).</p>
 </section>
 <section id="sec-43" class="level2">
 <h2 class="anchored" data-anchor-id="sec-43">§43 · La teoría del contrato social: Thomas Hobbes</h2>
-<p><strong>Del cuerpo en movimiento a la vida en común.</strong> Ya conoces a <em>Thomas Hobbes</em> (1588-1679) por su materialismo: era quien reducía el universo entero —y al propio ser humano— a cuerpos en movimiento, y la mente, a movimientos internos del cerebro (<a href="tema-09.html#sec-40">§40</a>). Esa misma mirada mecánica y desengañada es la que vuelve ahora sobre la política, en su obra mayor, el <em>Leviatán</em> (1651). Si el hombre es una máquina movida por el deseo y la aversión, la vida en común habrá de explicarse con las mismas leyes, sin apelar a un orden natural ni a un designio divino. Hobbes escribe, además, bajo el impacto de la guerra civil inglesa, que enfrentó al rey con el parlamento y le dejó una convicción de fondo: nada hay peor que la ausencia de un poder firme. Su filosofía política es, en buena medida, una larga reflexión sobre cómo evitar que la sociedad recaiga en el caos.</p>
+<p><strong>Del cuerpo en movimiento a la vida en común.</strong> Ya conoces a <em>Thomas Hobbes</em> (1588-1679) por su materialismo: era quien reducía el universo entero —y al propio ser humano— a cuerpos en movimiento, y la mente, a movimientos internos del cerebro (<a href="../chapters-web/tema-09.html#sec-40">§40</a>). Esa misma mirada mecánica y desengañada es la que vuelve ahora sobre la política, en su obra mayor, el <em>Leviatán</em> (1651). Si el hombre es una máquina movida por el deseo y la aversión, la vida en común habrá de explicarse con las mismas leyes, sin apelar a un orden natural ni a un designio divino. Hobbes escribe, además, bajo el impacto de la guerra civil inglesa, que enfrentó al rey con el parlamento y le dejó una convicción de fondo: nada hay peor que la ausencia de un poder firme. Su filosofía política es, en buena medida, una larga reflexión sobre cómo evitar que la sociedad recaiga en el caos.</p>
 <p><strong>La naturaleza humana.</strong> Hobbes parte de una antropología sombría. Los seres humanos somos, por naturaleza, individuos movidos por el afán de sobrevivir y por la búsqueda del propio interés: perseguimos el placer y huimos del dolor, y cada cual mira por sí. Somos, además, básicamente iguales, aunque en un sentido inquietante: no porque valgamos lo mismo, sino porque el más débil tiene fuerza suficiente para matar al más fuerte —con astucia, con una alianza o aprovechando su sueño—. De esa <em>igualdad en la vulnerabilidad</em> nace la inseguridad. Si todos podemos dañarnos, todos deseamos cosas parecidas y los recursos son escasos, la desconfianza recíproca se vuelve inevitable: me conviene golpear antes de ser golpeado.</p>
-<p><strong>El estado de naturaleza: la guerra de todos contra todos.</strong> Imaginemos ahora a esos individuos sin ningún poder común que los gobierne. El resultado, según Hobbes, no es un paraíso inocente, sino una <em>guerra de todos contra todos</em> (<em>bellum omnium contra omnes</em>): no una batalla incesante, pero sí una amenaza permanente en la que nadie está seguro y cada uno es enemigo posible de cada uno. Es la condición que resume el viejo dicho «el hombre es un lobo para el hombre» (<em>homo homini lupus</em>)<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. En ella no cabe progreso alguno, porque nadie siembra lo que tal vez no podrá recoger: no hay industria, ni agricultura, ni artes, ni letras, ni sociedad; solo miedo y peligro de muerte violenta. La vida del hombre, escribe en su frase más célebre, sería entonces «solitaria, pobre, desagradable, brutal y corta»<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Conviene medir el contraste con Aristóteles: donde el griego veía en la comunidad política el medio natural en que el ser humano se realiza (<a href="tema-04.html#sec-19">§19</a>), Hobbes ve en la condición pre-social una trampa mortal de la que hay que escapar como sea.</p>
+<p><strong>El estado de naturaleza: la guerra de todos contra todos.</strong> Imaginemos ahora a esos individuos sin ningún poder común que los gobierne. El resultado, según Hobbes, no es un paraíso inocente, sino una <em>guerra de todos contra todos</em> (<em>bellum omnium contra omnes</em>): no una batalla incesante, pero sí una amenaza permanente en la que nadie está seguro y cada uno es enemigo posible de cada uno. Es la condición que resume el viejo dicho «el hombre es un lobo para el hombre» (<em>homo homini lupus</em>)<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. En ella no cabe progreso alguno, porque nadie siembra lo que tal vez no podrá recoger: no hay industria, ni agricultura, ni artes, ni letras, ni sociedad; solo miedo y peligro de muerte violenta. La vida del hombre, escribe en su frase más célebre, sería entonces «solitaria, pobre, desagradable, brutal y corta»<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Conviene medir el contraste con Aristóteles: donde el griego veía en la comunidad política el medio natural en que el ser humano se realiza (<a href="../chapters-web/tema-04.html#sec-19">§19</a>), Hobbes ve en la condición pre-social una trampa mortal de la que hay que escapar como sea.</p>
 <p><strong>El contrato y el Leviatán.</strong> ¿Cómo se sale de ahí? Agruparse no basta: si me alío con unos pocos para defenderme, los demás harán lo mismo, y la guerra entre individuos se transforma en guerra entre bandos. La única salida estable es que todos, a la vez y mutuamente, renuncien a su derecho a tomarse la justicia por su mano y lo transfieran a un tercero —un hombre o una asamblea— que concentre todo el poder y lo emplee en mantener la paz. Ese pacto de cada uno con todos los demás hace nacer el Estado, al que Hobbes da el nombre bíblico de <em>Leviatán</em>, el gran monstruo marino: un «dios mortal» al que debemos, bajo el Dios inmortal, nuestra paz y nuestra defensa. A cambio de obediencia, recibimos seguridad. Y hay un detalle decisivo: el soberano <em>no es parte</em> del contrato —no se compromete a nada ante los súbditos—, sino que es su resultado; por eso su poder no puede ser limitado ni revocado por ellos sin abrir de nuevo las puertas del caos.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -557,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Frontispicio del <em>Leviatán</em> (1651): el cuerpo del soberano está formado por la multitud de súbditos que lo han instituido con su pacto —el Estado es, literalmente, la suma de quienes lo componen—. Grabado de Abraham Bosse. || Atribución: Abraham Bosse, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Un poder absoluto.</strong> De ahí la consecuencia más polémica: el poder del soberano ha de ser <em>absoluto</em>. Solo un poder sin contrapesos, que monopolice la ley, la espada y el juicio, puede impedir la vuelta a la guerra. Repartir ese poder —entre el rey y el parlamento, por ejemplo— sería, a ojos de Hobbes, plantar la semilla de la próxima guerra civil. Aquí asoma la paradoja del personaje. Parecía que los contractualistas venían a derribar las monarquías absolutas, y el primero de ellos las apuntala; pero las apuntala sobre un cimiento enteramente nuevo, porque el poder del Leviatán ya no desciende de Dios (<a href="tema-10.html#sec-41">§41</a>), sino que brota del acuerdo de los propios súbditos. Y, una vez fundado el poder en un pacto humano, queda abierta la puerta a discutir su forma y sus límites. Esa puerta la cruzarán Locke y Rousseau.</p>
+<p><strong>Un poder absoluto.</strong> De ahí la consecuencia más polémica: el poder del soberano ha de ser <em>absoluto</em>. Solo un poder sin contrapesos, que monopolice la ley, la espada y el juicio, puede impedir la vuelta a la guerra. Repartir ese poder —entre el rey y el parlamento, por ejemplo— sería, a ojos de Hobbes, plantar la semilla de la próxima guerra civil. Aquí asoma la paradoja del personaje. Parecía que los contractualistas venían a derribar las monarquías absolutas, y el primero de ellos las apuntala; pero las apuntala sobre un cimiento enteramente nuevo, porque el poder del Leviatán ya no desciende de Dios (<a href="../chapters-web/tema-10.html#sec-41">§41</a>), sino que brota del acuerdo de los propios súbditos. Y, una vez fundado el poder en un pacto humano, queda abierta la puerta a discutir su forma y sus límites. Esa puerta la cruzarán Locke y Rousseau.</p>
 <p><strong>Libertades, desigualdad y el límite del contrato.</strong> Bajo ese poder, las libertades de los súbditos dependen en gran parte del soberano y son escasas comparadas con las que hoy damos por descontadas. Hobbes no defiende la tiranía caprichosa —confía en que un buen soberano gobierne para la paz—, pero pone el orden por encima de casi todo, y considera las desigualdades sociales naturales y útiles para el cuerpo político. Hay, eso sí, una frontera que ni el contrato puede traspasar: como entramos en él precisamente para <em>proteger nuestra vida</em>, nadie puede quedar obligado a dejarse matar. Por eso el condenado a muerte, aun con sentencia justa, queda relevado del pacto y conserva el derecho a resistirse o a huir, por más que en la práctica le sirva de poco. Ese pequeño resquicio importa: incluso en el sistema más autoritario, la conservación de la propia vida señala el límite que el Estado no puede cruzar.</p>
 <p><strong>Crítica.</strong> El planteamiento de Hobbes ha recibido objeciones de peso, y conviene tenerlas a mano.</p>
 <ol type="1">
@@ -566,21 +578,21 @@ ul.task-list li input[type="checkbox"] {
 <li><em>La especulación</em>. El estado de naturaleza es del todo imaginario, y cabe sospechar que Hobbes lo dibujara ya con sus conclusiones monárquicas dentro.</li>
 <li><em>El totalitarismo</em>. Un poder tan inmenso y sin control puede degenerar con facilidad en un Estado que aplaste a los mismos individuos a los que decía proteger.</li>
 </ol>
-<p>Con todo, Hobbes había conseguido algo decisivo —fundar el poder político en un pacto entre seres humanos, y no en el cielo—, y sobre ese punto de partida construirá su respuesta, casi opuesta, quien fue además el primer gran empirista: John Locke (<a href="tema-10.html#sec-44">§44</a>).</p>
+<p>Con todo, Hobbes había conseguido algo decisivo —fundar el poder político en un pacto entre seres humanos, y no en el cielo—, y sobre ese punto de partida construirá su respuesta, casi opuesta, quien fue además el primer gran empirista: John Locke (<a href="../chapters-web/tema-10.html#sec-44">§44</a>).</p>
 </section>
 <section id="sec-44" class="level2">
 <h2 class="anchored" data-anchor-id="sec-44">§44 · La teoría del contrato social: John Locke</h2>
-<p><strong>El empirista, ahora en política.</strong> También conoces ya a <em>John Locke</em> (1632-1704): fue el primer gran empirista, el que sostuvo que la mente nace como un papel en blanco y que todo nuestro conocimiento procede de la experiencia (<a href="tema-09.html#sec-38">§38</a>). Ese mismo Locke es una figura capital del pensamiento político moderno. En sus <em>Dos tratados sobre el gobierno civil</em> (1690) —escritos en el clima de la revolución que en Inglaterra acababa de limitar el poder del rey— ofrece una respuesta al problema del contrato casi opuesta a la de Hobbes, aunque parte del mismo esquema: un estado de naturaleza, un pacto y un Estado que de él resulta.</p>
-<p><strong>Derechos naturales.</strong> La diferencia empieza en la antropología. Frente al individuo hobbesiano, puro egoísmo y miedo, Locke sostiene que los seres humanos poseemos por naturaleza ciertos <em>derechos naturales</em>, anteriores a toda sociedad y otorgados por Dios; por eso son <em>inalienables</em>: nadie puede arrebatárnoslos, ni nosotros cederlos del todo. Los principales son la <em>vida</em>, la <em>libertad</em> y la <em>propiedad</em>. Esa fundamentación divina encierra, además, una consecuencia igualitaria que conviene notar: aunque no seamos iguales en talento ni en fortuna, todos hemos sido dotados de los mismos derechos y, por tanto, somos <em>iguales ante la ley</em> —algo muy distinto de ser iguales en todo (<a href="tema-10.html#sec-41">§41</a>)—.</p>
+<p><strong>El empirista, ahora en política.</strong> También conoces ya a <em>John Locke</em> (1632-1704): fue el primer gran empirista, el que sostuvo que la mente nace como un papel en blanco y que todo nuestro conocimiento procede de la experiencia (<a href="../chapters-web/tema-09.html#sec-38">§38</a>). Ese mismo Locke es una figura capital del pensamiento político moderno. En sus <em>Dos tratados sobre el gobierno civil</em> (1690) —escritos en el clima de la revolución que en Inglaterra acababa de limitar el poder del rey— ofrece una respuesta al problema del contrato casi opuesta a la de Hobbes, aunque parte del mismo esquema: un estado de naturaleza, un pacto y un Estado que de él resulta.</p>
+<p><strong>Derechos naturales.</strong> La diferencia empieza en la antropología. Frente al individuo hobbesiano, puro egoísmo y miedo, Locke sostiene que los seres humanos poseemos por naturaleza ciertos <em>derechos naturales</em>, anteriores a toda sociedad y otorgados por Dios; por eso son <em>inalienables</em>: nadie puede arrebatárnoslos, ni nosotros cederlos del todo. Los principales son la <em>vida</em>, la <em>libertad</em> y la <em>propiedad</em>. Esa fundamentación divina encierra, además, una consecuencia igualitaria que conviene notar: aunque no seamos iguales en talento ni en fortuna, todos hemos sido dotados de los mismos derechos y, por tanto, somos <em>iguales ante la ley</em> —algo muy distinto de ser iguales en todo (<a href="../chapters-web/tema-10.html#sec-41">§41</a>)—.</p>
 <p><strong>Un estado de naturaleza vivible.</strong> De ahí que el estado de naturaleza lockeano no sea la pesadilla de Hobbes. Los individuos no viven en guerra de todos contra todos, sino bajo una <em>ley natural</em> que la razón es capaz de conocer y que prescribe no dañar al otro en su vida, su libertad ni sus bienes. Hay, eso sí, inconvenientes: cuando surge un conflicto, cada cual es juez de su propia causa y tiende a «barrer para casa», de modo que las disputas se enconan y la defensa de los derechos se vuelve insegura. No es un infierno, pero sí una situación incómoda y precaria.</p>
 <p><strong>El contrato: un árbitro imparcial.</strong> ¿Por qué, entonces, abandonarlo? No por miedo a morir, como en Hobbes, sino por <em>conveniencia</em>, para vivir mejor. Nos beneficia un árbitro neutral que dirima las disputas y garantice los derechos de todos mediante el <em>imperio de la ley</em> —en particular el de propiedad—; y la vida en sociedad nos permite, además, cooperar y emprender fines que a solas no alcanzaríamos. Por eso pactamos. Pero —y aquí está la clave— como los derechos son inalienables, al entrar en el contrato <em>no los cedemos</em>: los conservamos, y el Estado nace justamente para protegerlos mejor. El poder que entregamos es limitado y condicional, no absoluto.</p>
 <p><strong>Un gobierno limitado.</strong> De este punto de partida brota una arquitectura institucional opuesta a la de Hobbes. El gobierno óptimo no es un soberano todopoderoso, sino un gobierno <em>limitado</em> —una monarquía constitucional o un régimen representativo— que garantice los derechos naturales y respete la pluralidad y la tolerancia, también la religiosa. Para impedir que el poder se concentre y abuse, Locke defiende su <em>división</em>: la potestad de hacer las leyes (el poder legislativo) debe estar separada de la de aplicarlas (el ejecutivo), de manera que quien gobierna quede también sometido a la ley<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Y la legitimidad del gobierno reposa por entero en el <em>consentimiento</em> de los gobernados: si el poder traiciona su encargo y se vuelve tiránico, el pueblo conserva el <em>derecho de resistencia</em>, el derecho a rebelarse y a sustituirlo. El contraste con Hobbes no puede ser mayor: donde el Leviatán era irrevocable, el gobierno lockeano es revocable por su propia naturaleza.</p>
-<p><strong>Propiedad y desigualdad.</strong> Locke es también el gran teórico moderno de la propiedad privada, y aquí su pensamiento se vuelve más espinoso. ¿De dónde nace el derecho a poseer? Del propio trabajo: como cada cual es dueño de su cuerpo, lo es también del esfuerzo de sus manos, y cuando mezclo mi trabajo con algo de la naturaleza —cultivo un campo, recojo un fruto— lo hago mío. De ahí deduce que las desigualdades económicas son legítimas: si trabajo y produzco mucho, tengo derecho a enriquecerme; quien no se esfuerza no tiene derecho a la misma abundancia. Locke no defiende que todos seamos iguales en bienes, sino solo en derechos y ante la ley. Esta defensa conjunta de la <em>libertad</em> y la <em>propiedad</em> lo convirtió en una influencia decisiva sobre la Constitución de los Estados Unidos y sobre todo el pensamiento liberal posterior (<a href="tema-10.html#sec-46">§46</a>); seguramente reconozcas su eco en más de un discurso político de hoy.</p>
+<p><strong>Propiedad y desigualdad.</strong> Locke es también el gran teórico moderno de la propiedad privada, y aquí su pensamiento se vuelve más espinoso. ¿De dónde nace el derecho a poseer? Del propio trabajo: como cada cual es dueño de su cuerpo, lo es también del esfuerzo de sus manos, y cuando mezclo mi trabajo con algo de la naturaleza —cultivo un campo, recojo un fruto— lo hago mío. De ahí deduce que las desigualdades económicas son legítimas: si trabajo y produzco mucho, tengo derecho a enriquecerme; quien no se esfuerza no tiene derecho a la misma abundancia. Locke no defiende que todos seamos iguales en bienes, sino solo en derechos y ante la ley. Esta defensa conjunta de la <em>libertad</em> y la <em>propiedad</em> lo convirtió en una influencia decisiva sobre la Constitución de los Estados Unidos y sobre todo el pensamiento liberal posterior (<a href="../chapters-web/tema-10.html#sec-46">§46</a>); seguramente reconozcas su eco en más de un discurso político de hoy.</p>
 <p><strong>Crítica.</strong> Tres objeciones principales se le han dirigido.</p>
 <p><em>El papel de Dios.</em> Los derechos naturales de Locke se apoyan en Dios, y, retirado ese fundamento, su estado de naturaleza se parecería más al de Hobbes de lo que él querría.</p>
 <p><em>La falta de acuerdo sobre la ley natural.</em> Locke confía en que la razón descubra sin dificultad los derechos naturales, pero otros pensadores, usando también la razón, han elaborado listas muy distintas; el consenso que presupone no existe.</p>
 <p><em>El sesgo de clase.</em> Como el <em>Tratado</em> se escribe ya desde dentro de la sociedad civil, acaba funcionando como una justificación de la propiedad tal como es —incluso de la más desigual—; el propio Locke llega a afirmar que el fruto del trabajo de sus criados le pertenece a él. La teoría que prometía proteger los derechos de todos protege, sobre todo, los de quienes ya poseen.</p>
-<p>Con todo, su influjo fue inmenso, y de su defensa de la libertad y la propiedad nacerá la corriente con que se cierra el tema. Pero antes hay que escuchar a quien dio la vuelta por completo a este planteamiento, persuadido de que la sociedad, lejos de proteger al ser humano, lo había corrompido: Jean-Jacques Rousseau (<a href="tema-10.html#sec-45">§45</a>).</p>
+<p>Con todo, su influjo fue inmenso, y de su defensa de la libertad y la propiedad nacerá la corriente con que se cierra el tema. Pero antes hay que escuchar a quien dio la vuelta por completo a este planteamiento, persuadido de que la sociedad, lejos de proteger al ser humano, lo había corrompido: Jean-Jacques Rousseau (<a href="../chapters-web/tema-10.html#sec-45">§45</a>).</p>
 </section>
 <section id="sec-45" class="level2">
 <h2 class="anchored" data-anchor-id="sec-45">§45 · La teoría del contrato social: Jean-Jacques Rousseau</h2>
@@ -591,7 +603,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Retrato de Jean-Jacques Rousseau, por Maurice Quentin de La Tour. || Atribución: Maurice Quentin de La Tour, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>El hombre es bueno; la sociedad lo corrompe.</strong> Rousseau invierte la antropología de Hobbes. Donde el inglés veía un lobo (<a href="tema-10.html#sec-43">§43</a>), él ve un ser naturalmente <em>bueno</em>, movido por el instinto de conservación y por una compasión espontánea hacia el semejante. En el estado de naturaleza el ser humano no es malo: es la <em>civilización</em> —la propiedad, la desigualdad, la vanidad, la competencia— la que lo ha corrompido, según había argumentado en su <em>Discurso sobre el origen de la desigualdad</em> (1755). Pero Rousseau no es un ingenuo que predique volver a los bosques: sabe que no hay marcha atrás y que la vida en sociedad trae enormes beneficios. Su problema es otro, y más difícil.</p>
+<p><strong>El hombre es bueno; la sociedad lo corrompe.</strong> Rousseau invierte la antropología de Hobbes. Donde el inglés veía un lobo (<a href="../chapters-web/tema-10.html#sec-43">§43</a>), él ve un ser naturalmente <em>bueno</em>, movido por el instinto de conservación y por una compasión espontánea hacia el semejante. En el estado de naturaleza el ser humano no es malo: es la <em>civilización</em> —la propiedad, la desigualdad, la vanidad, la competencia— la que lo ha corrompido, según había argumentado en su <em>Discurso sobre el origen de la desigualdad</em> (1755). Pero Rousseau no es un ingenuo que predique volver a los bosques: sabe que no hay marcha atrás y que la vida en sociedad trae enormes beneficios. Su problema es otro, y más difícil.</p>
 <p><strong>El problema: vivir en sociedad sin perder la libertad.</strong> Para Rousseau, la libertad no es un lujo, sino lo que nos hace humanos: renunciar a ella sería dejar de ser hombres. De ahí su reto. Hobbes y Locke admitían que, al entrar en sociedad, <em>restringimos</em> nuestra libertad a cambio de seguridad o de protección. Rousseau no se conforma con eso: busca una forma de asociación en la que cada uno, uniéndose a todos, <em>no obedezca sin embargo más que a sí mismo</em> y siga siendo tan libre como antes. La salida a ese aparente imposible es su gran aportación: la <em>voluntad general</em>.</p>
 <p><strong>Voluntad general y voluntad de todos.</strong> Al pactar, los individuos no se someten a un soberano externo, sino que se funden en un <em>cuerpo político</em>, un «yo común» cuya voluntad es la <em>voluntad general</em>: la que se orienta al <em>bien común</em>, a lo que conviene a la comunidad como tal. Conviene distinguirla con cuidado de la <em>voluntad de todos</em>, que es la mera suma de los deseos particulares de cada cual. Un ejemplo lo aclara: que todos <em>deseen</em> pagar menos impuestos es la voluntad de todos; pero si bajarlos perjudica el bienestar de la comunidad, la voluntad general es mantenerlos. La primera mira al interés privado; la segunda, al común. Y la ley legítima no es sino la expresión de la voluntad general.</p>
 <p><strong>La libertad civil.</strong> Aquí Rousseau resuelve su reto, rozando una paradoja. Cuando obedezco la voluntad general, no obedezco a otro: obedezco a la parte de mí que quiere el bien común, y por tanto a mí mismo. Esa es la <em>libertad civil</em>, superior a la mera <em>libertad natural</em> de hacer lo que apetece: no la libertad del capricho, sino la del ciudadano que se da sus propias leyes. El precio es alto —a menudo habré de sacrificar mis deseos particulares al interés general—, pero a cambio gano una libertad de otro orden, la única digna de un ser humano que vive entre iguales.</p>
@@ -607,9 +619,9 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>Eje</th>
-<th>Hobbes (<a href="tema-10.html#sec-43">§43</a>)</th>
-<th>Locke (<a href="tema-10.html#sec-44">§44</a>)</th>
-<th>Rousseau (<a href="tema-10.html#sec-45">§45</a>)</th>
+<th>Hobbes (<a href="../chapters-web/tema-10.html#sec-43">§43</a>)</th>
+<th>Locke (<a href="../chapters-web/tema-10.html#sec-44">§44</a>)</th>
+<th>Rousseau (<a href="../chapters-web/tema-10.html#sec-45">§45</a>)</th>
 </tr>
 </thead>
 <tbody>
@@ -672,11 +684,11 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-46" class="level2">
 <h2 class="anchored" data-anchor-id="sec-46">§46 · El liberalismo político y el origen de la sociedad capitalista</h2>
-<p><strong>Del contrato a la libertad individual.</strong> De las tres versiones del contrato, fue la de Locke la que prendió con más fuerza en la práctica. De ella nace el <em>liberalismo</em>, la corriente política que pone en el centro la <em>libertad del individuo</em> y exige que el Estado la respete. Sus ideas ya las conoces: derechos naturales anteriores al poder, gobierno limitado y dividido, imperio de la ley, tolerancia y legitimidad fundada en el consentimiento (<a href="tema-10.html#sec-44">§44</a>). El liberalismo invierte la vieja relación entre individuo y Estado: el poder deja de ser un fin al que el individuo se debe y pasa a ser un instrumento al servicio de los derechos de los ciudadanos; y cuanto menos se entrometa en sus vidas, mejor. Entre esos derechos, uno va a cobrar un peso decisivo: el de <em>propiedad</em>.</p>
-<p><strong>De la propiedad al mercado: Adam Smith.</strong> Porque el liberalismo no es solo una teoría del poder; es también, y sobre todo, una teoría de la <em>economía</em>. Si cada uno es dueño del fruto de su trabajo (<a href="tema-10.html#sec-44">§44</a>) y libre de disponer de él, lo coherente es dejar que las personas produzcan, compren y vendan según su propio interés, con la mínima interferencia del Estado. Esa idea halla su formulación clásica en el escocés <em>Adam Smith</em> (1723-1790), cuya obra <em>La riqueza de las naciones</em> (1776) es el acta de nacimiento de la economía moderna<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Smith observa que, cuando cada individuo persigue su propio beneficio en un mercado libre, el resultado no es el caos, sino un orden que favorece al conjunto, como si una «mano invisible» coordinara los egoísmos particulares hacia la prosperidad general. La división del trabajo multiplica la riqueza; la competencia, y no la planificación, regula los precios y la producción. El Estado debe, pues, abstenerse: garantizar la propiedad y los contratos, y dejar hacer (<em>laissez faire</em>).</p>
+<p><strong>Del contrato a la libertad individual.</strong> De las tres versiones del contrato, fue la de Locke la que prendió con más fuerza en la práctica. De ella nace el <em>liberalismo</em>, la corriente política que pone en el centro la <em>libertad del individuo</em> y exige que el Estado la respete. Sus ideas ya las conoces: derechos naturales anteriores al poder, gobierno limitado y dividido, imperio de la ley, tolerancia y legitimidad fundada en el consentimiento (<a href="../chapters-web/tema-10.html#sec-44">§44</a>). El liberalismo invierte la vieja relación entre individuo y Estado: el poder deja de ser un fin al que el individuo se debe y pasa a ser un instrumento al servicio de los derechos de los ciudadanos; y cuanto menos se entrometa en sus vidas, mejor. Entre esos derechos, uno va a cobrar un peso decisivo: el de <em>propiedad</em>.</p>
+<p><strong>De la propiedad al mercado: Adam Smith.</strong> Porque el liberalismo no es solo una teoría del poder; es también, y sobre todo, una teoría de la <em>economía</em>. Si cada uno es dueño del fruto de su trabajo (<a href="../chapters-web/tema-10.html#sec-44">§44</a>) y libre de disponer de él, lo coherente es dejar que las personas produzcan, compren y vendan según su propio interés, con la mínima interferencia del Estado. Esa idea halla su formulación clásica en el escocés <em>Adam Smith</em> (1723-1790), cuya obra <em>La riqueza de las naciones</em> (1776) es el acta de nacimiento de la economía moderna<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Smith observa que, cuando cada individuo persigue su propio beneficio en un mercado libre, el resultado no es el caos, sino un orden que favorece al conjunto, como si una «mano invisible» coordinara los egoísmos particulares hacia la prosperidad general. La división del trabajo multiplica la riqueza; la competencia, y no la planificación, regula los precios y la producción. El Estado debe, pues, abstenerse: garantizar la propiedad y los contratos, y dejar hacer (<em>laissez faire</em>).</p>
 <p><strong>Competencia y cooperación.</strong> Conviene reparar en la doble cara de esta imagen, que el propio currículo subraya. El liberalismo económico exalta la <em>competencia</em> —cada cual rivaliza con los demás por mejorar su posición— y, sin embargo, presume que de esa rivalidad brota una <em>cooperación</em> no buscada: al especializarse y al intercambiar, los individuos acaban dependiendo unos de otros y sirviéndose mutuamente sin proponérselo. No es de la benevolencia del carnicero, el cervecero y el panadero de quien esperamos nuestra cena —escribe Smith en su frase más citada—, sino del cuidado que cada uno pone en su propio interés; y, gracias a ese interés, cenamos. La sociedad de mercado se presenta así como una vasta red de cooperación tejida con hilos de interés privado.</p>
 <p><strong>El nacimiento de la sociedad capitalista.</strong> De la confluencia de estos elementos —propiedad privada, libertad individual, mercado libre y Estado limitado— surge el marco ideológico de la <em>sociedad capitalista</em>, la forma de organización económica y social que se impondrá en Occidente a partir del siglo XVIII. Su protagonista es una clase en ascenso, la <em>burguesía</em>, que reclama frente a los privilegios del Antiguo Régimen justamente lo que el liberalismo promete: libertad para emprender, seguridad para la propiedad e igualdad ante la ley. No es casual que las grandes revoluciones liberales —la norteamericana, la francesa— enarbolen a la vez los derechos del individuo y la libertad económica. Liberalismo político y capitalismo nacen entrelazados.</p>
-<p><strong>Promesa y reverso.</strong> Ahora bien, esa promesa tiene un reverso que no tardará en señalarse. La igualdad que el liberalismo garantiza es <em>formal</em> —igualdad de derechos y ante la ley—, no <em>material</em>; y, como ya apuntaba la crítica a Locke (<a href="tema-10.html#sec-44">§44</a>), una sociedad de propietarios libres puede ser, al mismo tiempo, una sociedad hondamente desigual, en la que la libertad de quien nada posee valga muy poco. Sobre esta tensión —entre la libertad formal y la desigualdad real, entre la competencia y la justicia— se levantará buena parte del pensamiento posterior: la reflexión <em>ética</em> sobre la utilidad y la felicidad de los propios liberales Bentham y Mill, que veremos en su lugar (<a href="tema-13.html#sec-53">§53</a>); la crítica demoledora de Marx, para quien el orden capitalista no es natural ni eterno, sino una etapa histórica más (<a href="tema-15.html#sec-57">§57</a>); y los intentos del siglo XX de corregir sus desigualdades sin renunciar a la libertad, como el de Rawls y el Estado de bienestar (<a href="tema-19.html#sec-71">§71</a>). Pero todo eso pertenece a capítulos venideros. Antes, la confianza en la razón y en el progreso que sirvió de suelo común a estas ideas políticas reclama un tema para sí: la Ilustración (Tema 11).</p>
+<p><strong>Promesa y reverso.</strong> Ahora bien, esa promesa tiene un reverso que no tardará en señalarse. La igualdad que el liberalismo garantiza es <em>formal</em> —igualdad de derechos y ante la ley—, no <em>material</em>; y, como ya apuntaba la crítica a Locke (<a href="../chapters-web/tema-10.html#sec-44">§44</a>), una sociedad de propietarios libres puede ser, al mismo tiempo, una sociedad hondamente desigual, en la que la libertad de quien nada posee valga muy poco. Sobre esta tensión —entre la libertad formal y la desigualdad real, entre la competencia y la justicia— se levantará buena parte del pensamiento posterior: la reflexión <em>ética</em> sobre la utilidad y la felicidad de los propios liberales Bentham y Mill, que veremos en su lugar (<a href="../chapters-web/tema-13.html#sec-53">§53</a>); la crítica demoledora de Marx, para quien el orden capitalista no es natural ni eterno, sino una etapa histórica más (<a href="../chapters-web/tema-15.html#sec-57">§57</a>); y los intentos del siglo XX de corregir sus desigualdades sin renunciar a la libertad, como el de Rawls y el Estado de bienestar (<a href="../chapters-web/tema-19.html#sec-71">§71</a>). Pero todo eso pertenece a capítulos venideros. Antes, la confianza en la razón y en el progreso que sirvió de suelo común a estas ideas políticas reclama un tema para sí: la Ilustración (Tema 11).</p>
 
 
 </section>
@@ -695,19 +707,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -786,7 +910,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -795,8 +920,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -810,6 +996,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -972,44 +1159,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1108,7 +1305,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-09.html" class="pagination-link" aria-label="Tema 9 · El empirismo y el materialismo: Hume">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 9 · El empirismo y el materialismo: Hume</span></span>

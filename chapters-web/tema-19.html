@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-18.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-19.html"><span class="chapter-title">Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-19.html"><span class="chapter-title">Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -493,10 +505,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-19.html"><span class="chapter-title">Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-19.html"><span class="chapter-title">Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 19 · Razón y sociedad en el siglo XX: de Fráncfort a Rawls</span></h1>
 </div>
@@ -517,26 +529,26 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-la-razón-y-la-sociedad-del-siglo-xx" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-la-razón-y-la-sociedad-del-siglo-xx">Para entrar en la razón y la sociedad del siglo XX</h2>
-<p>El tema anterior se cerró con una pregunta que el siglo XX no pudo esquivar. Tras dos guerras mundiales y la catástrofe de los totalitarismos, ¿qué podemos esperar todavía de la <em>razón</em>? Durante siglos, la filosofía moderna había confiado en ella como en una promesa: la razón nos sacaría de la superstición, dominaría la naturaleza y ordenaría con justicia la convivencia (<a href="tema-11.html#sec-47">§47</a>, <a href="tema-12.html#sec-51">§51</a>). Pero la misma centuria que llevó esa confianza a su cumbre técnica fue la de Auschwitz y el Gulag. Algo había que repensar. Y lo característico de los pensadores que veremos es que ya no examinan la razón en abstracto, como hizo Kant (<a href="tema-12.html#sec-50">§50</a>), sino <em>en sociedad</em>: en cómo trabaja —o fracasa— dentro de la ciencia, la cultura y la política.</p>
-<p>A ese frente se asoman cuatro respuestas, y conviene tener desde el principio el mapa. Primero, la <em>Escuela de Fráncfort</em>, que lanza la sospecha más sombría: la razón que prometía liberarnos se ha convertido en un instrumento de dominio, y la Ilustración ha revertido en una nueva barbarie (<a href="tema-19.html#sec-68">§68</a>). Después, <em>Hannah Arendt</em>, que se enfrenta cara a cara con el agujero negro del siglo —el totalitarismo— y descubre en él una forma de mal completamente nueva (<a href="tema-19.html#sec-69">§69</a>). En tercer lugar, la doble disputa que enfrenta a <em>Karl Popper</em> con la propia Escuela y con <em>Jürgen Habermas</em>: cómo debe trabajar la razón en la ciencia y hasta dónde debe intervenir el Estado para mejorar la sociedad (<a href="tema-19.html#sec-70">§70</a>). Y, por último, <em>John Rawls</em>, que en plena posguerra se atreve a reconstruir: a preguntar, con herramientas nuevas, cómo sería una sociedad <em>justa</em> (<a href="tema-19.html#sec-71">§71</a>).</p>
+<p>El tema anterior se cerró con una pregunta que el siglo XX no pudo esquivar. Tras dos guerras mundiales y la catástrofe de los totalitarismos, ¿qué podemos esperar todavía de la <em>razón</em>? Durante siglos, la filosofía moderna había confiado en ella como en una promesa: la razón nos sacaría de la superstición, dominaría la naturaleza y ordenaría con justicia la convivencia (<a href="../chapters-web/tema-11.html#sec-47">§47</a>, <a href="../chapters-web/tema-12.html#sec-51">§51</a>). Pero la misma centuria que llevó esa confianza a su cumbre técnica fue la de Auschwitz y el Gulag. Algo había que repensar. Y lo característico de los pensadores que veremos es que ya no examinan la razón en abstracto, como hizo Kant (<a href="../chapters-web/tema-12.html#sec-50">§50</a>), sino <em>en sociedad</em>: en cómo trabaja —o fracasa— dentro de la ciencia, la cultura y la política.</p>
+<p>A ese frente se asoman cuatro respuestas, y conviene tener desde el principio el mapa. Primero, la <em>Escuela de Fráncfort</em>, que lanza la sospecha más sombría: la razón que prometía liberarnos se ha convertido en un instrumento de dominio, y la Ilustración ha revertido en una nueva barbarie (<a href="../chapters-web/tema-19.html#sec-68">§68</a>). Después, <em>Hannah Arendt</em>, que se enfrenta cara a cara con el agujero negro del siglo —el totalitarismo— y descubre en él una forma de mal completamente nueva (<a href="../chapters-web/tema-19.html#sec-69">§69</a>). En tercer lugar, la doble disputa que enfrenta a <em>Karl Popper</em> con la propia Escuela y con <em>Jürgen Habermas</em>: cómo debe trabajar la razón en la ciencia y hasta dónde debe intervenir el Estado para mejorar la sociedad (<a href="../chapters-web/tema-19.html#sec-70">§70</a>). Y, por último, <em>John Rawls</em>, que en plena posguerra se atreve a reconstruir: a preguntar, con herramientas nuevas, cómo sería una sociedad <em>justa</em> (<a href="../chapters-web/tema-19.html#sec-71">§71</a>).</p>
 <p>Son cuatro voces que discuten entre sí —el pesimismo de Fráncfort frente a la confianza de Rawls, el método de Popper frente al de Habermas—, pero todas comparten el mismo punto de partida: después de lo ocurrido, ninguna de ellas puede ya dar la razón por inocente.</p>
 </section>
 <section id="sec-68" class="level2">
 <h2 class="anchored" data-anchor-id="sec-68">§68 · La Escuela de Fráncfort: la dialéctica de la Ilustración</h2>
-<p><strong>Una teoría crítica de la sociedad.</strong> En 1923 se funda en Alemania el <em>Instituto de Investigación Social</em>, pronto conocido como la <em>Escuela de Fráncfort</em>. Bajo la dirección de <em>Max Horkheimer</em> (1895-1973) reúne a un grupo brillante —<em>Theodor W. Adorno</em> (1903-1969), Herbert Marcuse, Walter Benjamin, Erich Fromm— que comparten una herencia y un propósito. La herencia es la de Marx (<a href="tema-15.html#sec-58">§58</a>), pero releído a la luz del siglo XX y combinado con el psicoanálisis de Freud (<a href="tema-14.html#sec-56">§56</a>): si Marx explicó la opresión por la economía, hará falta también explicar <em>por qué los oprimidos consienten</em>, y ahí entra el estudio de la psique y de la cultura. El propósito lo nombra Horkheimer con una distinción que da nombre a la corriente. La <em>teoría tradicional</em> —la de las ciencias al uso— describe el mundo tal como es y, al aceptarlo, acaba legitimándolo; la <em>teoría crítica</em>, en cambio, no se conforma con describir: quiere <em>desenmascarar</em> las formas de dominación y contribuir a una sociedad más libre. Conocer, para ellos, no es retratar lo que hay, sino servir a la emancipación.</p>
+<p><strong>Una teoría crítica de la sociedad.</strong> En 1923 se funda en Alemania el <em>Instituto de Investigación Social</em>, pronto conocido como la <em>Escuela de Fráncfort</em>. Bajo la dirección de <em>Max Horkheimer</em> (1895-1973) reúne a un grupo brillante —<em>Theodor W. Adorno</em> (1903-1969), Herbert Marcuse, Walter Benjamin, Erich Fromm— que comparten una herencia y un propósito. La herencia es la de Marx (<a href="../chapters-web/tema-15.html#sec-58">§58</a>), pero releído a la luz del siglo XX y combinado con el psicoanálisis de Freud (<a href="../chapters-web/tema-14.html#sec-56">§56</a>): si Marx explicó la opresión por la economía, hará falta también explicar <em>por qué los oprimidos consienten</em>, y ahí entra el estudio de la psique y de la cultura. El propósito lo nombra Horkheimer con una distinción que da nombre a la corriente. La <em>teoría tradicional</em> —la de las ciencias al uso— describe el mundo tal como es y, al aceptarlo, acaba legitimándolo; la <em>teoría crítica</em>, en cambio, no se conforma con describir: quiere <em>desenmascarar</em> las formas de dominación y contribuir a una sociedad más libre. Conocer, para ellos, no es retratar lo que hay, sino servir a la emancipación.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-adorno-horkheimer.jpg" class="img-fluid figure-img"></p>
 <figcaption>Max Horkheimer (izquierda) y Theodor W. Adorno (derecha), las dos cabezas de la primera generación de la Escuela de Fráncfort y coautores de la <em>Dialéctica de la Ilustración</em> (al fondo, Jürgen Habermas). || Atribución: Jeremy J. Shapiro, Heidelberg 1964, CC BY-SA 3.0 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>La dialéctica de la Ilustración.</strong> Su obra más influyente nace en el peor momento: <em>Dialéctica de la Ilustración</em> (1944), escrita por Horkheimer y Adorno en el exilio estadounidense, mientras Europa ardía. Su tesis es una paradoja amarga. La <em>Ilustración</em> (<a href="tema-11.html#sec-47">§47</a>) había prometido liberar al ser humano del miedo y del mito mediante la razón; pues bien, dicen los autores, ese proyecto <em>se ha vuelto contra sí mismo</em> y ha desembocado en una nueva barbarie. ¿Cómo es posible? Porque la razón se fue estrechando hasta quedar reducida a <em>razón instrumental</em>: una razón que solo sabe calcular los <em>medios</em> más eficaces para un fin, pero que se declara incompetente para discutir los <em>fines</em> mismos. Una razón así sirve para dominar la naturaleza —«saber es poder», había dicho Bacon—, y de la naturaleza pasa a dominar también al ser humano, tratado como una cosa más que administrar. El horror del siglo es su prueba más siniestra: el exterminio nazi fue, entre otras cosas, un triunfo de la racionalidad instrumental —la organización técnica, burocrática y eficiente de la muerte— absolutamente divorciada de toda pregunta racional por el bien. La Ilustración <em>revierte en mito</em>: la misma luz que prometía emancipar se convierte en un nuevo dominio. Es el reverso oscuro del optimismo ilustrado que ya quedó anunciado como su límite histórico (<a href="tema-11.html#sec-47">§47</a>).</p>
+<p><strong>La dialéctica de la Ilustración.</strong> Su obra más influyente nace en el peor momento: <em>Dialéctica de la Ilustración</em> (1944), escrita por Horkheimer y Adorno en el exilio estadounidense, mientras Europa ardía. Su tesis es una paradoja amarga. La <em>Ilustración</em> (<a href="../chapters-web/tema-11.html#sec-47">§47</a>) había prometido liberar al ser humano del miedo y del mito mediante la razón; pues bien, dicen los autores, ese proyecto <em>se ha vuelto contra sí mismo</em> y ha desembocado en una nueva barbarie. ¿Cómo es posible? Porque la razón se fue estrechando hasta quedar reducida a <em>razón instrumental</em>: una razón que solo sabe calcular los <em>medios</em> más eficaces para un fin, pero que se declara incompetente para discutir los <em>fines</em> mismos. Una razón así sirve para dominar la naturaleza —«saber es poder», había dicho Bacon—, y de la naturaleza pasa a dominar también al ser humano, tratado como una cosa más que administrar. El horror del siglo es su prueba más siniestra: el exterminio nazi fue, entre otras cosas, un triunfo de la racionalidad instrumental —la organización técnica, burocrática y eficiente de la muerte— absolutamente divorciada de toda pregunta racional por el bien. La Ilustración <em>revierte en mito</em>: la misma luz que prometía emancipar se convierte en un nuevo dominio. Es el reverso oscuro del optimismo ilustrado que ya quedó anunciado como su límite histórico (<a href="../chapters-web/tema-11.html#sec-47">§47</a>).</p>
 <p><strong>La industria cultural.</strong> Hay un segundo hallazgo, más cercano a nuestra vida diaria. En el «mundo administrado» del capitalismo avanzado, advierten Adorno y Horkheimer, hasta la cultura se ha vuelto una <em>industria</em>. El cine, la radio, la música ligera o las revistas se fabrican en serie como cualquier otra mercancía, según fórmulas que se repiten y que el público consume sin esfuerzo. Esa <em>industria cultural</em> entretiene y, al entretener, <em>pacifica</em>: ofrece una evasión cómoda que adormece el pensamiento crítico y enseña a desear justo lo que el sistema puede vender. No hace falta censura ni policía; basta con mantener a la gente distraída y satisfecha. La cultura de masas se convierte así en un instrumento sutil de control social, tanto más eficaz cuanto que se disfraza de mero ocio.</p>
 <p><strong>Una revisión de Marx.</strong> Los de Fráncfort son marxistas, pero heterodoxos: el siglo les ha desmentido a Marx demasiadas cosas —la revolución proletaria no llegó a los países industriales, la clase obrera se integró en el sistema en lugar de derribarlo, y donde triunfó el marxismo lo hizo como nuevo totalitarismo—. Conservan, pues, su impulso crítico, pero someten su doctrina a revisión. La crítica frankfurtiana al marxismo puede resumirse en seis puntos:</p>
 <ol type="1">
 <li><em>Antropológico.</em> El ser humano no es un simple <em>homo faber</em> —un animal que solo trabaja—, ni el mundo una mera fábrica. Reducirlo todo al trabajo empobrece lo humano y deja fuera dimensiones decisivas de la existencia.</li>
 <li><em>La técnica como ideología.</em> Las propias fuerzas productivas —la tecnología— se han convertido en superestructura, es decir, en ideología: la fe ciega en el progreso técnico funciona hoy como una justificación más del orden establecido.</li>
-<li><em>La interacción no se reduce al trabajo.</em> Las relaciones entre los seres humanos no pueden deducirse solo de las relaciones de producción que el individuo entabla con la naturaleza —una intuición que Habermas desarrollará hasta el final (<a href="tema-19.html#sec-70">§70</a>)—.</li>
+<li><em>La interacción no se reduce al trabajo.</em> Las relaciones entre los seres humanos no pueden deducirse solo de las relaciones de producción que el individuo entabla con la naturaleza —una intuición que Habermas desarrollará hasta el final (<a href="../chapters-web/tema-19.html#sec-70">§70</a>)—.</li>
 <li><em>La lucha de clases es un esquema demasiado simple.</em> Tomada como única clave para interpretar la historia, resulta insuficiente ante la complejidad socioeconómica del presente.</li>
 <li><em>Han surgido nuevas clases.</em> En una sociedad estratificada de forma mucho más fina, el esquema binario de burguesía y proletariado ya no recoge la realidad social.</li>
 <li><em>La religión es más compleja de lo que Marx admitió.</em> No vio su funcionalidad múltiple ni los casos en que la religión se enfrenta a la ideología dominante —como la teología de la liberación—; en consecuencia, su ateísmo quedaría sin fundamento sólido.</li>
@@ -545,7 +557,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-69" class="level2">
 <h2 class="anchored" data-anchor-id="sec-69">§69 · Hannah Arendt: el análisis del totalitarismo</h2>
-<p><strong>Pensar la catástrofe desde dentro.</strong> <em>Hannah Arendt</em> (1906-1975) fue una mujer judía que se dedicó al oficio de pensar en la Alemania que la quería muerta. Discípula de Heidegger y de Karl Jaspers (<a href="tema-17.html#sec-63">§63</a>), vio cómo su maestro se afiliaba al nazismo mientras a ella la interrogaba la Gestapo; huyó del país, pasó por un campo de internamiento francés y acabó refugiada en Estados Unidos. No es un dato menor para lo que sigue: Arendt no analizó el totalitarismo como un objeto lejano, sino como quien ha escapado de sus fauces. Toda su obra política nace de una pregunta sin respuesta cómoda: ¿cómo pudo el país más culto de Europa engendrar Auschwitz?</p>
+<p><strong>Pensar la catástrofe desde dentro.</strong> <em>Hannah Arendt</em> (1906-1975) fue una mujer judía que se dedicó al oficio de pensar en la Alemania que la quería muerta. Discípula de Heidegger y de Karl Jaspers (<a href="../chapters-web/tema-17.html#sec-63">§63</a>), vio cómo su maestro se afiliaba al nazismo mientras a ella la interrogaba la Gestapo; huyó del país, pasó por un campo de internamiento francés y acabó refugiada en Estados Unidos. No es un dato menor para lo que sigue: Arendt no analizó el totalitarismo como un objeto lejano, sino como quien ha escapado de sus fauces. Toda su obra política nace de una pregunta sin respuesta cómoda: ¿cómo pudo el país más culto de Europa engendrar Auschwitz?</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-arendt.jpg" class="img-fluid figure-img"></p>
@@ -561,27 +573,27 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p>La tercera pieza es la <em>atomización</em>. Para dominar del todo, el régimen necesita individuos solos. Por eso rompe los vínculos que unen a las personas a sus grupos —la clase, el oficio, las asociaciones, hasta la familia— y las convierte en una <em>masa</em> de individuos aislados, desarraigados e intercambiables. El ser humano solo, sin nadie con quien contrastar lo que piensa, es infinitamente más fácil de manipular; y una sociedad de personas atomizadas, que se vigilan y se denuncian entre sí, ha perdido ese espacio compartido de palabra y acción común en el que, para Arendt, vive de verdad la libertad. El totalitarismo no oprime una <em>pluralidad</em> que existe: la destruye de raíz.</p>
 <p><strong>Eichmann y la banalidad del mal.</strong> En 1961 Arendt viajó a Jerusalén, enviada por una revista, a cubrir el juicio de <em>Adolf Eichmann</em>, el funcionario de las SS que había organizado la logística del transporte de millones de judíos a los campos de exterminio —un <em>colaborador necesario</em> del asesinato en masa que mataba, por así decir, desde su escritorio—. Esperaba encontrarse con un monstruo, un fanático sádico a la altura de sus crímenes. Lo que vio la desconcertó: un hombre gris, mediocre, un burócrata aplicado que hablaba con frases hechas y se defendía repitiendo que «solo cumplía órdenes» y que «nunca había matado a nadie». De ahí su conclusión más célebre y más malentendida, la <em>banalidad del mal</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>: «los hechos fueron monstruosos —escribió—, pero el hombre no fue un monstruo». El mal más extremo del siglo no había brotado de una maldad demoníaca ni de una perversión excepcional, sino de algo mucho más corriente y, por eso, más inquietante.</p>
-<p>¿De qué, entonces? De la <em>incapacidad de pensar</em>. Eichmann, sostiene Arendt, había perdido la capacidad de mantener consigo mismo ese diálogo interior, ese «dos en uno» de la conciencia, en el que sopesamos lo que hacemos y nos preguntamos si está bien; y, con ella, había perdido la capacidad de ponerse en el lugar del otro, de imaginar el sufrimiento que organizaba. No es que fuera tonto: es que había dejado de pensar, sustituyendo el juicio propio por los clichés del régimen y por el afán de cumplir y encajar. Aquí enlaza Arendt, sin nombrarla, con la <em>autonomía</em> ilustrada, el «atrévete a pensar» de Kant (<a href="tema-11.html#sec-47">§47</a>): cuando el individuo renuncia a juzgar por sí mismo y delega esa tarea en la ideología, cualquier atrocidad se vuelve posible. La consecuencia es escalofriante: para colaborar en un mal inmenso no hacen falta instintos asesinos ni convicciones extremas; basta con dejar de pensar, y las circunstancias de un régimen totalitario pueden llevar a ello a cualquiera.</p>
+<p>¿De qué, entonces? De la <em>incapacidad de pensar</em>. Eichmann, sostiene Arendt, había perdido la capacidad de mantener consigo mismo ese diálogo interior, ese «dos en uno» de la conciencia, en el que sopesamos lo que hacemos y nos preguntamos si está bien; y, con ella, había perdido la capacidad de ponerse en el lugar del otro, de imaginar el sufrimiento que organizaba. No es que fuera tonto: es que había dejado de pensar, sustituyendo el juicio propio por los clichés del régimen y por el afán de cumplir y encajar. Aquí enlaza Arendt, sin nombrarla, con la <em>autonomía</em> ilustrada, el «atrévete a pensar» de Kant (<a href="../chapters-web/tema-11.html#sec-47">§47</a>): cuando el individuo renuncia a juzgar por sí mismo y delega esa tarea en la ideología, cualquier atrocidad se vuelve posible. La consecuencia es escalofriante: para colaborar en un mal inmenso no hacen falta instintos asesinos ni convicciones extremas; basta con dejar de pensar, y las circunstancias de un régimen totalitario pueden llevar a ello a cualquiera.</p>
 <p>Arendt mostró, en suma, que el totalitarismo triunfa destruyendo la pluralidad, el espacio público del diálogo y la propia capacidad de juzgar. No sorprende, entonces, que los dos pensadores a los que pasamos ahora —enfrentados en casi todo lo demás— coincidieran en hacer de la <em>discusión racional abierta</em>, en la ciencia y en la política, su bandera común frente a toda pretensión de verdad cerrada e indiscutible.</p>
 </section>
 <section id="sec-70" class="level2">
 <h2 class="anchored" data-anchor-id="sec-70">§70 · Popper y Habermas: la disputa del positivismo y el intervencionismo del estado</h2>
 <p><strong>Dos disputas bajo una misma etiqueta.</strong> El rótulo que da título a esta sección reúne, en realidad, dos cosas distintas, y conviene separarlas antes de empezar. Por un lado, hay una <em>disputa metodológica</em>: cómo debe conocer la ciencia que estudia la sociedad —la llamada «disputa del positivismo», que enfrentó a Popper con la Escuela de Fráncfort—. Por otro, hay una <em>cuestión política</em>: hasta dónde debe el Estado rehacer la sociedad, donde Popper defiende la reforma gradual frente a la planificación total. Son dos planos que se tocan, pero no se confunden. Los recorremos por orden, empezando por la figura que está en los dos: Popper.</p>
-<p><strong>Popper: la falsabilidad y la sociedad abierta.</strong> <em>Karl Popper</em> (1902-1994), vienés exiliado del nazismo, es uno de los grandes filósofos de la ciencia del siglo XX. Su idea más conocida responde a una pregunta: ¿qué distingue una teoría científica de una que no lo es? No el que se acumulen pruebas a su favor —eso es fácil—, sino justo lo contrario: la <em>falsabilidad</em>. Una teoría es científica solo si puede ser <em>refutada</em> por la experiencia, si establece de antemano qué hecho la dejaría por falsa. La ciencia no avanza verificando, sino por <em>conjeturas y refutaciones</em>: proponemos hipótesis audaces y nos esforzamos en derribarlas; las que resisten, provisionalmente, quedan en pie. Con este criterio en la mano, Popper negó el carácter científico del psicoanálisis de Freud —y también del marxismo—, porque son teorías que se acomodan a cualquier hecho y a las que nada podría refutar (<a href="tema-14.html#sec-56">§56</a>). Lo que parecía su mayor fuerza —explicarlo todo— es para Popper su debilidad.</p>
+<p><strong>Popper: la falsabilidad y la sociedad abierta.</strong> <em>Karl Popper</em> (1902-1994), vienés exiliado del nazismo, es uno de los grandes filósofos de la ciencia del siglo XX. Su idea más conocida responde a una pregunta: ¿qué distingue una teoría científica de una que no lo es? No el que se acumulen pruebas a su favor —eso es fácil—, sino justo lo contrario: la <em>falsabilidad</em>. Una teoría es científica solo si puede ser <em>refutada</em> por la experiencia, si establece de antemano qué hecho la dejaría por falsa. La ciencia no avanza verificando, sino por <em>conjeturas y refutaciones</em>: proponemos hipótesis audaces y nos esforzamos en derribarlas; las que resisten, provisionalmente, quedan en pie. Con este criterio en la mano, Popper negó el carácter científico del psicoanálisis de Freud —y también del marxismo—, porque son teorías que se acomodan a cualquier hecho y a las que nada podría refutar (<a href="../chapters-web/tema-14.html#sec-56">§56</a>). Lo que parecía su mayor fuerza —explicarlo todo— es para Popper su debilidad.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-popper.jpg" class="img-fluid figure-img"></p>
 <figcaption>Karl Popper (1902-1994), filósofo de la ciencia y teórico de la «sociedad abierta». || Atribución: LSE Library, sin restricciones de copyright conocidas / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p>De la ciencia pasó Popper a la política con la misma lógica antidogmática. En <em>La sociedad abierta y sus enemigos</em> (1945) opone dos modelos. La <em>sociedad cerrada</em> es tribal y autoritaria: se cree en posesión de una verdad última sobre el sentido de la historia y no admite crítica. La <em>sociedad abierta</em> es democrática y plural: somete sus decisiones a discusión y revisión, igual que la ciencia somete sus hipótesis a refutación. Sus «enemigos» son, para Popper, los grandes pensadores que pretendieron conocer el rumbo necesario de la historia y rehacer la sociedad entera conforme a ese plan —Platón, Hegel y Marx (<a href="tema-15.html#sec-58">§58</a>)—.</p>
-<p><strong>El intervencionismo del estado: dos maneras de reformar.</strong> Aquí aterriza el segundo plano del rótulo. Popper distingue dos formas de intervenir en la sociedad. La <em>ingeniería social utópica</em> u holista pretende rediseñar la sociedad de arriba abajo, de una vez y según un plan total —el sueño del marxismo—. La <em>ingeniería social gradual</em> (la célebre <em>piecemeal</em>, «a pequeños pasos») aborda los males concretos uno a uno —el paro, la pobreza, la enfermedad—, con reformas parciales que pueden contrastarse y, si fallan, rectificarse. Popper defiende la segunda por una razón epistemológica: como todo conocimiento es limitado y falible, las reformas totales son peligrosas —no se pueden corregir sin un coste enorme y abren la puerta a la tiranía de quien dice saber adónde va la historia—, mientras que las graduales se dejan evaluar y enmendar. No es, por tanto, ni el «dejar hacer» absoluto del liberalismo más rígido ni la planificación total: es un Estado que interviene para corregir problemas concretos sin arrogarse el rediseño de la vida entera. Esta defensa de la reforma gradual será el sustrato del Estado de bienestar que veremos en Rawls (<a href="tema-19.html#sec-71">§71</a>).</p>
-<p><strong>La disputa del positivismo y la entrada de Habermas.</strong> En 1961, en un congreso de sociología alemana, estos planteamientos chocaron con los de la Escuela de Fráncfort en lo que se llamó la <em>disputa del positivismo</em> (<em>Positivismusstreit</em>). El núcleo era metodológico: ¿cómo debe proceder la ciencia social? Popper defendía un método único, cercano al de las ciencias naturales, que busca explicaciones contrastables y mantiene la <em>neutralidad valorativa</em> —separar los hechos de los juicios de valor—. Adorno y, sobre todo, <em>Jürgen Habermas</em> (1929-2026) —ya de la segunda generación de la Escuela, empeñada en rescatar el proyecto ilustrado que sus maestros habían dado por perdido (<a href="tema-19.html#sec-68">§68</a>)— respondieron que la sociedad no es un objeto neutro como la naturaleza: estudiarla es ya tomar partido, y una ciencia social que renuncia a criticar el todo acaba legitimándolo —es la «teoría tradicional» que vimos en <a href="tema-19.html#sec-68">§68</a>—. Habermas lo afinó con una tesis propia: el conocimiento nunca es neutral, porque responde siempre a <em>intereses</em>. Hay un saber movido por el <em>interés técnico</em> —el dominio de la naturaleza, propio de las ciencias naturales y de la <em>razón instrumental</em> que Fráncfort había denunciado (<a href="tema-19.html#sec-68">§68</a>)— y un saber movido por intereses <em>práctico</em> y <em>emancipatorio</em> —la comprensión entre las personas y su liberación—. La ciencia que se proclama puramente neutral no es que carezca de interés: oculta el suyo, el técnico. Frente a esa razón instrumental, Habermas opondrá una <em>razón comunicativa</em>, la que se ejerce en el diálogo orientado al entendimiento; pero su desarrollo pleno pertenece ya a otra discusión —la de la posmodernidad—, y allí lo retomaremos (<a href="tema-20.html#sec-75">§75</a>).</p>
+<p>De la ciencia pasó Popper a la política con la misma lógica antidogmática. En <em>La sociedad abierta y sus enemigos</em> (1945) opone dos modelos. La <em>sociedad cerrada</em> es tribal y autoritaria: se cree en posesión de una verdad última sobre el sentido de la historia y no admite crítica. La <em>sociedad abierta</em> es democrática y plural: somete sus decisiones a discusión y revisión, igual que la ciencia somete sus hipótesis a refutación. Sus «enemigos» son, para Popper, los grandes pensadores que pretendieron conocer el rumbo necesario de la historia y rehacer la sociedad entera conforme a ese plan —Platón, Hegel y Marx (<a href="../chapters-web/tema-15.html#sec-58">§58</a>)—.</p>
+<p><strong>El intervencionismo del estado: dos maneras de reformar.</strong> Aquí aterriza el segundo plano del rótulo. Popper distingue dos formas de intervenir en la sociedad. La <em>ingeniería social utópica</em> u holista pretende rediseñar la sociedad de arriba abajo, de una vez y según un plan total —el sueño del marxismo—. La <em>ingeniería social gradual</em> (la célebre <em>piecemeal</em>, «a pequeños pasos») aborda los males concretos uno a uno —el paro, la pobreza, la enfermedad—, con reformas parciales que pueden contrastarse y, si fallan, rectificarse. Popper defiende la segunda por una razón epistemológica: como todo conocimiento es limitado y falible, las reformas totales son peligrosas —no se pueden corregir sin un coste enorme y abren la puerta a la tiranía de quien dice saber adónde va la historia—, mientras que las graduales se dejan evaluar y enmendar. No es, por tanto, ni el «dejar hacer» absoluto del liberalismo más rígido ni la planificación total: es un Estado que interviene para corregir problemas concretos sin arrogarse el rediseño de la vida entera. Esta defensa de la reforma gradual será el sustrato del Estado de bienestar que veremos en Rawls (<a href="../chapters-web/tema-19.html#sec-71">§71</a>).</p>
+<p><strong>La disputa del positivismo y la entrada de Habermas.</strong> En 1961, en un congreso de sociología alemana, estos planteamientos chocaron con los de la Escuela de Fráncfort en lo que se llamó la <em>disputa del positivismo</em> (<em>Positivismusstreit</em>). El núcleo era metodológico: ¿cómo debe proceder la ciencia social? Popper defendía un método único, cercano al de las ciencias naturales, que busca explicaciones contrastables y mantiene la <em>neutralidad valorativa</em> —separar los hechos de los juicios de valor—. Adorno y, sobre todo, <em>Jürgen Habermas</em> (1929-2026) —ya de la segunda generación de la Escuela, empeñada en rescatar el proyecto ilustrado que sus maestros habían dado por perdido (<a href="../chapters-web/tema-19.html#sec-68">§68</a>)— respondieron que la sociedad no es un objeto neutro como la naturaleza: estudiarla es ya tomar partido, y una ciencia social que renuncia a criticar el todo acaba legitimándolo —es la «teoría tradicional» que vimos en <a href="../chapters-web/tema-19.html#sec-68">§68</a>—. Habermas lo afinó con una tesis propia: el conocimiento nunca es neutral, porque responde siempre a <em>intereses</em>. Hay un saber movido por el <em>interés técnico</em> —el dominio de la naturaleza, propio de las ciencias naturales y de la <em>razón instrumental</em> que Fráncfort había denunciado (<a href="../chapters-web/tema-19.html#sec-68">§68</a>)— y un saber movido por intereses <em>práctico</em> y <em>emancipatorio</em> —la comprensión entre las personas y su liberación—. La ciencia que se proclama puramente neutral no es que carezca de interés: oculta el suyo, el técnico. Frente a esa razón instrumental, Habermas opondrá una <em>razón comunicativa</em>, la que se ejerce en el diálogo orientado al entendimiento; pero su desarrollo pleno pertenece ya a otra discusión —la de la posmodernidad—, y allí lo retomaremos (<a href="../chapters-web/tema-20.html#sec-75">§75</a>).</p>
 <p>Popper y Habermas discuten, en el fondo, <em>cómo</em> debe trabajar la razón —en la ciencia, en la reforma gradual de la sociedad— y coinciden en defender la discusión abierta frente a quien dice poseer la verdad última. Pero apostar por la reforma y por el diálogo deja en pie una pregunta de fondo: conforme a qué idea de <em>justicia</em> debe el Estado intervenir y repartir lo que hay. A responderla, reconstruyendo desde sus cimientos la vieja pregunta por la sociedad justa, dedicó su obra el último pensador de este tema.</p>
 </section>
 <section id="sec-71" class="level2">
 <h2 class="anchored" data-anchor-id="sec-71">§71 · John Rawls y el estado de bienestar</h2>
-<p><strong>El contrato social, actualizado.</strong> <em>John Rawls</em> (1921-2002), filósofo estadounidense, publicó en 1971 <em>Teoría de la justicia</em>, el libro de filosofía política más influyente del siglo XX. Su pregunta es tan vieja como Aristóteles: la de la <em>justicia distributiva</em>, esto es, cuál es el reparto justo de los bienes en una sociedad. Y su herramienta para responderla es una vieja conocida, el <em>contrato social</em>, pero puesta al día. A diferencia de Hobbes, Locke y Rousseau (<a href="tema-10.html#sec-43">§43</a>-<a href="tema-10.html#sec-45">§45</a>), Rawls no imagina un estado de naturaleza prehistórico anterior a toda sociedad; parte de la situación presente y se pregunta cómo mejorarla. En lugar de aquel pacto fundacional, propone un <em>experimento mental</em>, una situación hipotética desde la que pensar qué principios deberían regir una sociedad justa.</p>
+<p><strong>El contrato social, actualizado.</strong> <em>John Rawls</em> (1921-2002), filósofo estadounidense, publicó en 1971 <em>Teoría de la justicia</em>, el libro de filosofía política más influyente del siglo XX. Su pregunta es tan vieja como Aristóteles: la de la <em>justicia distributiva</em>, esto es, cuál es el reparto justo de los bienes en una sociedad. Y su herramienta para responderla es una vieja conocida, el <em>contrato social</em>, pero puesta al día. A diferencia de Hobbes, Locke y Rousseau (<a href="../chapters-web/tema-10.html#sec-43">§43</a>-<a href="../chapters-web/tema-10.html#sec-45">§45</a>), Rawls no imagina un estado de naturaleza prehistórico anterior a toda sociedad; parte de la situación presente y se pregunta cómo mejorarla. En lugar de aquel pacto fundacional, propone un <em>experimento mental</em>, una situación hipotética desde la que pensar qué principios deberían regir una sociedad justa.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-rawls.jpg" class="img-fluid figure-img"></p>
@@ -590,35 +602,147 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p><strong>La posición original y el velo de ignorancia.</strong> El experimento arranca de una pregunta que conviene hacerse despacio: <em>¿cómo querrías que fuera la sociedad si no supieras qué lugar vas a ocupar en ella?</em> Rawls nos pide imaginarnos en lo que llama la <em>posición original</em>, eligiendo las reglas del juego social, pero cubiertos por un <em>velo de ignorancia</em>: desconocemos por completo quiénes seremos. Tras ese velo no sabes si serás hombre o mujer, listo o torpe, fuerte o débil, rico o pobre, con estudios o sin ellos, ni en qué época o cultura te tocará vivir. ¿Qué sociedad elegirías entonces? Como podrías acabar siendo <em>cualquiera</em> —también el más desfavorecido—, no te arriesgarás a diseñar un mundo con posiciones miserables, no vaya a ser que te toque a ti. El velo de ignorancia fuerza así la <em>imparcialidad</em>: al no poder hacer trampa a favor de uno mismo, cada cual razona como razonaría cualquier otro ser racional, y de ahí brota un acuerdo justo<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <p><strong>Los tres principios de la justicia.</strong> ¿Qué se elegiría desde esa posición? Rawls sostiene que tres principios, ordenados por <em>prioridad</em>: no se pasa al segundo sin haber garantizado el primero, ni al tercero sin los dos anteriores. El primero es el <em>principio de libertad</em>: toda persona tiene el mismo derecho al más amplio sistema de libertades básicas compatible con esa misma libertad para los demás; mi libertad solo encuentra su límite en la de los otros. El segundo es la <em>justa igualdad de oportunidades</em>: no basta con prohibir la discriminación —una igualdad meramente <em>formal</em>—, sino que la sociedad debe poner medidas <em>positivas</em>, sobre todo educativas, para que las oportunidades sean reales y efectivas para todos. El tercero es el célebre <em>principio de la diferencia</em>: las desigualdades sociales y económicas solo se toleran si redundan en el <em>mayor beneficio de los miembros más desfavorecidos</em> de la sociedad. Es la estrategia que se conoce como <em>maximin</em> —maximizar el mínimo—: lo que importa no es cuán alta llega la cima, sino cuán alto está el suelo. Un ejemplo lo aclara: entre una sociedad <em>A</em>, donde el 90 % gana mucho pero el 10 % no llega a un salario digno, y una sociedad <em>B</em>, donde todos ganan menos que aquel 90 % pero nadie cae por debajo de lo digno, Rawls elige sin dudar la <em>B</em>, porque es la que mejor trata a quien peor está. A esta concepción la llama <em>justicia como equidad</em>: ¿quieres que haya ricos? De acuerdo, pero garantiza antes que no haya pobres de verdad.</p>
-<p><strong>Rawls y el estado de bienestar.</strong> Aquí está el alcance político de la propuesta, el que el currículo subraya. El principio de la diferencia da <em>fundamento filosófico</em> al <em>Estado de bienestar</em>: ese modelo de Estado que, mediante los impuestos, la sanidad y la educación públicas, las pensiones o el seguro de desempleo, redistribuye la riqueza para garantizar a todos un mínimo digno y unas oportunidades reales. Rawls ofrece, en el fondo, una vía media en la gran disputa del siglo: ni el liberalismo que sacraliza la libertad del mercado y se desentiende de la desigualdad, ni el colectivismo que sacrifica la libertad en nombre de la igualdad, sino una conciliación de ambas —libertad <em>e</em> igualdad— por la vía de la reforma, no de la revolución. Recoge así, actualizado, el viejo afán de corregir la desigualdad que ya latía en el liberalismo social (<a href="tema-10.html#sec-46">§46</a>); y proporciona la clave de algo que dejamos anunciado al estudiar a Marx: el Estado de bienestar fue, precisamente, el mecanismo con que las democracias occidentales desmintieron su predicción de un proletariado cada vez más miserable abocado a la revolución (<a href="tema-15.html#sec-58">§58</a>). La reforma gradual que defendía Popper (<a href="tema-19.html#sec-70">§70</a>) encontró en Rawls su justificación moral.</p>
-<p><strong>Las críticas.</strong> La propuesta ha recibido objeciones de peso. Se ha dicho que <em>nadie puede situarse de verdad tras el velo de ignorancia</em>, que no sabemos pensar al margen de quienes somos; Rawls replica que eso prueba la dificultad de <em>aplicar</em> su método, no que el método sea falso. Se le ha reprochado también que <em>presupone los valores liberales</em> —una sociedad tolerante y de fuerte autonomía individual— y los disfraza de conclusión neutral. Los utilitaristas (<a href="tema-13.html#sec-53">§53</a>) le objetan que su reparto no <em>maximiza la felicidad</em> del conjunto. Y la crítica más afilada niega que el <em>maximin</em> sea la única estrategia racional: una persona dispuesta a arriesgarse podría preferir la sociedad <em>A</em>, apostando a que le toque una buena posición; y si tras el velo hay jugadores así, ¿por qué habría de imponerse la opción prudente?</p>
-<p>Con Rawls, la pregunta por la <em>razón y la sociedad</em> da un giro esperanzado. Después del diagnóstico sombrío de Fráncfort y del abismo que analizó Arendt, su obra encarna una confianza sobria y reconstructiva: la razón, escarmentada, todavía puede fundar una sociedad justa —no imponiendo un plan total, como temía Popper, sino acordando principios imparciales que cualquiera aceptaría—. El siglo interrogó a fondo a la razón y, pese a la catástrofe, no renunció a ella. Pero esa misma centuria abrió otro frente que aún no hemos tocado: en lugar de preguntar qué puede la razón, se volvió sobre el <em>instrumento</em> en que la razón se expresa —el lenguaje—. A esa otra gran vuelta de tuerca del pensamiento del siglo XX se dedica el tema siguiente (<a href="tema-20.html#sec-72">§72</a>).</p>
+<p><strong>Rawls y el estado de bienestar.</strong> Aquí está el alcance político de la propuesta, el que el currículo subraya. El principio de la diferencia da <em>fundamento filosófico</em> al <em>Estado de bienestar</em>: ese modelo de Estado que, mediante los impuestos, la sanidad y la educación públicas, las pensiones o el seguro de desempleo, redistribuye la riqueza para garantizar a todos un mínimo digno y unas oportunidades reales. Rawls ofrece, en el fondo, una vía media en la gran disputa del siglo: ni el liberalismo que sacraliza la libertad del mercado y se desentiende de la desigualdad, ni el colectivismo que sacrifica la libertad en nombre de la igualdad, sino una conciliación de ambas —libertad <em>e</em> igualdad— por la vía de la reforma, no de la revolución. Recoge así, actualizado, el viejo afán de corregir la desigualdad que ya latía en el liberalismo social (<a href="../chapters-web/tema-10.html#sec-46">§46</a>); y proporciona la clave de algo que dejamos anunciado al estudiar a Marx: el Estado de bienestar fue, precisamente, el mecanismo con que las democracias occidentales desmintieron su predicción de un proletariado cada vez más miserable abocado a la revolución (<a href="../chapters-web/tema-15.html#sec-58">§58</a>). La reforma gradual que defendía Popper (<a href="../chapters-web/tema-19.html#sec-70">§70</a>) encontró en Rawls su justificación moral.</p>
+<p><strong>Las críticas.</strong> La propuesta ha recibido objeciones de peso. Se ha dicho que <em>nadie puede situarse de verdad tras el velo de ignorancia</em>, que no sabemos pensar al margen de quienes somos; Rawls replica que eso prueba la dificultad de <em>aplicar</em> su método, no que el método sea falso. Se le ha reprochado también que <em>presupone los valores liberales</em> —una sociedad tolerante y de fuerte autonomía individual— y los disfraza de conclusión neutral. Los utilitaristas (<a href="../chapters-web/tema-13.html#sec-53">§53</a>) le objetan que su reparto no <em>maximiza la felicidad</em> del conjunto. Y la crítica más afilada niega que el <em>maximin</em> sea la única estrategia racional: una persona dispuesta a arriesgarse podría preferir la sociedad <em>A</em>, apostando a que le toque una buena posición; y si tras el velo hay jugadores así, ¿por qué habría de imponerse la opción prudente?</p>
+<p>Con Rawls, la pregunta por la <em>razón y la sociedad</em> da un giro esperanzado. Después del diagnóstico sombrío de Fráncfort y del abismo que analizó Arendt, su obra encarna una confianza sobria y reconstructiva: la razón, escarmentada, todavía puede fundar una sociedad justa —no imponiendo un plan total, como temía Popper, sino acordando principios imparciales que cualquiera aceptaría—. El siglo interrogó a fondo a la razón y, pese a la catástrofe, no renunció a ella. Pero esa misma centuria abrió otro frente que aún no hemos tocado: en lugar de preguntar qué puede la razón, se volvió sobre el <em>instrumento</em> en que la razón se expresa —el lenguaje—. A esa otra gran vuelta de tuerca del pensamiento del siglo XX se dedica el tema siguiente (<a href="../chapters-web/tema-20.html#sec-72">§72</a>).</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Marx murió en 1883, mucho antes de la Revolución rusa (1917) y del régimen de Stalin. Habló de una «dictadura del proletariado» como fase de transición, pero nada en su obra anticipa el Estado totalitario que se construyó en su nombre; conviene no confundir la teoría con lo que otros hicieron de ella (<a href="tema-15.html#sec-58">§58</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Marx murió en 1883, mucho antes de la Revolución rusa (1917) y del régimen de Stalin. Habló de una «dictadura del proletariado» como fase de transición, pero nada en su obra anticipa el Estado totalitario que se construyó en su nombre; conviene no confundir la teoría con lo que otros hicieron de ella (<a href="../chapters-web/tema-15.html#sec-58">§58</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p><em>Banal</em> significa, según la RAE, «trivial, común, insustancial». Muchos leyeron el término como una disculpa de Eichmann; es lo contrario. Arendt sostuvo siempre que sus crímenes eran de una gravedad sin medida y que merecía la horca a la que fue condenado.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>No es casual que recuerde al imperativo categórico de Kant (<a href="tema-12.html#sec-51">§51</a>): también allí lo justo era lo que podía quererse universalmente, despojado del interés particular. El velo de ignorancia es una manera ingeniosa de obligarnos a esa universalidad.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>No es casual que recuerde al imperativo categórico de Kant (<a href="../chapters-web/tema-12.html#sec-51">§51</a>): también allí lo justo era lo que podía quererse universalmente, despojado del interés particular. El velo de ignorancia es una manera ingeniosa de obligarnos a esa universalidad.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -697,7 +821,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -706,8 +831,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -721,6 +907,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -883,44 +1070,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1019,7 +1216,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-18.html" class="pagination-link" aria-label="Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano</span></span>

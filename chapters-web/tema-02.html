@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-01.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-02.html"><span class="chapter-title">Tema 2 · La Ilustración griega: los sofistas y Sócrates</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-02.html"><span class="chapter-title">Tema 2 · La Ilustración griega: los sofistas y Sócrates</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -493,10 +505,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-02.html"><span class="chapter-title">Tema 2 · La Ilustración griega: los sofistas y Sócrates</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-02.html"><span class="chapter-title">Tema 2 · La Ilustración griega: los sofistas y Sócrates</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 2 · La Ilustración griega: los sofistas y Sócrates</span></h1>
 </div>
@@ -517,22 +529,22 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="sec-04" class="level2">
 <h2 class="anchored" data-anchor-id="sec-04">§04 · La Ilustración griega: filosofía y ciudadanía</h2>
-<p>¿De qué te sirve saber de qué está hecho el mundo si no sabes cómo debes vivir en él? Hacia mediados del siglo V a. e. c., una nueva generación de pensadores griegos se hizo esta pregunta, y con ella giró la mirada de la filosofía. Los primeros filósofos —lo viste en <a href="tema-01.html#sec-03">§03</a>— habían interrogado a la <em>physis</em>, la naturaleza: buscaban el <em>arkhé</em>, el principio de un cosmos ordenado. Ahora el foco se desplaza de los astros a los hombres, del mundo a la <em>polis</em>. A ese desplazamiento lo llamamos el <em>giro antropológico</em>: la filosofía deja por un tiempo el problema de la realidad para interrogarse por el ser humano, por la sociedad, por la ley y por lo justo. Algunos historiadores han llamado a este período la <em>Ilustración griega</em>, por su confianza en la razón crítica y su afán de someter a examen las creencias heredadas; nos basta el nombre, sin forzar el paralelo, porque lo que de verdad importa es el giro que late debajo.</p>
-<p>Cicerón resumiría más tarde ese viraje con una imagen afortunada: Sócrates fue el primero en «hacer bajar la filosofía del cielo a la tierra», instalándola en las ciudades y en las casas de los hombres<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Honra a Sócrates —su gran protagonista, a quien dedicamos <a href="tema-02.html#sec-06">§06</a>—, pero describe una época entera: la del ágora, la asamblea y el tribunal, donde lo que se ventilaba no era el origen del universo, sino cómo vivir juntos.</p>
-<p><strong>El escenario es Atenas.</strong> Si la filosofía había nacido en las colonias jonias (<a href="tema-01.html#sec-02">§02</a>), su segunda gran etapa tiene capital: la Atenas del siglo V, en la cima de su esplendor. Bajo la dirección de Pericles (h. 495-429 a. e. c.), la ciudad se había dotado de una <em>democracia</em> directa —de <em>dêmos</em>, «pueblo», y <em>krátos</em>, «poder»— sin parangón en el mundo antiguo. No se parecía a la nuestra, que es representativa: los ciudadanos no elegían a quienes decidirían por ellos, sino que decidían ellos mismos. En la asamblea se votaban las leyes y la guerra; en los tribunales, formados por cientos de ciudadanos sorteados, se juzgaban los pleitos sin abogados profesionales, y cada cual se defendía con su propia palabra<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. A esa Atenas próspera y abierta, imán de saberes, acudirían de todos los rincones del mundo griego los maestros que enseñarían el nuevo arte de la palabra.</p>
+<p>¿De qué te sirve saber de qué está hecho el mundo si no sabes cómo debes vivir en él? Hacia mediados del siglo V a. e. c., una nueva generación de pensadores griegos se hizo esta pregunta, y con ella giró la mirada de la filosofía. Los primeros filósofos —lo viste en <a href="../chapters-web/tema-01.html#sec-03">§03</a>— habían interrogado a la <em>physis</em>, la naturaleza: buscaban el <em>arkhé</em>, el principio de un cosmos ordenado. Ahora el foco se desplaza de los astros a los hombres, del mundo a la <em>polis</em>. A ese desplazamiento lo llamamos el <em>giro antropológico</em>: la filosofía deja por un tiempo el problema de la realidad para interrogarse por el ser humano, por la sociedad, por la ley y por lo justo. Algunos historiadores han llamado a este período la <em>Ilustración griega</em>, por su confianza en la razón crítica y su afán de someter a examen las creencias heredadas; nos basta el nombre, sin forzar el paralelo, porque lo que de verdad importa es el giro que late debajo.</p>
+<p>Cicerón resumiría más tarde ese viraje con una imagen afortunada: Sócrates fue el primero en «hacer bajar la filosofía del cielo a la tierra», instalándola en las ciudades y en las casas de los hombres<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Honra a Sócrates —su gran protagonista, a quien dedicamos <a href="../chapters-web/tema-02.html#sec-06">§06</a>—, pero describe una época entera: la del ágora, la asamblea y el tribunal, donde lo que se ventilaba no era el origen del universo, sino cómo vivir juntos.</p>
+<p><strong>El escenario es Atenas.</strong> Si la filosofía había nacido en las colonias jonias (<a href="../chapters-web/tema-01.html#sec-02">§02</a>), su segunda gran etapa tiene capital: la Atenas del siglo V, en la cima de su esplendor. Bajo la dirección de Pericles (h. 495-429 a. e. c.), la ciudad se había dotado de una <em>democracia</em> directa —de <em>dêmos</em>, «pueblo», y <em>krátos</em>, «poder»— sin parangón en el mundo antiguo. No se parecía a la nuestra, que es representativa: los ciudadanos no elegían a quienes decidirían por ellos, sino que decidían ellos mismos. En la asamblea se votaban las leyes y la guerra; en los tribunales, formados por cientos de ciudadanos sorteados, se juzgaban los pleitos sin abogados profesionales, y cada cual se defendía con su propia palabra<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. A esa Atenas próspera y abierta, imán de saberes, acudirían de todos los rincones del mundo griego los maestros que enseñarían el nuevo arte de la palabra.</p>
 <p><strong>En una democracia así, la palabra es poder.</strong> Cuando ninguna autoridad impone la verdad desde arriba —ni un rey, ni un sacerdote, ni un libro sagrado—, una propuesta solo llega a ser ley si logra <em>convencer</em> a los demás. Quien aspire a influir en los asuntos públicos necesita saber argumentar ante la asamblea y defenderse ante el tribunal. De pronto, una destreza antes secundaria —el dominio del discurso— se convierte en la llave del éxito social y político. Saber hablar dejó de verse como un don natural para entenderse como algo que podía aprenderse y, por tanto, enseñarse. Y donde aparece una demanda, no tarda en aparecer quien la satisface.</p>
-<p><strong>Una educación nueva para una ciudad nueva.</strong> La formación tradicional del joven aristócrata —gimnasia para el cuerpo, música y poesía para el espíritu, las primeras letras— ya no bastaba para triunfar en la vida pública. Lo que ahora se reclamaba era otra cosa: aprender a hablar, a persuadir, a conducirse con acierto en la ciudad. En una palabra, se buscaba la <em>aretē</em>: la «excelencia» o «virtud», entendida no como santidad moral, sino como la capacidad de sobresalir y de gobernar bien los asuntos propios y los de la <em>polis</em>. Hasta entonces, la <em>aretē</em> se daba por cosa de linaje: se nacía noble o no se nacía. La novedad —explosiva— fue sostener que también se <em>aprende</em>. Y aquí asoma la pregunta que vertebra todo el tema: ¿puede <em>enseñarse</em> la <em>aretē</em>? ¿Es un don que se hereda con la cuna, o una técnica que cualquiera puede adquirir con el maestro adecuado? A ella responderán, de maneras opuestas, los sofistas (<a href="tema-02.html#sec-05">§05</a>) y Sócrates (<a href="tema-02.html#sec-06">§06</a>).</p>
-<p><strong>Naturaleza o convención: la gran disyuntiva.</strong> El giro antropológico puso sobre la mesa una distinción que atraviesa toda la filosofía moral y política, y que conviene que fijes bien desde ahora. De un lado, la <em>physis</em>, la <em>naturaleza</em>: lo que las cosas son por sí mismas, igual en todas partes y al margen de lo que los hombres decidan. Del otro, el <em>nomos</em>, la <em>ley</em> o <em>convención</em>: lo establecido por acuerdo, costumbre o decreto, y que por eso cambia de un pueblo a otro. El trato con otras culturas —esos griegos que viajan y comercian (<a href="tema-01.html#sec-02">§02</a>)— había hecho evidente que las leyes, las costumbres y hasta las ideas de lo justo varían de una <em>polis</em> a otra. ¿Quiere decir eso que lo justo es solo <em>nomos</em>, convención humana, distinta en cada sitio? ¿O existe un orden <em>natural</em>, una justicia válida para todos, que las leyes no hacen más que intentar reflejar? La pregunta queda abierta. Verás en <a href="tema-02.html#sec-05">§05</a> cómo los sofistas se inclinaron del lado del <em>nomos</em>, con unas consecuencias relativistas que escandalizaron a sus contemporáneos, y en <a href="tema-02.html#sec-06">§06</a> y <a href="tema-02.html#sec-07">§07</a> cómo Sócrates se resistió a esa deriva en busca de definiciones válidas para todos <a href="tema-02.html#tbl-sofistas-y-socrates">Tabla 1</a>.</p>
+<p><strong>Una educación nueva para una ciudad nueva.</strong> La formación tradicional del joven aristócrata —gimnasia para el cuerpo, música y poesía para el espíritu, las primeras letras— ya no bastaba para triunfar en la vida pública. Lo que ahora se reclamaba era otra cosa: aprender a hablar, a persuadir, a conducirse con acierto en la ciudad. En una palabra, se buscaba la <em>aretē</em>: la «excelencia» o «virtud», entendida no como santidad moral, sino como la capacidad de sobresalir y de gobernar bien los asuntos propios y los de la <em>polis</em>. Hasta entonces, la <em>aretē</em> se daba por cosa de linaje: se nacía noble o no se nacía. La novedad —explosiva— fue sostener que también se <em>aprende</em>. Y aquí asoma la pregunta que vertebra todo el tema: ¿puede <em>enseñarse</em> la <em>aretē</em>? ¿Es un don que se hereda con la cuna, o una técnica que cualquiera puede adquirir con el maestro adecuado? A ella responderán, de maneras opuestas, los sofistas (<a href="../chapters-web/tema-02.html#sec-05">§05</a>) y Sócrates (<a href="../chapters-web/tema-02.html#sec-06">§06</a>).</p>
+<p><strong>Naturaleza o convención: la gran disyuntiva.</strong> El giro antropológico puso sobre la mesa una distinción que atraviesa toda la filosofía moral y política, y que conviene que fijes bien desde ahora. De un lado, la <em>physis</em>, la <em>naturaleza</em>: lo que las cosas son por sí mismas, igual en todas partes y al margen de lo que los hombres decidan. Del otro, el <em>nomos</em>, la <em>ley</em> o <em>convención</em>: lo establecido por acuerdo, costumbre o decreto, y que por eso cambia de un pueblo a otro. El trato con otras culturas —esos griegos que viajan y comercian (<a href="../chapters-web/tema-01.html#sec-02">§02</a>)— había hecho evidente que las leyes, las costumbres y hasta las ideas de lo justo varían de una <em>polis</em> a otra. ¿Quiere decir eso que lo justo es solo <em>nomos</em>, convención humana, distinta en cada sitio? ¿O existe un orden <em>natural</em>, una justicia válida para todos, que las leyes no hacen más que intentar reflejar? La pregunta queda abierta. Verás en <a href="../chapters-web/tema-02.html#sec-05">§05</a> cómo los sofistas se inclinaron del lado del <em>nomos</em>, con unas consecuencias relativistas que escandalizaron a sus contemporáneos, y en <a href="../chapters-web/tema-02.html#sec-06">§06</a> y <a href="../chapters-web/tema-02.html#sec-07">§07</a> cómo Sócrates se resistió a esa deriva en busca de definiciones válidas para todos <a href="../chapters-web/tema-02.html#tbl-sofistas-y-socrates">Tabla 1</a>.</p>
 <p>Recapitulemos el terreno que pisamos. La filosofía ha cambiado de objeto: del <em>cosmos</em> ha pasado al ser humano y a la ciudad. Ha cambiado de escenario: de las costas de Jonia a la Atenas democrática. Y ha cambiado de problema: ya no se pregunta «¿de qué está hecha la realidad?», sino «¿cómo debemos vivir juntos?, ¿es lo justo natural o convencional?». Sobre ese suelo crecen las dos grandes figuras del tema. Empezamos por quienes hicieron de la nueva educación un oficio y de la palabra un arte: los sofistas.</p>
 </section>
 <section id="sec-05" class="level2">
 <h2 class="anchored" data-anchor-id="sec-05">§05 · Los sofistas</h2>
-<p>Vuelve a aquella Atenas del <a href="tema-02.html#sec-04">§04</a>. Quieres prosperar en la vida pública: defender tu causa en el tribunal, hacer triunfar tu propuesta en la asamblea, brillar entre los ciudadanos. ¿Quién te enseña a hacerlo? Hacia mediados del siglo V a. e. c.&nbsp;apareció en Grecia quien ofrecía justamente eso: el <em>sofista</em>.</p>
-<p><strong>Qué era un sofista.</strong> La palabra <em>sophistēs</em> significaba al principio, sin más, «sabio» o «experto», y no tenía nada de insulto; el matiz despectivo vino después, y al final del recorrido volveremos sobre él. Los sofistas fueron un nuevo tipo de intelectual: maestros profesionales e itinerantes que iban de <em>polis</em> en <em>polis</em> y, novedad escandalosa para muchos, <em>cobraban</em> por enseñar. No formaron una escuela ni compartieron una doctrina; en muchos puntos discreparon entre sí. Lo que los une no es un sistema, sino un oficio y un clima de época: el de la <em>Ilustración griega</em> (<a href="tema-02.html#sec-04">§04</a>), con su confianza en la razón y su voluntad de examinar las creencias recibidas.</p>
-<p><strong>Qué enseñaban: la <em>aretē</em> y el arte del discurso.</strong> Recordarás la pregunta que dejamos abierta en <a href="tema-02.html#sec-04">§04</a>: ¿puede enseñarse la <em>aretē</em>, la excelencia para triunfar en la <em>polis</em>? Los sofistas respondieron que sí, y se ofrecieron a impartirla por dinero. Su materia estrella era la <em>technē</em> del discurso: la «técnica» o «arte» de hablar bien y, sobre todo, de <em>persuadir</em>. En una democracia donde la palabra es poder (<a href="tema-02.html#sec-04">§04</a>), saber argumentar a favor y en contra de cualquier tesis era la herramienta más codiciada. El sofista prometía formar al ciudadano eficaz: alguien capaz de defender su posición ante cualquier auditorio y de ganar el debate.</p>
+<p>Vuelve a aquella Atenas del <a href="../chapters-web/tema-02.html#sec-04">§04</a>. Quieres prosperar en la vida pública: defender tu causa en el tribunal, hacer triunfar tu propuesta en la asamblea, brillar entre los ciudadanos. ¿Quién te enseña a hacerlo? Hacia mediados del siglo V a. e. c.&nbsp;apareció en Grecia quien ofrecía justamente eso: el <em>sofista</em>.</p>
+<p><strong>Qué era un sofista.</strong> La palabra <em>sophistēs</em> significaba al principio, sin más, «sabio» o «experto», y no tenía nada de insulto; el matiz despectivo vino después, y al final del recorrido volveremos sobre él. Los sofistas fueron un nuevo tipo de intelectual: maestros profesionales e itinerantes que iban de <em>polis</em> en <em>polis</em> y, novedad escandalosa para muchos, <em>cobraban</em> por enseñar. No formaron una escuela ni compartieron una doctrina; en muchos puntos discreparon entre sí. Lo que los une no es un sistema, sino un oficio y un clima de época: el de la <em>Ilustración griega</em> (<a href="../chapters-web/tema-02.html#sec-04">§04</a>), con su confianza en la razón y su voluntad de examinar las creencias recibidas.</p>
+<p><strong>Qué enseñaban: la <em>aretē</em> y el arte del discurso.</strong> Recordarás la pregunta que dejamos abierta en <a href="../chapters-web/tema-02.html#sec-04">§04</a>: ¿puede enseñarse la <em>aretē</em>, la excelencia para triunfar en la <em>polis</em>? Los sofistas respondieron que sí, y se ofrecieron a impartirla por dinero. Su materia estrella era la <em>technē</em> del discurso: la «técnica» o «arte» de hablar bien y, sobre todo, de <em>persuadir</em>. En una democracia donde la palabra es poder (<a href="../chapters-web/tema-02.html#sec-04">§04</a>), saber argumentar a favor y en contra de cualquier tesis era la herramienta más codiciada. El sofista prometía formar al ciudadano eficaz: alguien capaz de defender su posición ante cualquier auditorio y de ganar el debate.</p>
 <p><strong>Protágoras: el hombre, medida de todo.</strong> El más célebre fue Protágoras de Abdera (h. 490-h. 420 a. e. c.), el primero en llamarse sofista y en cobrar por sus lecciones. Suya es la fórmula más famosa —y más discutida— de toda la sofística, el llamado principio del <em>homo mensura</em>: «El hombre es la medida de todas las cosas, de las que son en cuanto que son, y de las que no son en cuanto que no son»<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Léela con cuidado, porque en ella cabe casi todo el pensamiento sofístico. Significa que no hay un criterio absoluto, por encima de los seres humanos, para decidir qué es verdadero o falso, justo o injusto, bello o feo: la medida de todo es el ser humano mismo. Lo que a ti te parece frío es frío <em>para ti</em>, aunque a otro le parezca templado. A esto lo llamamos <em>relativismo</em>: la tesis de que no hay verdades válidas para todos, sino solo verdades relativas a quien las sostiene, sea cada individuo o cada comunidad.</p>
-<p><strong>Del relativismo al convencionalismo.</strong> Aplicada a la moral y a la política, esta idea desemboca en el <em>convencionalismo</em>, y aquí reaparece el par que fijaste en <a href="tema-02.html#sec-04">§04</a>. Si no hay una justicia <em>natural</em>, escrita en la <em>physis</em> e igual en todas partes, entonces lo justo y lo injusto son <em>nomos</em>: convención humana, fruto del acuerdo, la costumbre y la educación, y por eso distinta de una <em>polis</em> a otra. Las leyes no descienden de los dioses ni de la naturaleza: las hacen los hombres, y los hombres pueden discutirlas y cambiarlas. Para los sofistas, esto no rebajaba la ley, sino que la ponía donde le corresponde: en manos de la comunidad que delibera. Protágoras lo llevó al terreno del método con sus <em>Antilogías</em>, donde sostiene que «sobre toda cuestión hay dos discursos opuestos entre sí». De ahí a su promesa más provocadora había un paso: se le atribuyó —y se le reprochó— enseñar a «hacer más fuerte el argumento más débil», esto es, a ganar cualquier debate, tuviera uno razón o no<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p><strong>Gorgias: el poder de la palabra y los límites del conocer.</strong> Más volcado en la pura retórica estuvo Gorgias de Leontinos (h. 485-h. 380 a. e. c.), célebre por el poder casi mágico que atribuía al <em>logos</em>, al discurso, capaz de mover las almas como un fármaco actúa sobre el cuerpo. Pero a Gorgias le debemos también la formulación más extrema del <em>escepticismo sofístico</em>. En su obra <em>Sobre el no-ser</em> defendía, en una escalada deliberada, tres tesis: primera, que nada existe; segunda, que, si algo existiera, no podríamos conocerlo; y tercera, que, si pudiéramos conocerlo, no podríamos comunicarlo a nadie. Tómalo como lo que seguramente era —un ejercicio dialéctico, una exhibición de virtuosismo tanto como una tesis—, pero advierte su alcance: pone en duda que el lenguaje alcance la realidad. Este escepticismo no debe confundirse con el de los escépticos helenísticos (<a href="tema-05.html#sec-23">§23</a>): aquellos harán de la suspensión del juicio una vía sistemática para vivir sin perturbación; el de los sofistas es más bien crítico y combativo, atado a su confianza en la persuasión.</p>
+<p><strong>Del relativismo al convencionalismo.</strong> Aplicada a la moral y a la política, esta idea desemboca en el <em>convencionalismo</em>, y aquí reaparece el par que fijaste en <a href="../chapters-web/tema-02.html#sec-04">§04</a>. Si no hay una justicia <em>natural</em>, escrita en la <em>physis</em> e igual en todas partes, entonces lo justo y lo injusto son <em>nomos</em>: convención humana, fruto del acuerdo, la costumbre y la educación, y por eso distinta de una <em>polis</em> a otra. Las leyes no descienden de los dioses ni de la naturaleza: las hacen los hombres, y los hombres pueden discutirlas y cambiarlas. Para los sofistas, esto no rebajaba la ley, sino que la ponía donde le corresponde: en manos de la comunidad que delibera. Protágoras lo llevó al terreno del método con sus <em>Antilogías</em>, donde sostiene que «sobre toda cuestión hay dos discursos opuestos entre sí». De ahí a su promesa más provocadora había un paso: se le atribuyó —y se le reprochó— enseñar a «hacer más fuerte el argumento más débil», esto es, a ganar cualquier debate, tuviera uno razón o no<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p><strong>Gorgias: el poder de la palabra y los límites del conocer.</strong> Más volcado en la pura retórica estuvo Gorgias de Leontinos (h. 485-h. 380 a. e. c.), célebre por el poder casi mágico que atribuía al <em>logos</em>, al discurso, capaz de mover las almas como un fármaco actúa sobre el cuerpo. Pero a Gorgias le debemos también la formulación más extrema del <em>escepticismo sofístico</em>. En su obra <em>Sobre el no-ser</em> defendía, en una escalada deliberada, tres tesis: primera, que nada existe; segunda, que, si algo existiera, no podríamos conocerlo; y tercera, que, si pudiéramos conocerlo, no podríamos comunicarlo a nadie. Tómalo como lo que seguramente era —un ejercicio dialéctico, una exhibición de virtuosismo tanto como una tesis—, pero advierte su alcance: pone en duda que el lenguaje alcance la realidad. Este escepticismo no debe confundirse con el de los escépticos helenísticos (<a href="../chapters-web/tema-05.html#sec-23">§23</a>): aquellos harán de la suspensión del juicio una vía sistemática para vivir sin perturbación; el de los sofistas es más bien crítico y combativo, atado a su confianza en la persuasión.</p>
 <p><strong>La «mala prensa» de los sofistas.</strong> Si hoy llamar a alguien «sofista» es un insulto, y un «sofisma» es un razonamiento falso disfrazado de válido, eso tiene una historia. Buena parte de esa imagen negativa procede de sus grandes adversarios, Platón y Aristóteles. Frente al <em>sofista</em> —que cobra, que enseña a vencer y que no parece buscar la verdad—, ambos defendieron la figura del <em>filósofo</em>, que ama la verdad y no la vende. Diálogos de Platón como el <em>Gorgias</em>, el <em>Protágoras</em> o el <em>Sofista</em> fijaron durante siglos esa caricatura. En el <em>Gorgias</em>, por ejemplo, Platón rebaja la retórica a una mera «adulación», un arte aparente que enseña a persuadir sin saber y puede ponerse al servicio de la injusticia. Y, como casi todo lo que sabemos de los sofistas nos llega a través de quienes los combatieron, el retrato quedó deformado. La relectura tardó: a partir del siglo XIX, los historiadores empezaron a revalorarlos. Hoy se los reconoce como los primeros maestros de la democracia, pioneros de la retórica y de la reflexión sobre el lenguaje, y autores de una idea fértil: que las leyes y los valores son obra humana, abierta a la crítica y a la mejora. Su relativismo, llevado al límite, sigue inquietando; pero su pregunta —¿hay una justicia natural, o todo es convención?— sigue igual de viva.</p>
 <p>A esa pregunta respondió, desde dentro de la misma <em>Ilustración griega</em>, un ateniense que compartía el giro hacia el ser humano pero rechazaba de plano el relativismo. Contra los sofistas sostuvo que sí hay un saber firme sobre lo justo y lo bueno, y que puede alcanzarse. Su nombre es Sócrates, y a él dedicamos la sección siguiente.</p>
 </section>
@@ -545,7 +557,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Σωκράτης (h. 470-399 a. e. c.). Busto romano del Louvre, copia de un original griego. || Atribución: Sting (Eric Gaba), CC BY-SA 2.5 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Un hijo de la <em>Ilustración griega</em>, y su crítico.</strong> Sócrates comparte con los sofistas (<a href="tema-02.html#sec-05">§05</a>) el giro hacia el ser humano (<a href="tema-02.html#sec-04">§04</a>): no le interesan los astros, sino la virtud, lo justo y lo bueno. Pero rompe con ellos en lo esencial. No cobra. No enseña a <em>vencer</em> en el debate, sino a <em>buscar</em> la verdad. Y, sobre todo, rechaza el relativismo: frente al «el hombre es la medida de todas las cosas» de Protágoras, Sócrates está convencido de que sí existe un saber firme sobre el bien y la justicia, el mismo para todos, y de que la tarea del filósofo es alcanzarlo. Decía, además, escuchar una voz interior, un <em>dáimon</em>, que lo frenaba cuando iba a obrar mal: señal de que la conciencia moral tiene, para él, un peso decisivo.</p>
+<p><strong>Un hijo de la <em>Ilustración griega</em>, y su crítico.</strong> Sócrates comparte con los sofistas (<a href="../chapters-web/tema-02.html#sec-05">§05</a>) el giro hacia el ser humano (<a href="../chapters-web/tema-02.html#sec-04">§04</a>): no le interesan los astros, sino la virtud, lo justo y lo bueno. Pero rompe con ellos en lo esencial. No cobra. No enseña a <em>vencer</em> en el debate, sino a <em>buscar</em> la verdad. Y, sobre todo, rechaza el relativismo: frente al «el hombre es la medida de todas las cosas» de Protágoras, Sócrates está convencido de que sí existe un saber firme sobre el bien y la justicia, el mismo para todos, y de que la tarea del filósofo es alcanzarlo. Decía, además, escuchar una voz interior, un <em>dáimon</em>, que lo frenaba cuando iba a obrar mal: señal de que la conciencia moral tiene, para él, un peso decisivo.</p>
 <p><strong>El método: ironía y <em>elenchos</em>.</strong> ¿Cómo buscaba ese saber? No exponiéndolo, sino <em>preguntando</em>. Su método tiene dos tiempos. El primero es la <em>ironía</em> (de <em>eirōneía</em>, «fingimiento»): Sócrates simula no saber nada y pide a su interlocutor que le enseñe, halagándolo para que se confíe y exponga sus ideas. El segundo es el <em>elenchos</em> o refutación: una vez que el otro ha afirmado saber algo, Sócrates lo interroga paso a paso hasta mostrar que sus respuestas se contradicen. Lo verás con claridad en el <em>Eutifrón</em>. Eutifrón, que se dispone a denunciar a su propio padre, presume de saber qué es la piedad. Sócrates le pregunta entonces «¿qué es lo pío?» —no un ejemplo, sino la <em>definición</em>, aquello común a todas las acciones piadosas—. Eutifrón ensaya varias respuestas, y todas se desmoronan bajo sus preguntas, hasta que el experto reconoce, perplejo, que no sabía lo que creía saber. A ese callejón sin salida los griegos lo llamaban <em>aporía</em>. No es un fracaso: es el primer paso, porque solo quien descubre que no sabe está en condiciones de empezar a buscar.</p>
 <p><strong>La mayéutica.</strong> Si la ironía y el <em>elenchos</em> limpian el terreno de falsas certezas, falta el momento positivo. Sócrates lo llamó <em>mayéutica</em>, el «arte de partear». Hijo de una comadrona, Fenáreta, decía ejercer con las almas el oficio de su madre con los cuerpos: no deposita el saber en nadie, sino que ayuda a su interlocutor a «dar a luz» por sí mismo la verdad, alumbrándola con preguntas<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. El conocimiento, así, no se transmite desde fuera: se conquista desde dentro.</p>
 <p><strong>«Conócete a ti mismo».</strong> Sócrates hizo suya una inscripción del templo de Apolo en Delfos: <em>gnōthi seautón</em>, «conócete a ti mismo». Su sentido se aclara con un episodio que él mismo relata en la <em>Apología</em>. Un amigo, Querefonte, preguntó al oráculo de Delfos si había alguien más sabio que Sócrates, y la sacerdotisa respondió que no. Sócrates, que se tenía por ignorante, quedó desconcertado y se propuso refutar al oráculo buscando a alguien más sabio que él. Interrogó a políticos, poetas y artesanos de fama, y halló en todos lo mismo: creían saber lo que en realidad no sabían. Entonces comprendió el oráculo: él era más sabio solo en una cosa, en <em>saber que no sabía</em>. De ahí procede la fórmula tradicional con que resumimos su posición: «solo sé que no sé nada».</p>
@@ -593,19 +605,19 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-07" class="level2">
 <h2 class="anchored" data-anchor-id="sec-07">§07 · El intelectualismo socrático-platónico</h2>
-<p>Cerrábamos <a href="tema-02.html#sec-06">§06</a> con una pregunta: si conocerse es reconocer que no se sabe, ¿cómo se alcanza el saber sobre el bien que Sócrates buscaba? Y, sobre todo, ¿para qué? La respuesta de Sócrates es tan sencilla de enunciar como difícil de aceptar: la virtud <em>es</em> conocimiento. Saber qué es el bien y ser bueno son, para él, una sola cosa. A esta tesis la llamamos <em>intelectualismo moral</em>: la convicción de que obrar bien no es cuestión de voluntad ni de carácter, sino de saber. Quien conoce de verdad qué es lo justo, obra justamente; quien no lo conoce, no puede.</p>
+<p>Cerrábamos <a href="../chapters-web/tema-02.html#sec-06">§06</a> con una pregunta: si conocerse es reconocer que no se sabe, ¿cómo se alcanza el saber sobre el bien que Sócrates buscaba? Y, sobre todo, ¿para qué? La respuesta de Sócrates es tan sencilla de enunciar como difícil de aceptar: la virtud <em>es</em> conocimiento. Saber qué es el bien y ser bueno son, para él, una sola cosa. A esta tesis la llamamos <em>intelectualismo moral</em>: la convicción de que obrar bien no es cuestión de voluntad ni de carácter, sino de saber. Quien conoce de verdad qué es lo justo, obra justamente; quien no lo conoce, no puede.</p>
 <p><strong>«Nadie obra mal a sabiendas».</strong> De aquí se sigue un corolario que ha hecho correr ríos de tinta: si la virtud es conocimiento, el vicio es ignorancia. Nadie hace el mal a propósito, <em>sabiendo</em> que es el mal; quien obra mal lo hace porque se equivoca, porque confunde un mal con un bien. El malvado no es un perverso que elige el mal con los ojos abiertos, sino alguien que ha errado en sus cuentas. Detrás de esta idea late una premisa que a Sócrates le parece evidente: todos deseamos nuestro bien, todos queremos vivir bien. Si de verdad supieras que algo te daña, no lo elegirías; por tanto, cuando eliges lo que te perjudica, es que has tomado por bueno algo que no lo era. La consecuencia es llamativa, y muy actual: si nadie es malo queriéndolo, el que delinque no es un monstruo, sino un ignorante, y el castigo debería servir para corregir y enseñar, no para vengarse.</p>
-<p><strong>La gran objeción: la <em>akrasía</em>.</strong> Seguramente ya estás protestando, y haces bien: la experiencia parece desmentir a Sócrates a cada paso. A esa protesta los griegos le pusieron nombre: <em>akrasía</em> —literalmente, «falta de dominio de sí», con ese <em>krátos</em>, «poder» o «dominio», que reconociste en <em>democracia</em> (<a href="tema-02.html#sec-04">§04</a>), ahora en negativo—. La tradición la tradujo por «incontinencia» o «debilidad de la voluntad», y nombra un fenómeno tan común que cuesta creer que alguien lo niegue: <em>saber</em> qué es lo correcto y, aun así, hacer lo contrario. Sabes que mentir está mal y, para librarte de un apuro o sacar ventaja, mientes. Sabes que ese dinero o ese objeto no son tuyos, sabes que deberías devolverlos, y te los quedas. En un arranque de ira haces daño a alguien a quien quieres, y mientras lo haces ya sabes que te vas a arrepentir. No es que en esos momentos te falte el conocimiento del bien: lo tienes delante, y obras contra él. Y si esto ocurre —y ocurre sin cesar—, entonces conocer el bien <em>no</em> basta para hacerlo, y el intelectualismo socrático se viene abajo.</p>
+<p><strong>La gran objeción: la <em>akrasía</em>.</strong> Seguramente ya estás protestando, y haces bien: la experiencia parece desmentir a Sócrates a cada paso. A esa protesta los griegos le pusieron nombre: <em>akrasía</em> —literalmente, «falta de dominio de sí», con ese <em>krátos</em>, «poder» o «dominio», que reconociste en <em>democracia</em> (<a href="../chapters-web/tema-02.html#sec-04">§04</a>), ahora en negativo—. La tradición la tradujo por «incontinencia» o «debilidad de la voluntad», y nombra un fenómeno tan común que cuesta creer que alguien lo niegue: <em>saber</em> qué es lo correcto y, aun así, hacer lo contrario. Sabes que mentir está mal y, para librarte de un apuro o sacar ventaja, mientes. Sabes que ese dinero o ese objeto no son tuyos, sabes que deberías devolverlos, y te los quedas. En un arranque de ira haces daño a alguien a quien quieres, y mientras lo haces ya sabes que te vas a arrepentir. No es que en esos momentos te falte el conocimiento del bien: lo tienes delante, y obras contra él. Y si esto ocurre —y ocurre sin cesar—, entonces conocer el bien <em>no</em> basta para hacerlo, y el intelectualismo socrático se viene abajo.</p>
 <p><strong>La respuesta de Sócrates.</strong> Lejos de rendirse, Sócrates muerde la bala y sostiene algo asombroso: la <em>akrasía</em>, en sentido estricto, no existe. Lo que llamamos «debilidad» es, visto de cerca, otra forma de ignorancia. Su argumento tiene dos filos. El primero: en el instante de actuar, lo que de verdad persigues es el bien que tienes delante —librarte del apuro con la mentira, quedarte con lo que deseas—, y lo persigues porque en ese momento lo juzgas preferible. No es que sepas lo mejor y elijas lo peor: es que has medido mal, dando un peso enorme al beneficio inmediato y casi ninguno al bien verdadero, más lejano y menos vistoso. La akrasía sería, entonces, un fallo en el «arte de medir» los bienes<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. El segundo filo es aún más exigente: si de verdad <em>supieras</em> —con un saber firme, no con una vaga opinión— el daño que esa mentira o ese robo acarrean, no podrías quererlos. El conocimiento real del bien, para Sócrates, es tan poderoso que no se deja vencer. Lo que en el akrásico falla no es la voluntad: es que su «saber» no era tal, sino una creencia mal asentada. La objeción, lejos de derribar la tesis, la afila: solo un conocimiento pleno del bien es virtud, y ese conocimiento, por definición, mueve a obrar.</p>
-<p><strong>El giro platónico.</strong> Aquí entra Platón, que recoge la herencia de su maestro pero la complica. Como verás en <a href="tema-03.html#sec-11">§11</a>, Platón concibe el alma dividida en partes —la razón, el ánimo y el apetito— y reconoce algo que el intelectualismo puro no contemplaba: que esas partes pueden <em>entrar en conflicto</em>, y que el apetito es capaz de arrastrar a la razón pese a lo que esta sabe. Con ello, Platón hace sitio, dentro del alma, a algo muy parecido a la akrasía que Sócrates negaba. Su solución no es abandonar el intelectualismo, sino ampliarlo: la virtud sigue exigiendo conocer el bien (<a href="tema-03.html#sec-09">§09</a>), pero exige además que el alma esté <em>bien ordenada</em>, con la razón gobernando a las demás partes. Saber no basta si la casa interior está en desorden. Por eso, cuando en <a href="tema-03.html#sec-12">§12</a> estudies las virtudes de Platón, las hallarás definidas como el buen orden del alma; y por eso <a href="tema-03.html#sec-12">§12</a> remite aquí: la raíz socrática de aquella doctrina está en esta sección.</p>
-<p>Con todo, la objeción no queda zanjada. ¿De verdad es imposible saber lo que se debe hacer y, aun así, no hacerlo? Aristóteles responderá que no, que la akrasía es real y se explica sin negar la evidencia: se puede poseer el conocimiento «en general» y no aplicarlo «en el momento», vencido por el deseo y por unos hábitos mal formados. Esa réplica, que repara buena parte de lo que el intelectualismo deja sin explicar, la verás en <a href="tema-04.html#sec-17">§17</a>. De momento, quédate con el nervio del problema, que sigue vivo en la ética de hoy: ¿basta con saber qué es el bien para ser bueno, o hace falta algo más?</p>
+<p><strong>El giro platónico.</strong> Aquí entra Platón, que recoge la herencia de su maestro pero la complica. Como verás en <a href="../chapters-web/tema-03.html#sec-11">§11</a>, Platón concibe el alma dividida en partes —la razón, el ánimo y el apetito— y reconoce algo que el intelectualismo puro no contemplaba: que esas partes pueden <em>entrar en conflicto</em>, y que el apetito es capaz de arrastrar a la razón pese a lo que esta sabe. Con ello, Platón hace sitio, dentro del alma, a algo muy parecido a la akrasía que Sócrates negaba. Su solución no es abandonar el intelectualismo, sino ampliarlo: la virtud sigue exigiendo conocer el bien (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), pero exige además que el alma esté <em>bien ordenada</em>, con la razón gobernando a las demás partes. Saber no basta si la casa interior está en desorden. Por eso, cuando en <a href="../chapters-web/tema-03.html#sec-12">§12</a> estudies las virtudes de Platón, las hallarás definidas como el buen orden del alma; y por eso <a href="../chapters-web/tema-03.html#sec-12">§12</a> remite aquí: la raíz socrática de aquella doctrina está en esta sección.</p>
+<p>Con todo, la objeción no queda zanjada. ¿De verdad es imposible saber lo que se debe hacer y, aun así, no hacerlo? Aristóteles responderá que no, que la akrasía es real y se explica sin negar la evidencia: se puede poseer el conocimiento «en general» y no aplicarlo «en el momento», vencido por el deseo y por unos hábitos mal formados. Esa réplica, que repara buena parte de lo que el intelectualismo deja sin explicar, la verás en <a href="../chapters-web/tema-04.html#sec-17">§17</a>. De momento, quédate con el nervio del problema, que sigue vivo en la ética de hoy: ¿basta con saber qué es el bien para ser bueno, o hace falta algo más?</p>
 </section>
 <section id="sec-08" class="level2">
 <h2 class="anchored" data-anchor-id="sec-08">§08 · Aspasia de Mileto y la mujer en la filosofía griega</h2>
-<p>En la Atenas del <em>logos</em> y de la palabra (<a href="tema-02.html#sec-04">§04</a>, <a href="tema-02.html#sec-05">§05</a>), donde Sócrates interrogaba a cualquiera en el ágora (<a href="tema-02.html#sec-06">§06</a>), vivió una mujer admirada por su inteligencia y su elocuencia, capaz —se decía— de enseñar a hablar a los más sabios. Se llamaba Aspasia, y de ella no conservamos una sola línea salida de su mano. Esa paradoja —una voz célebre de la que no nos queda la voz— es la puerta de entrada a esta sección.</p>
+<p>En la Atenas del <em>logos</em> y de la palabra (<a href="../chapters-web/tema-02.html#sec-04">§04</a>, <a href="../chapters-web/tema-02.html#sec-05">§05</a>), donde Sócrates interrogaba a cualquiera en el ágora (<a href="../chapters-web/tema-02.html#sec-06">§06</a>), vivió una mujer admirada por su inteligencia y su elocuencia, capaz —se decía— de enseñar a hablar a los más sabios. Se llamaba Aspasia, y de ella no conservamos una sola línea salida de su mano. Esa paradoja —una voz célebre de la que no nos queda la voz— es la puerta de entrada a esta sección.</p>
 <p><strong>Quién fue Aspasia.</strong> Aspasia de Mileto (h. 470-h. 400 a. e. c.) llegó a Atenas desde Jonia y se convirtió en la compañera de Pericles, el hombre más influyente de la ciudad. Como extranjera, era una <em>meteca</em>: no tenía la ciudadanía ateniense, ni podía tenerla —y, por una de las ironías de la época, fue una ley del propio Pericles la que, al reservar la ciudadanía a los hijos de padre y madre atenienses, dejó a su hijo fuera de ella—. Las fuentes coinciden en su brillantez: dirigía una suerte de salón donde se reunían políticos, artistas y filósofos, y tenía fama de oradora excepcional en una cultura que hacía del discurso la cima de la educación.</p>
 <p><strong>Una voz que solo oímos por boca de otros.</strong> Aspasia aparece, en efecto, en la primera literatura filosófica. En el <em>Menéxeno</em>, Platón pone a Sócrates a sostener, medio en serio medio en broma, que fue ella quien le enseñó retórica y quien compuso el célebre discurso fúnebre de Pericles<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. Jenofonte la cita como autoridad en asuntos de matrimonio, y otro discípulo de Sócrates, Esquines, le dedicó un diálogo entero, hoy perdido; siglos después, Plutarco reuniría sobre ella tanto la admiración como la difamación. La presentan, una y otra vez, como maestra; incluso como maestra de Sócrates. Y, sin embargo, fíjate en lo que falta: ni una palabra que podamos atribuirle con seguridad. Cuanto sabemos de ella nos llega filtrado por hombres —Platón, que ironiza; Jenofonte, que la cita; los cómicos, que la convirtieron en blanco, atacando su moral y hasta culpándola de provocar guerras—. De Aspasia tenemos el eco, no la voz.</p>
-<p><strong>Por qué su voz se perdió.</strong> No fue porque no tuviera nada que decir: en eso las fuentes, hostiles o amables, coinciden. Fue por las condiciones. Recuerda quiénes quedaban fuera del cuerpo de ciudadanos (<a href="tema-02.html#sec-04">§04</a>): las mujeres, entre otros. La vida de la ateniense respetable transcurría puertas adentro, en el <em>oikos</em>, la casa; estaba excluida de la asamblea, del tribunal, del gimnasio, de los espacios públicos donde la filosofía respiraba, y recibía poca o ninguna instrucción formal. Había, además, un ideal que premiaba ese silencio: en el mismo discurso fúnebre que Platón atribuye en broma a Aspasia, Pericles afirma que la mayor gloria de una mujer es aquella de la que menos se hable entre los hombres, para bien o para mal<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. Se esperaba de ella que no destacara, que no se la nombrara: justo lo contrario de lo que la filosofía, hija del debate público, exigía. Por eso la casi total ausencia de mujeres en su historia no mide su capacidad, sino su exclusión; y por eso las pocas que asoman suelen ser, como Aspasia, extranjeras o gentes de medios excepcionales.</p>
+<p><strong>Por qué su voz se perdió.</strong> No fue porque no tuviera nada que decir: en eso las fuentes, hostiles o amables, coinciden. Fue por las condiciones. Recuerda quiénes quedaban fuera del cuerpo de ciudadanos (<a href="../chapters-web/tema-02.html#sec-04">§04</a>): las mujeres, entre otros. La vida de la ateniense respetable transcurría puertas adentro, en el <em>oikos</em>, la casa; estaba excluida de la asamblea, del tribunal, del gimnasio, de los espacios públicos donde la filosofía respiraba, y recibía poca o ninguna instrucción formal. Había, además, un ideal que premiaba ese silencio: en el mismo discurso fúnebre que Platón atribuye en broma a Aspasia, Pericles afirma que la mayor gloria de una mujer es aquella de la que menos se hable entre los hombres, para bien o para mal<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. Se esperaba de ella que no destacara, que no se la nombrara: justo lo contrario de lo que la filosofía, hija del debate público, exigía. Por eso la casi total ausencia de mujeres en su historia no mide su capacidad, sino su exclusión; y por eso las pocas que asoman suelen ser, como Aspasia, extranjeras o gentes de medios excepcionales.</p>
 <p><strong>Dos excepciones, con sus matices.</strong> Hubo, aun así, grietas. La más notable fue la escuela pitagórica, que —a diferencia del resto— admitió mujeres entre sus miembros, quizá porque funcionaba como una comunidad de vida y no solo como una academia. De algunas nos ha llegado el nombre, como el de Teano, ligada a Pitágoras como esposa o discípula, aunque los escritos que se le atribuyen son, en su mayoría, muy posteriores. Y está Diotima: en el <em>Banquete</em>, Platón pone en boca de una sacerdotisa, Diotima de Mantinea, una de las cumbres de su pensamiento, la doctrina del amor y el ascenso hacia la Belleza. Conviene la cautela: casi con seguridad Diotima es un personaje literario, no una filósofa histórica, de modo que su presencia nos dice más del arte de Platón que de una pensadora real. Aun así, resulta significativo que la voz que instruye a Sócrates sobre el amor sea, en la ficción, la de una mujer.</p>
 <p>Recuperar a estas figuras <em>sin anacronismo</em> es presentarlas tal como llegan: atestiguadas pero mediadas, a veces inventadas; ni convertirlas en filósofas sistemáticas que no fueron, ni borrarlas del relato. Queda el hecho: en la filosofía griega las mujeres están presentes, sobre todo, como ausencia —como voces que solo oímos a través de hombres, o como personajes que los hombres escribieron—. Esa pregunta por quién puede filosofar, y por la voz de quién se conserva, reaparecerá mucho más adelante, cuando la historia de la filosofía dé entrada a las mujeres por derecho propio.</p>
 
@@ -615,7 +627,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p>Cicerón, <em>Tusculanae disputationes</em>, V, 10. La frase se refiere a Sócrates, pero retrata a toda una época.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>El cuerpo de ciudadanos era, además, una minoría: quedaban fuera las mujeres, los esclavos y los extranjeros residentes —los <em>metecos</em>—. Volveremos sobre ese silencio en <a href="tema-02.html#sec-08">§08</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>El cuerpo de ciudadanos era, además, una minoría: quedaban fuera las mujeres, los esclavos y los extranjeros residentes —los <em>metecos</em>—. Volveremos sobre ese silencio en <a href="../chapters-web/tema-02.html#sec-08">§08</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>El fragmento lo transmite Sexto Empírico; Platón lo somete a discusión en el <em>Teeteto</em> (152a y ss.).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Esa misma actitud crítica alcanzó a la religión: su obra <em>Sobre los dioses</em> comenzaba, según se cuenta, declarando que «sobre los dioses no puedo saber ni que existen ni que no existen». Tal agnosticismo le habría valido una acusación de impiedad (Diógenes Laercio, IX, 51).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Sócrates no dejó nada escrito: casi todo lo que sabemos de él procede de su discípulo Platón, que lo convirtió en protagonista de sus diálogos. Lo retrataron también, de manera muy distinta, su contemporáneo Jenofonte y el comediógrafo Aristófanes, que lo ridiculizó en <em>Las nubes</em>. A la dificultad de reconstruir al Sócrates histórico tras estos retratos se la llama el «problema socrático».<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -628,19 +640,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -719,7 +843,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -728,8 +853,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -743,6 +929,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -905,44 +1092,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1041,7 +1238,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-01.html" class="pagination-link" aria-label="Tema 1 · Del mito a la filosofía">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></span>

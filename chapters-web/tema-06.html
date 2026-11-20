@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../parte-2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-2.html">Parte II · Edad Media</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-06.html"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-2.html">Parte II · Edad Media</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-06.html"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -494,10 +506,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-2.html">Parte II · Edad Media</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-06.html"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-2.html">Parte II · Edad Media</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-06.html"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></h1>
 </div>
@@ -519,21 +531,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="para-entrar-en-la-filosofía-medieval" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-la-filosofía-medieval">Para entrar en la filosofía medieval</h2>
 <p>La introducción de la Parte II ha puesto el marco: durante mil años la filosofía europea piensa dentro del cristianismo, una religión que afirma un Dios único y creador, la salvación del ser humano y una verdad revelada que se acepta por fe (Parte II). Este tema entra en lo que la filosofía hizo dentro de ese marco. Y lo que hizo, una y otra vez, fue medirse con una sola pregunta de fondo: si Dios ya ha revelado la verdad, ¿qué le queda por hacer a la razón? La fe y la razón, lo que se cree y lo que se demuestra, ¿son aliadas, extrañas o rivales?</p>
-<p><strong>Una pregunta, tres respuestas.</strong> Hemos organizado el tema en torno a esa pregunta, porque es la que da unidad a toda la época y la que mejor se estudia por contraste. Tras una sección de andamiaje, que explica cómo se dividió y cómo trabajó la filosofía medieval (<a href="tema-06.html#sec-25">§25</a>), el corazón del tema son tres grandes pensadores que respondieron de tres maneras distintas. Agustín de Hipona, en los albores del período, funde fe y razón en un mismo movimiento: hay que creer para entender (<a href="tema-06.html#sec-26">§26</a>). Tomás de Aquino, en la cumbre de la Edad Media, las distingue con cuidado para mostrar que se armonizan, y demuestra por pura razón la existencia de Dios con sus famosas cinco vías (<a href="tema-06.html#sec-27">§27</a>). Guillermo de Ockham, al final, las separa: la razón no puede probar casi nada de Dios, que queda enteramente para la fe (<a href="tema-06.html#sec-28">§28</a>). Creer para entender, armonizar, separar: tres posiciones que conviene leer seguidas, porque cada una se entiende mejor frente a las otras, y porque entre las tres dibujan el arco completo del problema, desde la unión más estrecha hasta el divorcio que abrirá la puerta a la modernidad.</p>
-<p><strong>Una cuarta figura.</strong> Cerraremos el tema saliendo del aula. Junto a los grandes maestros de la teología, la Edad Media tuvo figuras que no encajan en el molde del filósofo de escuela y que merecen, sin embargo, un lugar. Hildegard von Bingen —abadesa, visionaria, naturalista, compositora— es una de ellas, y con ella, tercera de la serie que abrieron Aspasia (<a href="tema-02.html#sec-08">§08</a>) e Hipatia (<a href="tema-05.html#sec-24">§24</a>), recordamos que el pensamiento de una época nunca cabe entero en sus autores canónicos (<a href="tema-06.html#sec-29">§29</a>).</p>
+<p><strong>Una pregunta, tres respuestas.</strong> Hemos organizado el tema en torno a esa pregunta, porque es la que da unidad a toda la época y la que mejor se estudia por contraste. Tras una sección de andamiaje, que explica cómo se dividió y cómo trabajó la filosofía medieval (<a href="../chapters-web/tema-06.html#sec-25">§25</a>), el corazón del tema son tres grandes pensadores que respondieron de tres maneras distintas. Agustín de Hipona, en los albores del período, funde fe y razón en un mismo movimiento: hay que creer para entender (<a href="../chapters-web/tema-06.html#sec-26">§26</a>). Tomás de Aquino, en la cumbre de la Edad Media, las distingue con cuidado para mostrar que se armonizan, y demuestra por pura razón la existencia de Dios con sus famosas cinco vías (<a href="../chapters-web/tema-06.html#sec-27">§27</a>). Guillermo de Ockham, al final, las separa: la razón no puede probar casi nada de Dios, que queda enteramente para la fe (<a href="../chapters-web/tema-06.html#sec-28">§28</a>). Creer para entender, armonizar, separar: tres posiciones que conviene leer seguidas, porque cada una se entiende mejor frente a las otras, y porque entre las tres dibujan el arco completo del problema, desde la unión más estrecha hasta el divorcio que abrirá la puerta a la modernidad.</p>
+<p><strong>Una cuarta figura.</strong> Cerraremos el tema saliendo del aula. Junto a los grandes maestros de la teología, la Edad Media tuvo figuras que no encajan en el molde del filósofo de escuela y que merecen, sin embargo, un lugar. Hildegard von Bingen —abadesa, visionaria, naturalista, compositora— es una de ellas, y con ella, tercera de la serie que abrieron Aspasia (<a href="../chapters-web/tema-02.html#sec-08">§08</a>) e Hipatia (<a href="../chapters-web/tema-05.html#sec-24">§24</a>), recordamos que el pensamiento de una época nunca cabe entero en sus autores canónicos (<a href="../chapters-web/tema-06.html#sec-29">§29</a>).</p>
 </section>
 <section id="sec-25" class="level2">
 <h2 class="anchored" data-anchor-id="sec-25">§25 · La filosofía medieval: etapas, métodos y cuestiones</h2>
 <p>Antes de entrar en los autores conviene un poco de andamiaje: saber en qué grandes etapas se divide la filosofía de estos mil años, cómo se trabajaba y se enseñaba en ella, cuál fue su problema central y de qué herencia griega se sirvió para pensarlo. Esta sección monta ese armazón; las siguientes lo llenan con tres pensadores concretos.</p>
-<p><strong>Dos grandes etapas: patrística y escolástica.</strong> La filosofía cristiana medieval suele dividirse en dos grandes momentos, separados por varios siglos de transición. El primero es la <em>patrística</em> (de <em>pater</em>, padre), la obra de los llamados <em>Padres de la Iglesia</em>, los primeros pensadores cristianos que, entre los siglos II y VIII, definieron la doctrina y la defendieron frente a otras interpretaciones. Su tarea no era tanto investigar cuanto <em>construir</em>: dotar a la nueva fe de una formulación intelectual sólida, capaz de competir con la cultura pagana de su tiempo. Para ello echaron mano de la filosofía griega que tenían a mano, sobre todo del platonismo. La cumbre de la patrística, y con mucho su filósofo más hondo, es Agustín de Hipona (<a href="tema-06.html#sec-26">§26</a>).</p>
-<p>El segundo momento es la <em>escolástica</em> (de <em>schola</em>, escuela), la filosofía que se cultiva en las escuelas medievales —las monásticas, luego las catedralicias y, desde el siglo XIII, las universidades— entre los siglos XI y XV. Si la patrística fundaba, la escolástica <em>sistematiza</em>: hereda un cuerpo de doctrina ya establecido y se dedica a ordenarlo, a precisarlo y a defenderlo con un rigor técnico cada vez mayor. Es una filosofía de profesores y de aulas, escrita en latín para un público especializado, que discute sin descanso problemas heredados. Sus dos figuras mayores, y los otros dos protagonistas de este tema, son Tomás de Aquino (<a href="tema-06.html#sec-27">§27</a>) y Guillermo de Ockham (<a href="tema-06.html#sec-28">§28</a>), ya en la fase final, cuando el gran edificio escolástico empieza a agrietarse.</p>
+<p><strong>Dos grandes etapas: patrística y escolástica.</strong> La filosofía cristiana medieval suele dividirse en dos grandes momentos, separados por varios siglos de transición. El primero es la <em>patrística</em> (de <em>pater</em>, padre), la obra de los llamados <em>Padres de la Iglesia</em>, los primeros pensadores cristianos que, entre los siglos II y VIII, definieron la doctrina y la defendieron frente a otras interpretaciones. Su tarea no era tanto investigar cuanto <em>construir</em>: dotar a la nueva fe de una formulación intelectual sólida, capaz de competir con la cultura pagana de su tiempo. Para ello echaron mano de la filosofía griega que tenían a mano, sobre todo del platonismo. La cumbre de la patrística, y con mucho su filósofo más hondo, es Agustín de Hipona (<a href="../chapters-web/tema-06.html#sec-26">§26</a>).</p>
+<p>El segundo momento es la <em>escolástica</em> (de <em>schola</em>, escuela), la filosofía que se cultiva en las escuelas medievales —las monásticas, luego las catedralicias y, desde el siglo XIII, las universidades— entre los siglos XI y XV. Si la patrística fundaba, la escolástica <em>sistematiza</em>: hereda un cuerpo de doctrina ya establecido y se dedica a ordenarlo, a precisarlo y a defenderlo con un rigor técnico cada vez mayor. Es una filosofía de profesores y de aulas, escrita en latín para un público especializado, que discute sin descanso problemas heredados. Sus dos figuras mayores, y los otros dos protagonistas de este tema, son Tomás de Aquino (<a href="../chapters-web/tema-06.html#sec-27">§27</a>) y Guillermo de Ockham (<a href="../chapters-web/tema-06.html#sec-28">§28</a>), ya en la fase final, cuando el gran edificio escolástico empieza a agrietarse.</p>
 <p><strong>Cómo se trabajaba: lectio, quaestio, disputatio.</strong> La escolástica no es solo un período: es también un <em>método</em>, una manera de enseñar y de pensar que conviene conocer, porque explica la forma misma de los textos que leeremos. La enseñanza giraba en torno a tres ejercicios encadenados. El primero era la <em>lectio</em>, la lectura comentada de un texto autorizado —la Biblia, una obra de Aristóteles, una colección de sentencias de los Padres—: el maestro lo leía y lo explicaba línea a línea. De esa lectura surgía, de forma natural, el segundo ejercicio: la <em>quaestio</em>, la <em>cuestión</em>, el problema que el texto plantea y que merece discutirse aparte. Y la cuestión se resolvía mediante el tercero y más vivo: la <em>disputatio</em>, la <em>disputa</em>, un debate reglado en el que se exponían primero los argumentos a favor y en contra de una tesis y el maestro la zanjaba al final con su propia resolución, respondiendo una por una a las objeciones.</p>
-<p>Esa estructura —plantear la cuestión, alinear los argumentos contrarios, resolver, refutar las objeciones— es la que da forma a las grandes obras de la época, las <em>sumas</em>, esos enormes compendios que pretenden abarcar ordenadamente todo el saber. La <em>Suma teológica</em> de Tomás de Aquino, de la que saldrán las cinco vías (<a href="tema-06.html#sec-27">§27</a>), está escrita entera así: como una sucesión de cuestiones disputadas. Conviene tenerlo presente para no descontextualizar lo que leamos: aquellos textos no son ensayos ni tratados continuos, sino piezas de un debate de escuela.</p>
+<p>Esa estructura —plantear la cuestión, alinear los argumentos contrarios, resolver, refutar las objeciones— es la que da forma a las grandes obras de la época, las <em>sumas</em>, esos enormes compendios que pretenden abarcar ordenadamente todo el saber. La <em>Suma teológica</em> de Tomás de Aquino, de la que saldrán las cinco vías (<a href="../chapters-web/tema-06.html#sec-27">§27</a>), está escrita entera así: como una sucesión de cuestiones disputadas. Conviene tenerlo presente para no descontextualizar lo que leamos: aquellos textos no son ensayos ni tratados continuos, sino piezas de un debate de escuela.</p>
 <p><strong>La gran cuestión: fe y razón.</strong> ¿De qué se discutía en aquellas aulas? De muchas cosas, pero una atraviesa todas las demás y vertebra este tema: la relación entre la <em>fe</em> y la <em>razón</em>. El problema, ya lo vimos, nace del propio cristianismo (Parte II). Si la verdad última ha sido revelada por Dios y se acepta por fe, ¿qué papel le queda a la razón, esa herramienta que los griegos habían afilado durante siglos? Las respuestas posibles forman un abanico que va de un extremo a otro. En un extremo está el <em>fideísmo</em>, que desconfía de la razón y lo fía todo a la fe, hasta el punto de que un autor temprano, Tertuliano, pudo preguntarse qué tiene que ver Atenas con Jerusalén, la filosofía con el evangelio. En el otro extremo asomaría la tentación contraria: hacer de la razón un tribunal autónomo, capaz incluso de contradecir a la fe, como se acusó de sostener a algunos lectores radicales de Aristóteles con su doctrina de la «doble verdad». Entre ambos extremos caben muchas posiciones intermedias, y son las que de verdad cuentan.</p>
-<p>Las tres secciones siguientes recorren tres de esas posiciones, y no por azar, sino porque entre las tres trazan el recorrido completo. Agustín une fe y razón hasta casi fundirlas: se cree para entender (<a href="tema-06.html#sec-26">§26</a>). Tomás las distingue para armonizarlas, dando a cada una su terreno y mostrando que no pueden contradecirse, pues la verdad es una sola (<a href="tema-06.html#sec-27">§27</a>). Ockham las separa, retira a la razón casi todo lo que tocaba a Dios y lo devuelve a la fe (<a href="tema-06.html#sec-28">§28</a>). No conviene adelantar más: basta retener que la misma pregunta admite respuestas muy distintas, y que el modo de responderla cambia con los siglos.</p>
+<p>Las tres secciones siguientes recorren tres de esas posiciones, y no por azar, sino porque entre las tres trazan el recorrido completo. Agustín une fe y razón hasta casi fundirlas: se cree para entender (<a href="../chapters-web/tema-06.html#sec-26">§26</a>). Tomás las distingue para armonizarlas, dando a cada una su terreno y mostrando que no pueden contradecirse, pues la verdad es una sola (<a href="../chapters-web/tema-06.html#sec-27">§27</a>). Ockham las separa, retira a la razón casi todo lo que tocaba a Dios y lo devuelve a la fe (<a href="../chapters-web/tema-06.html#sec-28">§28</a>). No conviene adelantar más: basta retener que la misma pregunta admite respuestas muy distintas, y que el modo de responderla cambia con los siglos.</p>
 <p><strong>La herencia griega: dos recepciones.</strong> Para pensar su fe, los medievales no partieron de cero: se apoyaron en la filosofía griega que iban heredando. Pero no la heredaron toda a la vez, y eso marcó la diferencia entre las dos etapas. La filosofía medieval se sirve de dos grandes recepciones sucesivas de la Antigüedad.</p>
-<p>La primera es la del <em>platonismo</em>, y más exactamente la de su versión tardía, el <em>neoplatonismo</em> de Plotino. Estuvo disponible desde temprano y resultó muy afín al cristianismo, hasta el punto de parecer hecha a su medida. No es difícil ver por qué: la división platónica entre un mundo sensible y cambiante y un mundo inteligible, eterno y superior (<a href="tema-03.html#sec-09">§09</a>), encajaba con la distinción cristiana entre la criatura y Dios; la idea de un alma inmaterial e inmortal, superior al cuerpo (<a href="tema-03.html#sec-11">§11</a>), confirmaba la antropología cristiana; y el Bien supremo de Platón se dejaba leer como anticipo del Dios creador. Esta es la herencia con la que trabaja la patrística, y la que Agustín cristianiza con genio (<a href="tema-06.html#sec-26">§26</a>).</p>
-<p>La segunda recepción, mucho más tardía y mucho más conflictiva, es la de <em>Aristóteles</em>. Buena parte de su obra se había perdido para el Occidente latino y solo se recuperó entre los siglos XII y XIII, a través de las traducciones del griego y, sobre todo, del árabe: fueron los filósofos del mundo islámico, como Avicena y Averroes, quienes habían conservado y comentado a Aristóteles, y por su mediación —y por la de centros de traducción como el de Toledo— regresó a Europa (Parte II). Su llegada fue una conmoción. Aristóteles ofrecía un sistema completo y poderoso para explicar la naturaleza, pero contenía tesis difíciles de conciliar con la fe, como la eternidad del mundo, que choca con la creación, o sus dudas sobre la inmortalidad personal del alma. La Iglesia llegó a prohibir su enseñanza, y el siglo XIII vivió de su digestión. La gran empresa de Tomás de Aquino será precisamente esa: mostrar que el aristotelismo, bien entendido, no solo no amenaza la fe, sino que puede ponerse a su servicio (<a href="tema-06.html#sec-27">§27</a>). Con ello, la metafísica de la <em>forma</em>, del acto y la potencia y del primer motor que estudiamos en Aristóteles (<a href="tema-04.html#sec-14">§14</a>) pasa a ser la cantera de la teología cristiana.</p>
+<p>La primera es la del <em>platonismo</em>, y más exactamente la de su versión tardía, el <em>neoplatonismo</em> de Plotino. Estuvo disponible desde temprano y resultó muy afín al cristianismo, hasta el punto de parecer hecha a su medida. No es difícil ver por qué: la división platónica entre un mundo sensible y cambiante y un mundo inteligible, eterno y superior (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), encajaba con la distinción cristiana entre la criatura y Dios; la idea de un alma inmaterial e inmortal, superior al cuerpo (<a href="../chapters-web/tema-03.html#sec-11">§11</a>), confirmaba la antropología cristiana; y el Bien supremo de Platón se dejaba leer como anticipo del Dios creador. Esta es la herencia con la que trabaja la patrística, y la que Agustín cristianiza con genio (<a href="../chapters-web/tema-06.html#sec-26">§26</a>).</p>
+<p>La segunda recepción, mucho más tardía y mucho más conflictiva, es la de <em>Aristóteles</em>. Buena parte de su obra se había perdido para el Occidente latino y solo se recuperó entre los siglos XII y XIII, a través de las traducciones del griego y, sobre todo, del árabe: fueron los filósofos del mundo islámico, como Avicena y Averroes, quienes habían conservado y comentado a Aristóteles, y por su mediación —y por la de centros de traducción como el de Toledo— regresó a Europa (Parte II). Su llegada fue una conmoción. Aristóteles ofrecía un sistema completo y poderoso para explicar la naturaleza, pero contenía tesis difíciles de conciliar con la fe, como la eternidad del mundo, que choca con la creación, o sus dudas sobre la inmortalidad personal del alma. La Iglesia llegó a prohibir su enseñanza, y el siglo XIII vivió de su digestión. La gran empresa de Tomás de Aquino será precisamente esa: mostrar que el aristotelismo, bien entendido, no solo no amenaza la fe, sino que puede ponerse a su servicio (<a href="../chapters-web/tema-06.html#sec-27">§27</a>). Con ello, la metafísica de la <em>forma</em>, del acto y la potencia y del primer motor que estudiamos en Aristóteles (<a href="../chapters-web/tema-04.html#sec-14">§14</a>) pasa a ser la cantera de la teología cristiana.</p>
 <p>Con el armazón ya montado —dos etapas, un método, una cuestión central y dos herencias griegas—, podemos entrar en las tres voces que dieron a esa cuestión sus tres grandes respuestas. Empezamos por la primera en el tiempo: Agustín.</p>
 </section>
 <section id="sec-26" class="level2">
@@ -546,14 +558,14 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>Creer para entender.</strong> La posición de Agustín ante el problema de la fe y la razón no es fideísta: no renuncia a la razón en favor de la fe. Pero tampoco las pone una junto a otra como dos caminos independientes. Las entrelaza en un mismo movimiento, condensado en una fórmula célebre: <em>credo ut intellegam, intellegam ut credam</em>, «creo para entender, entiendo para creer». La fe y la razón no se contradicen ni se ignoran: se necesitan y se refuerzan. La fe es el punto de partida, la que orienta la búsqueda y ofrece lo que la razón aún no ve; pero el creyente no se queda en la fe, sino que usa la razón para profundizar en lo que cree y comprenderlo mejor. No hay que elegir entre creer y entender: se cree para poder entender, y lo entendido afianza la fe. La razón, lejos de ser enemiga de la religión, es su mejor aliada.</p>
-<p><strong>Contra el escepticismo: si me engaño, existo.</strong> Esa confianza en la razón obliga a Agustín a un primer combate: contra el <em>escepticismo</em>, la doctrina que niega que podamos alcanzar ninguna verdad cierta (<a href="tema-05.html#sec-23">§23</a>). Si nada pudiera saberse con seguridad, la propia búsqueda de la verdad sería vana. Agustín responde con un argumento de una agudeza que lo hará famoso. El escéptico duda de todo; pero, aunque dude de todo, no puede dudar de que <em>está dudando</em>, y por tanto de que <em>existe</em> él, que duda. Es más: aunque se engañe, aunque todas sus opiniones sean falsas, para engañarse tiene que existir. <em>Si fallor, sum</em>: «si me engaño, existo». El error mismo demuestra la existencia del que yerra. Hay, pues, al menos una verdad que ninguna duda puede tocar: la de mi propia existencia como sujeto consciente. Con ella se derrumba el escepticismo y se asegura un punto firme desde el que partir<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p><strong>Contra el escepticismo: si me engaño, existo.</strong> Esa confianza en la razón obliga a Agustín a un primer combate: contra el <em>escepticismo</em>, la doctrina que niega que podamos alcanzar ninguna verdad cierta (<a href="../chapters-web/tema-05.html#sec-23">§23</a>). Si nada pudiera saberse con seguridad, la propia búsqueda de la verdad sería vana. Agustín responde con un argumento de una agudeza que lo hará famoso. El escéptico duda de todo; pero, aunque dude de todo, no puede dudar de que <em>está dudando</em>, y por tanto de que <em>existe</em> él, que duda. Es más: aunque se engañe, aunque todas sus opiniones sean falsas, para engañarse tiene que existir. <em>Si fallor, sum</em>: «si me engaño, existo». El error mismo demuestra la existencia del que yerra. Hay, pues, al menos una verdad que ninguna duda puede tocar: la de mi propia existencia como sujeto consciente. Con ella se derrumba el escepticismo y se asegura un punto firme desde el que partir<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 <p><strong>La verdad está dentro, y por encima de ti.</strong> ¿Dónde se busca, entonces, la verdad? No fuera, en el mundo de los sentidos, sino dentro. «No salgas fuera, entra en ti mismo: en el interior del hombre habita la verdad», escribe Agustín. Es el giro hacia la <em>interioridad</em>, una de sus grandes aportaciones. Pero ese movimiento hacia dentro no termina en uno mismo. Cuando el alma examina las verdades que encuentra en su interior —las de las matemáticas, por ejemplo, o las del bien y la belleza—, descubre que son <em>inmutables</em>, <em>eternas</em> y <em>necesarias</em>: que siete y tres son diez lo es siempre, para todos, y no depende de que yo lo piense. Y entonces topa con una paradoja decisiva: el alma humana es mudable, cambia y se equivoca; pero esas verdades que ella reconoce no cambian ni se equivocan. Algo inmutable es, por fuerza, superior a lo mudable. Luego esas verdades están por encima del alma: no las ha creado ella, las encuentra, como quien halla una perla que ya estaba ahí.</p>
 <p><strong>La existencia de Dios.</strong> Aquí está la prueba agustiniana de la existencia de Dios, y nótese cómo nace: no de mirar el mundo exterior, como hará Tomás, sino de mirar dentro del alma. Si hay verdades eternas e inmutables, superiores a nuestra mente mudable, tiene que existir un fundamento eterno e inmutable que las sostenga, una Verdad suprema de la que todas las verdades particulares dependen. Y esa Verdad eterna, absoluta, fuente de todas las demás, no puede ser otra cosa que Dios. Dios y la Verdad se identifican: demostrar que hay verdad es demostrar que hay Dios. La existencia de Dios no se prueba, pues, por sus efectos en la naturaleza, sino por las huellas de lo eterno que el alma encuentra en su propio interior<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<p><strong>La iluminación.</strong> Queda una pregunta: si esas verdades eternas están por encima de nuestra mente, ¿cómo logra una mente finita y mudable acceder a ellas? La respuesta de Agustín es la teoría de la <em>iluminación</em>, y es su manera de cristianizar la herencia de Platón. Para Platón, conocer las Formas era <em>recordar</em> lo que el alma había visto antes de nacer (<a href="tema-03.html#sec-10">§10</a>); pero el cristianismo niega que el alma preexista al cuerpo, así que la reminiscencia no sirve. Agustín la sustituye por la iluminación: así como el ojo no ve los colores sin la luz del sol, la mente no capta las verdades eternas sin una luz espiritual que se las haga inteligibles, y esa luz es Dios mismo. Las verdades que conocemos son <em>ideas ejemplares</em>, los modelos eternos de todas las cosas, que ya no están —como en Platón— en un cielo aparte, sino en la mente de Dios, como sus pensamientos creadores. Dios, que nos creó, nos ilumina para que podamos conocer. Conocer la verdad es, en el fondo, una forma de encontrarse con Dios. Así, en Agustín, teoría del conocimiento y religión son una sola cosa: el camino hacia el saber y el camino hacia Dios coinciden, y ambos pasan por el interior del alma. Es el modelo que dominará hasta que, ocho siglos después, otro pensador proponga empezar no por dentro, sino por los sentidos y el mundo: Tomás de Aquino.</p>
+<p><strong>La iluminación.</strong> Queda una pregunta: si esas verdades eternas están por encima de nuestra mente, ¿cómo logra una mente finita y mudable acceder a ellas? La respuesta de Agustín es la teoría de la <em>iluminación</em>, y es su manera de cristianizar la herencia de Platón. Para Platón, conocer las Formas era <em>recordar</em> lo que el alma había visto antes de nacer (<a href="../chapters-web/tema-03.html#sec-10">§10</a>); pero el cristianismo niega que el alma preexista al cuerpo, así que la reminiscencia no sirve. Agustín la sustituye por la iluminación: así como el ojo no ve los colores sin la luz del sol, la mente no capta las verdades eternas sin una luz espiritual que se las haga inteligibles, y esa luz es Dios mismo. Las verdades que conocemos son <em>ideas ejemplares</em>, los modelos eternos de todas las cosas, que ya no están —como en Platón— en un cielo aparte, sino en la mente de Dios, como sus pensamientos creadores. Dios, que nos creó, nos ilumina para que podamos conocer. Conocer la verdad es, en el fondo, una forma de encontrarse con Dios. Así, en Agustín, teoría del conocimiento y religión son una sola cosa: el camino hacia el saber y el camino hacia Dios coinciden, y ambos pasan por el interior del alma. Es el modelo que dominará hasta que, ocho siglos después, otro pensador proponga empezar no por dentro, sino por los sentidos y el mundo: Tomás de Aquino.</p>
 </section>
 <section id="sec-27" class="level2">
 <h2 class="anchored" data-anchor-id="sec-27">§27 · Tomás de Aquino: la armonía de fe y razón y las cinco vías</h2>
-<p>Tomás de Aquino (1224-1274 e. c.) representa la cumbre de la escolástica y la mayor síntesis intelectual de la Edad Media. Fraile dominico y profesor en la Universidad de París, en pleno siglo XIII, le tocó vivir el momento decisivo en que Aristóteles regresaba a Occidente y amenazaba con dividir a creyentes y filósofos (<a href="tema-06.html#sec-25">§25</a>). Su obra inmensa —encabezada por la <em>Suma teológica</em>— se entiende toda como respuesta a ese desafío: mostrar que la mejor filosofía, la de Aristóteles, y la fe cristiana, lejos de enfrentarse, se necesitan. Donde Agustín había pensado con Platón, Tomás piensa con Aristóteles, y ese cambio de maestro lo cambia casi todo<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Tomás de Aquino (1224-1274 e. c.) representa la cumbre de la escolástica y la mayor síntesis intelectual de la Edad Media. Fraile dominico y profesor en la Universidad de París, en pleno siglo XIII, le tocó vivir el momento decisivo en que Aristóteles regresaba a Occidente y amenazaba con dividir a creyentes y filósofos (<a href="../chapters-web/tema-06.html#sec-25">§25</a>). Su obra inmensa —encabezada por la <em>Suma teológica</em>— se entiende toda como respuesta a ese desafío: mostrar que la mejor filosofía, la de Aristóteles, y la fe cristiana, lejos de enfrentarse, se necesitan. Donde Agustín había pensado con Platón, Tomás piensa con Aristóteles, y ese cambio de maestro lo cambia casi todo<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-tomas-aquino.png" class="img-fluid figure-img"></p>
@@ -562,7 +574,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p><strong>La armonía de fe y razón.</strong> La posición de Tomás ante el problema central del tema es la de la <em>armonía</em>, y es más fina que la de Agustín. No las funde: las <em>distingue</em> cuidadosamente para luego mostrar que concuerdan. Razón y fe son dos vías de conocimiento distintas. La razón, la filosofía, parte de los datos de los sentidos y procede por demostración; la fe, la teología, parte de lo que Dios ha revelado y se acepta por la autoridad de quien lo revela. Tienen métodos distintos y, en buena parte, objetos distintos. Pero —y este es el punto— <em>no pueden contradecirse</em>, porque la verdad es una sola: Dios es a la vez el autor de la razón con que pensamos y de la revelación que creemos, y Dios no se contradice. Si un razonamiento parece chocar con la fe, es que el razonamiento está mal hecho.</p>
 <p><strong>Lo que la razón alcanza y lo que la supera.</strong> ¿Cómo se reparten, entonces, el terreno? Tomás distingue tres zonas. Hay verdades que pertenecen <em>solo</em> a la fe, porque superan la capacidad de la razón: que Dios sea uno y trino, o que el mundo haya sido creado en el tiempo, no pueden demostrarse, solo creerse. Hay verdades que pertenecen <em>solo</em> a la razón, las del conocimiento natural del mundo. Y hay una franja que ambas comparten: verdades sobre Dios a las que se puede llegar también razonando, como su existencia. A esas verdades accesibles por las dos vías Tomás las llama <em>preámbulos de la fe</em> (<em>praeambula fidei</em>): son el prólogo racional de la religión, el tramo del camino que la razón puede recorrer por su cuenta antes de que la fe tome el relevo. La filosofía no agota lo cognoscible, pero tampoco es una sierva muda: tiene su propia autonomía y su propia dignidad. La fe la corona, no la suprime.</p>
-<p><strong>Demostrar a Dios desde el mundo.</strong> La existencia de Dios es, justamente, el más importante de esos preámbulos: una verdad que se cree, pero que también se puede <em>demostrar</em>. Y aquí se ve el giro respecto de Agustín. Tomás no prueba a Dios mirando hacia dentro, por las verdades eternas del alma, sino mirando hacia <em>fuera</em>, partiendo de los datos que los sentidos nos ofrecen del mundo. Su prueba es <em>a posteriori</em>: asciende desde los efectos que observamos hasta su causa. Cada una de sus famosas <em>cinco vías</em> arranca de un hecho de experiencia, sigue el hilo de las causas hacia atrás y concluye que esa cadena no puede prolongarse hasta el infinito, sino que exige un primer término, que es Dios. Todas comparten ese esqueleto; la metafísica que las sostiene —el acto y la potencia, las cuatro causas, el primer motor— es la de Aristóteles que ya estudiamos (<a href="tema-04.html#sec-14">§14</a>), ahora puesta al servicio de la teología.</p>
+<p><strong>Demostrar a Dios desde el mundo.</strong> La existencia de Dios es, justamente, el más importante de esos preámbulos: una verdad que se cree, pero que también se puede <em>demostrar</em>. Y aquí se ve el giro respecto de Agustín. Tomás no prueba a Dios mirando hacia dentro, por las verdades eternas del alma, sino mirando hacia <em>fuera</em>, partiendo de los datos que los sentidos nos ofrecen del mundo. Su prueba es <em>a posteriori</em>: asciende desde los efectos que observamos hasta su causa. Cada una de sus famosas <em>cinco vías</em> arranca de un hecho de experiencia, sigue el hilo de las causas hacia atrás y concluye que esa cadena no puede prolongarse hasta el infinito, sino que exige un primer término, que es Dios. Todas comparten ese esqueleto; la metafísica que las sostiene —el acto y la potencia, las cuatro causas, el primer motor— es la de Aristóteles que ya estudiamos (<a href="../chapters-web/tema-04.html#sec-14">§14</a>), ahora puesta al servicio de la teología.</p>
 <p>Las cinco vías son estas:</p>
 <ol type="1">
 <li><p><strong>La vía del movimiento.</strong> Vemos que en el mundo hay cosas que se mueven, esto es, que cambian. Pero todo lo que se mueve es movido por otro, pues mover algo es hacerlo pasar de la potencia al acto, y eso solo puede causarlo algo que ya esté en acto. Esa serie de motores no puede remontarse al infinito, porque entonces no habría un primer motor y, sin él, tampoco los demás moverían. Ha de existir, pues, un <em>primer motor inmóvil</em>, que mueve sin ser movido: «y todos entienden que este es Dios».</p></li>
@@ -582,11 +594,11 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Guillermo de Ockham (h. 1287-1347 e. c.). Vidriera de una iglesia de Surrey. || Atribución: Moscarlop, CC BY-SA 3.0 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>El problema de los universales.</strong> Para entender a Ockham hay que asomarse a una de las grandes discusiones de toda la Edad Media: el <em>problema de los universales</em>. Un <em>universal</em> es un término general, como «hombre» o «blancura», que se aplica a muchos individuos a la vez. La pregunta es: ¿a qué corresponde ese término en la realidad? ¿Existe algo así como la humanidad, una naturaleza común realmente presente en todos los hombres, o solo existen los hombres concretos, y «hombre» es apenas un nombre que les damos? La discusión venía de lejos: era, en el fondo, la vieja disputa entre Platón, que situaba lo universal en un mundo aparte (<a href="tema-03.html#sec-09">§09</a>), y Aristóteles, que lo ponía dentro de las cosas (<a href="tema-04.html#sec-14">§14</a>). Frente a quienes sostenían que los universales tienen algún tipo de existencia real —el <em>realismo</em>—, Ockham defiende la posición contraria, el <em>nominalismo</em>.</p>
+<p><strong>El problema de los universales.</strong> Para entender a Ockham hay que asomarse a una de las grandes discusiones de toda la Edad Media: el <em>problema de los universales</em>. Un <em>universal</em> es un término general, como «hombre» o «blancura», que se aplica a muchos individuos a la vez. La pregunta es: ¿a qué corresponde ese término en la realidad? ¿Existe algo así como la humanidad, una naturaleza común realmente presente en todos los hombres, o solo existen los hombres concretos, y «hombre» es apenas un nombre que les damos? La discusión venía de lejos: era, en el fondo, la vieja disputa entre Platón, que situaba lo universal en un mundo aparte (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), y Aristóteles, que lo ponía dentro de las cosas (<a href="../chapters-web/tema-04.html#sec-14">§14</a>). Frente a quienes sostenían que los universales tienen algún tipo de existencia real —el <em>realismo</em>—, Ockham defiende la posición contraria, el <em>nominalismo</em>.</p>
 <p><strong>El nominalismo.</strong> Para Ockham, solo existen los individuos. No hay «humanidad» alguna flotando en las cosas ni en un cielo platónico: existen este hombre y aquel, cada uno singular y único, y nada más. ¿Qué son entonces los universales? Simples <em>nombres</em> (de ahí <em>nominalismo</em>), signos mentales con los que agrupamos cosas parecidas para poder pensarlas y hablar de ellas con economía. «Hombre» no nombra una entidad común, sino que es un concepto que vale por muchos individuos semejantes. Lo universal no está en la realidad, sino en la mente y en el lenguaje; en el mundo, todo es particular. Es una tesis de enormes consecuencias: si no hay naturalezas comunes que captar, el conocimiento cambia de signo, y la metafísica se queda sin buena parte de sus objetos.</p>
 <p><strong>La navaja de Ockham.</strong> Detrás del nominalismo late un principio de método que ha hecho a Ockham más famoso que cualquiera de sus doctrinas: el de no multiplicar los entes sin necesidad. «En vano se hace con más lo que puede hacerse con menos»: si una explicación más simple da cuenta de los hechos, sobra la más complicada. A este principio de economía se lo conoce, con una imagen feliz que es posterior a él, como la <em>navaja de Ockham</em>, porque corta y elimina todo lo superfluo. Aplicado a los universales, la navaja barre las naturalezas comunes: si basta con los individuos y unos cuantos conceptos para explicarlo todo, ¿para qué postular además entidades universales? Aplicado a la filosofía entera, recorta el frondoso bosque de distinciones y entidades que la escolástica había hecho crecer. Es un instrumento crítico de un filo extraordinario, y sigue vivo: la ciencia moderna lo usa cada vez que, entre dos teorías que explican lo mismo, prefiere la más sencilla.</p>
-<p><strong>La separación de fe y razón.</strong> Esa misma navaja, vuelta hacia la teología, produce el resultado que más nos importa. Si Tomás había confiado en que la razón podía demostrar la existencia de Dios y otros preámbulos de la fe (<a href="tema-06.html#sec-27">§27</a>), Ockham lo niega. Sus pruebas, sometidas a crítica, no son concluyentes: de los efectos finitos del mundo no se sigue con necesidad un Dios infinito, único y todopoderoso tal como lo concibe el cristianismo. La razón puede a lo sumo hacer probable la existencia de un primer principio, pero no demostrar al Dios de la fe. Y con ello la armonía tomista se rompe. La fe y la razón quedan <em>separadas</em>: las verdades de la religión no son objeto de demostración, sino solo de fe; se creen porque Dios las ha revelado, no porque la razón las pruebe. La filosofía se ocupa de lo que se puede conocer por la experiencia y la lógica; la teología, de lo que se cree. Cada una en su terreno, sin invadirse.</p>
-<p><strong>Lo que abre esa grieta.</strong> La separación tiene un doble filo, y por eso Ockham mira a la vez hacia atrás y hacia delante. Por un lado, exalta la fe: al librarla de la tutela de la razón, la hace depender solo de la libre voluntad de un Dios omnipotente, cuyas decisiones no tenemos por qué poder demostrar ni comprender. Por otro, y sin pretenderlo, emancipa a la razón: una vez que la filosofía no tiene que justificar los dogmas, queda libre para volverse hacia el mundo, hacia lo singular y observable, con sus propios métodos. El nominalismo, que reclama atención a los individuos concretos, y la navaja, que exige sencillez, apuntan ya en la dirección que tomará la ciencia moderna. Así, el último gran escolástico es también el primero de los modernos: al separar lo que Tomás había unido, Ockham cierra la Edad Media del lado de la fe y entreabre, del lado de la razón, la puerta por la que entrará Descartes (<a href="tema-08.html#sec-36">§36</a>).</p>
+<p><strong>La separación de fe y razón.</strong> Esa misma navaja, vuelta hacia la teología, produce el resultado que más nos importa. Si Tomás había confiado en que la razón podía demostrar la existencia de Dios y otros preámbulos de la fe (<a href="../chapters-web/tema-06.html#sec-27">§27</a>), Ockham lo niega. Sus pruebas, sometidas a crítica, no son concluyentes: de los efectos finitos del mundo no se sigue con necesidad un Dios infinito, único y todopoderoso tal como lo concibe el cristianismo. La razón puede a lo sumo hacer probable la existencia de un primer principio, pero no demostrar al Dios de la fe. Y con ello la armonía tomista se rompe. La fe y la razón quedan <em>separadas</em>: las verdades de la religión no son objeto de demostración, sino solo de fe; se creen porque Dios las ha revelado, no porque la razón las pruebe. La filosofía se ocupa de lo que se puede conocer por la experiencia y la lógica; la teología, de lo que se cree. Cada una en su terreno, sin invadirse.</p>
+<p><strong>Lo que abre esa grieta.</strong> La separación tiene un doble filo, y por eso Ockham mira a la vez hacia atrás y hacia delante. Por un lado, exalta la fe: al librarla de la tutela de la razón, la hace depender solo de la libre voluntad de un Dios omnipotente, cuyas decisiones no tenemos por qué poder demostrar ni comprender. Por otro, y sin pretenderlo, emancipa a la razón: una vez que la filosofía no tiene que justificar los dogmas, queda libre para volverse hacia el mundo, hacia lo singular y observable, con sus propios métodos. El nominalismo, que reclama atención a los individuos concretos, y la navaja, que exige sencillez, apuntan ya en la dirección que tomará la ciencia moderna. Así, el último gran escolástico es también el primero de los modernos: al separar lo que Tomás había unido, Ockham cierra la Edad Media del lado de la fe y entreabre, del lado de la razón, la puerta por la que entrará Descartes (<a href="../chapters-web/tema-08.html#sec-36">§36</a>).</p>
 <p><strong>Las tres voces, de un vistazo.</strong> Hemos recorrido tres respuestas a una misma pregunta. Conviene verlas juntas, porque solo en su contraste se mide el camino que va de una a otra: de la fe y la razón fundidas en Agustín, a su armonía equilibrada en Tomás, a su divorcio en Ockham. La tabla siguiente las resume.</p>
 <span id="tbl-tres-voces-de-la-filosofia-medieval" class="tbl-ancla"></span>
 <table class="caption-top table">
@@ -647,7 +659,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-29" class="level2">
 <h2 class="anchored" data-anchor-id="sec-29">§29 · La personalidad polifacética de Hildegard von Bingen</h2>
-<p>La filosofía medieval que hemos recorrido es la de los grandes maestros de la teología, todos ellos varones, clérigos y profesores. Pero el pensamiento de una época nunca cabe entero en sus autores canónicos, y conviene cerrar el tema saliendo del aula para recordar una figura que desbordó por completo los moldes de su tiempo: Hildegard von Bingen (1098-1179 e. c.), abadesa renana del siglo XII. Es la tercera de una serie que abrimos con Aspasia (<a href="tema-02.html#sec-08">§08</a>) y continuamos con Hipatia (<a href="tema-05.html#sec-24">§24</a>): la de las mujeres que, contra todos los obstáculos de su época, dejaron huella en la vida intelectual<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<p>La filosofía medieval que hemos recorrido es la de los grandes maestros de la teología, todos ellos varones, clérigos y profesores. Pero el pensamiento de una época nunca cabe entero en sus autores canónicos, y conviene cerrar el tema saliendo del aula para recordar una figura que desbordó por completo los moldes de su tiempo: Hildegard von Bingen (1098-1179 e. c.), abadesa renana del siglo XII. Es la tercera de una serie que abrimos con Aspasia (<a href="../chapters-web/tema-02.html#sec-08">§08</a>) y continuamos con Hipatia (<a href="../chapters-web/tema-05.html#sec-24">§24</a>): la de las mujeres que, contra todos los obstáculos de su época, dejaron huella en la vida intelectual<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-hildegard.jpg" class="img-fluid figure-img"></p>
@@ -664,7 +676,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p>Las fórmulas latinas que se citan proceden de sus obras (<em>Confesiones</em>, <em>La verdadera religión</em>, <em>Soliloquios</em>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>El parentesco con el <em>cogito ergo sum</em> de Descartes (<a href="tema-08.html#sec-36">§36</a>) es evidente, y el propio Descartes lo reconoció. Pero el contexto y la finalidad son distintos: Agustín no busca, como Descartes, un primer principio para reconstruir todo el saber, sino confirmar que el alma, al volverse sobre sí, encuentra verdades indudables que la elevan hacia Dios.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>El parentesco con el <em>cogito ergo sum</em> de Descartes (<a href="../chapters-web/tema-08.html#sec-36">§36</a>) es evidente, y el propio Descartes lo reconoció. Pero el contexto y la finalidad son distintos: Agustín no busca, como Descartes, un primer principio para reconstruir todo el saber, sino confirmar que el alma, al volverse sobre sí, encuentra verdades indudables que la elevan hacia Dios.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Agustín ofrece también otras vías más clásicas, como la que asciende desde el orden y la belleza del mundo hasta un creador, o la que parte de los grados de bondad de las cosas hacia el Bien supremo. Pero la prueba característicamente agustiniana, la que mejor expresa su giro hacia la interioridad, es la de las verdades eternas.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Los textos de las cinco vías que se citan proceden todos de la <em>Suma teológica</em>, parte I, cuestión 2, artículo 3.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>La célebre «navaja» no aparece con ese nombre en sus textos, pero condensa fielmente un principio de economía que él aplica una y otra vez.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -673,19 +685,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -764,7 +888,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -773,8 +898,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -788,6 +974,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -950,44 +1137,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1086,7 +1283,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../parte-2.html" class="pagination-link" aria-label="Parte II · Edad Media">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Parte II · Edad Media</span>

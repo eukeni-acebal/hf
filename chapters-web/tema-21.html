@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-20.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-21.html"><span class="chapter-title">Tema 21 · Beauvoir y el pensamiento feminista</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-21.html"><span class="chapter-title">Tema 21 · Beauvoir y el pensamiento feminista</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -491,10 +503,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-21.html"><span class="chapter-title">Tema 21 · Beauvoir y el pensamiento feminista</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-21.html"><span class="chapter-title">Tema 21 · Beauvoir y el pensamiento feminista</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 21 · Beauvoir y el pensamiento feminista</span></h1>
 </div>
@@ -515,14 +527,14 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-beauvoir-y-el-pensamiento-feminista" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-beauvoir-y-el-pensamiento-feminista">Para entrar en Beauvoir y el pensamiento feminista</h2>
-<p>El tema anterior se cerró con una advertencia posmoderna: desconfiar de quien dice hablar en nombre de la Razón con mayúscula, porque tras lo que cada época proclama «universal» suelen esconderse intereses particulares (<a href="tema-20.html#sec-75">§75</a>). Pues bien, hay un caso donde esa sospecha da en el blanco con una nitidez incómoda. Durante casi toda la historia de la filosofía, lo que se llamó «el ser humano», «el ciudadano» o «el Hombre» se pensó, calladamente, en masculino, y dejó fuera —o en segundo plano— a la mitad de la humanidad: las mujeres. Sacar a la luz esa exclusión, mostrar que no era natural sino fabricada, y reclamar la igual dignidad de las mujeres es uno de los grandes acontecimientos del pensamiento de los siglos XIX y XX. Ese es el asunto de este tema.</p>
-<p>Lo recorreremos en dos pasos, de fuera adentro. El <strong>primero</strong> toma distancia y mira el <em>movimiento</em> en su conjunto: el feminismo como corriente social e intelectual que, a lo largo de dos siglos, suele ordenarse en <em>olas</em> —de las pioneras ilustradas al sufragismo, y de este a los feminismos de la segunda mitad del siglo XX—, cada una con sus reivindicaciones y sus figuras (<a href="tema-21.html#sec-76">§76</a>). El <strong>segundo</strong> paso cierra el plano sobre la pensadora que dio a todo ese movimiento su mayor obra filosófica: <em>Simone de Beauvoir</em>, cuyo <em>El segundo sexo</em> (1949) ofreció, por fin, las herramientas conceptuales —la categoría de mujer, la distinción entre lo biológico y lo social, la pareja <em>Sujeto/Otro</em>— para entender y combatir la subordinación femenina (<a href="tema-21.html#sec-77">§77</a>).</p>
+<p>El tema anterior se cerró con una advertencia posmoderna: desconfiar de quien dice hablar en nombre de la Razón con mayúscula, porque tras lo que cada época proclama «universal» suelen esconderse intereses particulares (<a href="../chapters-web/tema-20.html#sec-75">§75</a>). Pues bien, hay un caso donde esa sospecha da en el blanco con una nitidez incómoda. Durante casi toda la historia de la filosofía, lo que se llamó «el ser humano», «el ciudadano» o «el Hombre» se pensó, calladamente, en masculino, y dejó fuera —o en segundo plano— a la mitad de la humanidad: las mujeres. Sacar a la luz esa exclusión, mostrar que no era natural sino fabricada, y reclamar la igual dignidad de las mujeres es uno de los grandes acontecimientos del pensamiento de los siglos XIX y XX. Ese es el asunto de este tema.</p>
+<p>Lo recorreremos en dos pasos, de fuera adentro. El <strong>primero</strong> toma distancia y mira el <em>movimiento</em> en su conjunto: el feminismo como corriente social e intelectual que, a lo largo de dos siglos, suele ordenarse en <em>olas</em> —de las pioneras ilustradas al sufragismo, y de este a los feminismos de la segunda mitad del siglo XX—, cada una con sus reivindicaciones y sus figuras (<a href="../chapters-web/tema-21.html#sec-76">§76</a>). El <strong>segundo</strong> paso cierra el plano sobre la pensadora que dio a todo ese movimiento su mayor obra filosófica: <em>Simone de Beauvoir</em>, cuyo <em>El segundo sexo</em> (1949) ofreció, por fin, las herramientas conceptuales —la categoría de mujer, la distinción entre lo biológico y lo social, la pareja <em>Sujeto/Otro</em>— para entender y combatir la subordinación femenina (<a href="../chapters-web/tema-21.html#sec-77">§77</a>).</p>
 <p>El hilo que cose ambos pasos es una sola convicción, la que Beauvoir resumió en cuatro palabras: <em>no se nace mujer, se llega a serlo</em>. Si lo que somos como mujeres y como varones no nos viene dado por la naturaleza, sino que lo construye la sociedad, entonces puede pensarse de otro modo y, sobre todo, puede cambiarse. Ese es el descubrimiento que conviene llevar en la mano por las páginas que siguen.</p>
 </section>
 <section id="sec-76" class="level2">
 <h2 class="anchored" data-anchor-id="sec-76">§76 · Las olas del feminismo</h2>
-<p><strong>El feminismo como movimiento y como filosofía.</strong> <em>Feminismo</em> es a la vez una corriente de pensamiento y un movimiento social que sostienen la igual dignidad de mujeres y varones y combaten la subordinación de aquellas. Para ordenar su larga historia se ha hecho común una metáfora: la de las <em>olas</em>, cada una con sus reivindicaciones, sus figuras y su momento. Conviene usarla con cautela —el esquema procede del mundo anglosajón y deja en sombra otros feminismos<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>—, pero sirve como mapa para no perderse. Antes de detenernos en la filósofa central de este tema, recorramos ese mapa <a href="tema-21.html#tbl-olas-del-feminismo">Tabla 14</a>.</p>
-<p><strong>El precedente ilustrado.</strong> La primera reflexión filosófica de fondo sobre la igualdad entre los sexos nace con la Ilustración (<a href="tema-11.html#sec-49">§49</a>). Frente a una Declaración de Derechos del Hombre que no contaba con ellas, <em>Olympe de Gouges</em> (1748-1793) escribió la <em>Declaración de los derechos de la mujer y de la ciudadana</em> (1791), y <em>Mary Wollstonecraft</em> (1759-1797) reclamó en su <em>Vindicación de los derechos de la mujer</em> (1792) que las mujeres son tan capaces de razón como los varones y que, por tanto, <em>deben ser educadas racionalmente</em> y no solo para agradar. A este <em>feminismo ilustrado</em> —así lo llamamos aquí, reservando «primera ola» para el sufragismo posterior— pertenece la semilla de todo lo que vendrá: si la desigualdad no es natural sino fruto de una mala educación, puede corregirse.</p>
+<p><strong>El feminismo como movimiento y como filosofía.</strong> <em>Feminismo</em> es a la vez una corriente de pensamiento y un movimiento social que sostienen la igual dignidad de mujeres y varones y combaten la subordinación de aquellas. Para ordenar su larga historia se ha hecho común una metáfora: la de las <em>olas</em>, cada una con sus reivindicaciones, sus figuras y su momento. Conviene usarla con cautela —el esquema procede del mundo anglosajón y deja en sombra otros feminismos<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>—, pero sirve como mapa para no perderse. Antes de detenernos en la filósofa central de este tema, recorramos ese mapa <a href="../chapters-web/tema-21.html#tbl-olas-del-feminismo">Tabla 14</a>.</p>
+<p><strong>El precedente ilustrado.</strong> La primera reflexión filosófica de fondo sobre la igualdad entre los sexos nace con la Ilustración (<a href="../chapters-web/tema-11.html#sec-49">§49</a>). Frente a una Declaración de Derechos del Hombre que no contaba con ellas, <em>Olympe de Gouges</em> (1748-1793) escribió la <em>Declaración de los derechos de la mujer y de la ciudadana</em> (1791), y <em>Mary Wollstonecraft</em> (1759-1797) reclamó en su <em>Vindicación de los derechos de la mujer</em> (1792) que las mujeres son tan capaces de razón como los varones y que, por tanto, <em>deben ser educadas racionalmente</em> y no solo para agradar. A este <em>feminismo ilustrado</em> —así lo llamamos aquí, reservando «primera ola» para el sufragismo posterior— pertenece la semilla de todo lo que vendrá: si la desigualdad no es natural sino fruto de una mala educación, puede corregirse.</p>
 <p><strong>La primera ola: el sufragismo.</strong> La <em>primera ola</em> propiamente dicha se extiende desde el siglo XIX hasta comienzos del XX, y sus reivindicaciones son sobre todo <em>legales</em>: el <em>derecho al voto</em> (el sufragio femenino), el acceso de las mujeres a la <em>educación</em> y la abolición de los dobles raseros entre sexos. Ya no es cosa de unas pocas pensadoras aisladas, sino un movimiento internacional con incontables mujeres organizadas; en el Reino Unido las <em>suffragettes</em> recurrieron incluso a protestas, sabotajes y huelgas de hambre, frente a las <em>sufragistas</em>, partidarias de medios más templados. Una nación tras otra fue reconociendo el voto femenino —Nueva Zelanda en 1893, muchas otras tras la Primera Guerra Mundial, España en 1931—, y a medida que ese objetivo se alcanzaba, la primera ola fue perdiendo fuerza, frenada además por las dos guerras y las penurias económicas. Por entonces, en 1949, un libro vino a cambiar el rumbo del feminismo: <em>El segundo sexo</em>, de Simone de Beauvoir, la figura a la que dedicamos el epígrafe siguiente.</p>
 <p><strong>La segunda ola: lo personal es político.</strong> La <em>segunda ola</em> surge en Europa y los Estados Unidos a finales de los años sesenta y se prolonga hasta los ochenta. Ya no se conforma con la igualdad legal: lleva la mirada a la <em>experiencia personal</em> de las mujeres y a la construcción de una teoría feminista. Su detonante social fue, en parte, la posguerra: durante la Segunda Guerra Mundial muchas mujeres habían ocupado los empleos de los hombres movilizados, y al volver estos fueron devueltas al hogar contra su voluntad. De aquel malestar nacieron tres grandes corrientes: la <em>liberal</em> —mayoritaria y práctica, busca la <em>paridad</em> y el igual acceso de las mujeres a los puestos de poder—; la <em>radical</em> —ve en la sociedad un <em>patriarcado</em> jerárquico que no basta con integrar, sino que hay que reestructurar—; y la <em>cultural</em> o <em>de la diferencia</em> —que reivindica y celebra las cualidades tenidas por femeninas en vez de pedir a las mujeres que se vuelvan como los varones—. Tres figuras la encarnan: <em>Betty Friedan</em> (1921-2006), cuya <em>Mística de la feminidad</em> (1963) puso nombre al «malestar que no tiene nombre» de las amas de casa a las que se había convencido de que su único destino era el matrimonio y la maternidad; <em>Kate Millett</em> (1934-2017), que en <em>Política sexual</em> (1970) popularizó el término <em>patriarcado</em> y mostró que la subordinación femenina es una cuestión <em>política</em>; y <em>Gloria Steinem</em> (n.&nbsp;1934), periodista y activista que llevó el feminismo a la opinión pública.</p>
 <p><strong>La tercera ola: la diversidad.</strong> La <em>tercera ola</em> arranca en los años noventa, con mujeres nacidas durante la segunda, y coincide con la popularización de internet, que da a sus voces un alcance global. Su rasgo dominante es la <em>diversidad</em>: ya no se habla de «la mujer» en singular, sino de mujeres muy distintas. Su concepto clave es la <em>interseccionalidad</em> —la constatación de que el género se cruza con la raza, la clase y la sexualidad, de modo que no todas las mujeres viven la misma opresión—, al que se suman la afirmación del cuerpo y de la sexualidad y el rechazo del <em>esencialismo</em>, esto es, de la idea de que exista una única manera «verdadera» de ser mujer. Su pensadora más influyente es <em>Judith Butler</em> (n.&nbsp;1956), que radicaliza la distinción entre sexo y género. Para Butler el género es <em>performativo</em>: no es una cualidad que se <em>tenga</em>, sino un papel que se <em>representa</em> una y otra vez —mediante el lenguaje, los gestos y las normas sociales—, de modo que se es mujer o varón <em>al interpretar el papel y porque se interpreta</em>. Va más allá y niega que el sexo mismo sea un dato puramente biológico previo a la cultura: también él, sostiene, es una idea social nacida de una heterosexualidad dada por norma. Frente al binarismo «macho/hembra», propone un <em>espectro</em> fluido de identidades, y frente a la heteronormatividad, la pluralidad de formas de vida que reúne el pensamiento <em>queer</em>, del que fue pionera<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
@@ -539,7 +551,7 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Feminismo ilustrado</strong> (<a href="tema-11.html#sec-49">§49</a>)</td>
+<td><strong>Feminismo ilustrado</strong> (<a href="../chapters-web/tema-11.html#sec-49">§49</a>)</td>
 <td>s. XVIII</td>
 <td>la igualdad nace de la razón; educar a las mujeres</td>
 <td>Olympe de Gouges, Mary Wollstonecraft</td>
@@ -568,14 +580,14 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-77" class="level2">
 <h2 class="anchored" data-anchor-id="sec-77">§77 · Simone de Beauvoir: la categoría «mujer» y la alteridad</h2>
-<p><strong>La filósofa de la otra mitad.</strong> <em>Simone de Beauvoir</em> (1908-1986) fue filósofa, novelista y activista, y compañera de Jean-Paul Sartre durante medio siglo (<a href="tema-17.html#sec-64">§64</a>). Existencialista como él, llevó la libertad situada del existencialismo (<a href="tema-17.html#sec-62">§62</a>) a un terreno que la filosofía apenas había pisado: la condición de la mujer. Su obra mayor, <em>El segundo sexo</em> (1949), es uno de los libros más influyentes del siglo y la pieza fundacional del feminismo contemporáneo —tan central que figura entre las obras de lectura del examen de acceso a la universidad—. Curiosamente, durante años Beauvoir se negó a llamarse feminista, por temor a que la etiqueta encorsetara su libertad de pensamiento; solo más tarde, al ver el eco de su libro en el movimiento, aceptó el nombre<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. La pregunta que vertebra su pensamiento es a la vez sencilla y vertiginosa: <em>¿qué es ser mujer?</em></p>
+<p><strong>La filósofa de la otra mitad.</strong> <em>Simone de Beauvoir</em> (1908-1986) fue filósofa, novelista y activista, y compañera de Jean-Paul Sartre durante medio siglo (<a href="../chapters-web/tema-17.html#sec-64">§64</a>). Existencialista como él, llevó la libertad situada del existencialismo (<a href="../chapters-web/tema-17.html#sec-62">§62</a>) a un terreno que la filosofía apenas había pisado: la condición de la mujer. Su obra mayor, <em>El segundo sexo</em> (1949), es uno de los libros más influyentes del siglo y la pieza fundacional del feminismo contemporáneo —tan central que figura entre las obras de lectura del examen de acceso a la universidad—. Curiosamente, durante años Beauvoir se negó a llamarse feminista, por temor a que la etiqueta encorsetara su libertad de pensamiento; solo más tarde, al ver el eco de su libro en el movimiento, aceptó el nombre<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. La pregunta que vertebra su pensamiento es a la vez sencilla y vertiginosa: <em>¿qué es ser mujer?</em></p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-beauvoir.jpg" class="img-fluid figure-img"></p>
 <figcaption>Simone de Beauvoir (1908-1986), autora de <em>El segundo sexo</em> (1949) y figura central del pensamiento feminista del siglo XX. || Atribución: Anefo / Nationaal Archief, 1967, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Antes de la mujer, la ambigüedad.</strong> Para entender su análisis de la mujer conviene partir de la base ética que lo sostiene, fijada dos años antes en <em>Para una moral de la ambigüedad</em> (1947). Beauvoir parte de una constatación: el ser humano está hecho de <em>dualidades</em> que no se dejan resolver. Somos mente y cuerpo, individuos libres y a la vez atados a un grupo, fruto del azar y a la vez agentes capaces de decidir. La dualidad decisiva es la que ya conocemos del existencialismo (<a href="tema-17.html#sec-62">§62</a>): somos <em>facticidad</em> —lo que de hecho somos: nuestra edad, nuestro pasado, nuestra mortalidad— y a la vez <em>trascendencia</em> —la capacidad de proyectarnos hacia lo que aún no somos—. No podemos quedarnos con uno solo de los polos: ambos tiran de nosotros a la vez, y de esa tensión irresoluble nace la <em>ambigüedad</em> de la existencia, que nos produce angustia. La tentación filosófica de siempre, dice Beauvoir, ha sido amputar uno de los polos para acabar con la incomodidad: Platón y Agustín sacrifican el cuerpo al alma (<a href="tema-03.html#sec-09">§09</a>, <a href="tema-06.html#sec-26">§26</a>); Descartes elimina el azar con su universo-reloj (<a href="tema-08.html#sec-36">§36</a>); el marxismo elimina a Dios pero recupera un absoluto por la puerta de atrás, la Humanidad (<a href="tema-15.html#sec-58">§58</a>). Todas son maneras de huir de la libertad y su vértigo.</p>
+<p><strong>Antes de la mujer, la ambigüedad.</strong> Para entender su análisis de la mujer conviene partir de la base ética que lo sostiene, fijada dos años antes en <em>Para una moral de la ambigüedad</em> (1947). Beauvoir parte de una constatación: el ser humano está hecho de <em>dualidades</em> que no se dejan resolver. Somos mente y cuerpo, individuos libres y a la vez atados a un grupo, fruto del azar y a la vez agentes capaces de decidir. La dualidad decisiva es la que ya conocemos del existencialismo (<a href="../chapters-web/tema-17.html#sec-62">§62</a>): somos <em>facticidad</em> —lo que de hecho somos: nuestra edad, nuestro pasado, nuestra mortalidad— y a la vez <em>trascendencia</em> —la capacidad de proyectarnos hacia lo que aún no somos—. No podemos quedarnos con uno solo de los polos: ambos tiran de nosotros a la vez, y de esa tensión irresoluble nace la <em>ambigüedad</em> de la existencia, que nos produce angustia. La tentación filosófica de siempre, dice Beauvoir, ha sido amputar uno de los polos para acabar con la incomodidad: Platón y Agustín sacrifican el cuerpo al alma (<a href="../chapters-web/tema-03.html#sec-09">§09</a>, <a href="../chapters-web/tema-06.html#sec-26">§26</a>); Descartes elimina el azar con su universo-reloj (<a href="../chapters-web/tema-08.html#sec-36">§36</a>); el marxismo elimina a Dios pero recupera un absoluto por la puerta de atrás, la Humanidad (<a href="../chapters-web/tema-15.html#sec-58">§58</a>). Todas son maneras de huir de la libertad y su vértigo.</p>
 <p><strong>Una ética de la esperanza, sin Dios y sin absolutos.</strong> De esa condición ambigua Beauvoir extrae una moral. Como no somos fuente de ningún sentido absoluto —no somos Dios—, <em>no caben los valores absolutos</em> ni las éticas que pretenden resolver de una vez por todas nuestros dilemas. Su propuesta es una <em>ética de la esperanza existencial</em> que ha de reconocer nuestros límites, mantener el futuro abierto y ser <em>secular</em>: rechazar tanto el Dios del cristianismo como la Humanidad del marxismo, porque ambos posponen la dignidad de las personas reales de hoy a un futuro utópico —el cielo o la sociedad sin clases— que tal vez no llegue nunca. Lo único que tenemos es el presente y nuestras acciones en él. Con esto, Beauvoir responde a la célebre sentencia que Dostoievski puso en boca de uno de sus personajes —«si Dios no existe, todo está permitido»—. No es verdad, replica: que Dios no esté para perdonar ni condenar no significa que todo valga, sino justamente lo contrario, que <em>solo nosotros somos responsables</em> de lo que hacemos, sin poder descargar esa responsabilidad en nadie. ¿Y cómo fundar valores compartidos sin Dios? Beauvoir lo cifra en uno solo: <em>el mal es negar la libertad</em>, la mía o la del otro. Y como no puedo afirmar mi propia libertad sin afirmar a la vez la de los demás —pues solo entre libres tiene sentido ser libre—, todos somos responsables de garantizar las <em>condiciones</em> de la libertad de todos. Esta es la viga maestra que sostendrá todo lo demás: si oprimir es negar la libertad ajena, entonces la opresión de las mujeres no es un hecho natural que haya que aceptar, sino un mal que hay que deshacer.</p>
 <p><strong>No se nace mujer.</strong> Armada con esa ética, Beauvoir vuelve la mirada a las mujeres. <em>El segundo sexo</em> se propone mostrar cómo las ciencias, las religiones y las tradiciones de Occidente han fabricado <em>una ideología de la inferioridad natural de la mujer</em> para justificar el dominio del varón. Y desmonta esa supuesta naturaleza con el pasaje más famoso del libro:</p>
 <blockquote class="blockquote">
@@ -583,14 +595,14 @@ ul.task-list li input[type="checkbox"] {
 <p>—Simone de Beauvoir, <em>El segundo sexo</em> (1949)</p>
 </blockquote>
 <p>La idea es de largo alcance. Nacer con un cuerpo de hembra humana es un hecho biológico; pero <em>ser mujer</em> —con todo lo que cada época y cada lugar cargan en esa palabra: dulzura, debilidad, entrega, dependencia— es el resultado de un largo proceso de socialización posterior al nacimiento. En esta distinción entre el dato biológico y el papel social muchos han visto el origen de la pareja conceptual <em>sexo</em> y <em>género</em> que hoy usamos a diario, aunque los estudiosos siguen discutiendo hasta dónde quiso Beauvoir llevarla. Lo indiscutible es lo que aportó: un <em>lenguaje</em> para analizar la feminidad como construcción social y un <em>método</em> para criticarla. Si la mujer se <em>hace</em>, también puede <em>rehacerse</em>.</p>
-<p><strong>El Sujeto y el Otro.</strong> ¿Cómo se ha fabricado esa imagen? Aquí Beauvoir introduce su instrumento conceptual más penetrante: la <em>alteridad</em>. La idea de fondo es general. Yo me defino siendo <em>yo</em> frente a los <em>Otros</em>, los que no son como yo; y un grupo se define como un <em>nosotros</em> frente a los que quedan fuera. Los griegos se pensaban civilizados frente a los <em>bárbaros</em>; el Tercer Reich se proclamó raza superior frente a los judíos, a quienes deshumanizó hasta el exterminio (<a href="tema-19.html#sec-69">§69</a>). Distinguir un Otro y atribuirle rasgos dice tanto del que mira como del mirado: cuando culpamos al inmigrante de quitarnos el trabajo, hablamos sobre todo de nuestros propios miedos. En toda relación de alteridad hay un <em>Sujeto</em> —que se toma por la norma, lo esencial, el absoluto— y un <em>Otro</em> —lo no-esencial, lo que se define por relación al Sujeto y depende de él—. Pues bien, sostiene Beauvoir, en la civilización occidental el Sujeto por defecto es el <em>varón</em>: cuando pensamos «ser humano», pensamos un varón, y las características del varón se extienden a toda la especie, de modo que la mujer queda definida no como un ser humano completo con sus particularidades, sino como un varón incompleto, un ser carente, <em>el Otro</em>. La fórmula, brutal en su simpleza, sería: <em>ser humano = varón</em>.</p>
-<p><strong>Una opresión sin historia.</strong> Esta «otrificación» no es un juego conceptual: ha <em>producido</em> las vidas concretas de las mujeres, su papel secundario, sus relaciones de dependencia. Y al <em>naturalizarse</em> —al atribuirse a la Naturaleza o a Dios—, se ha vuelto casi invisible e incuestionable: si la mujer es así <em>por naturaleza</em>, no hay nada que hacer. El análisis de Beauvoir rompe ese hechizo al mostrar que se trata de un producto social y, por tanto, reversible. Ahora bien, las mujeres son un caso de opresión muy peculiar, y aquí Beauvoir es de una lucidez incómoda. A diferencia de los judíos o de los esclavos negros, las mujeres <em>no forman un grupo</em> identificable con un origen histórico, una conciencia común y una solidaridad propia: son la mitad de la humanidad, dispersa entre los varones, ligada a ellos. No pueden rastrear el comienzo de su otredad ni reclamarse como pueblo agraviado. A ello se suma lo que Beauvoir llama la <em>unión heteronormativa</em>: no el deseo, sino el ideal social de que la mujer se realice a través del varón con quien se une, lo que la lleva a no reclamar su lugar como Sujeto y a contentarse con su papel de Otro. Por eso las mujeres pueden ser <em>cómplices</em> de su propia sujeción: encuentran en ella una cierta comodidad —la de no tener que cargar con la libertad y sus riesgos—, una felicidad de <em>mala fe</em>, en el sentido sartreano (<a href="tema-17.html#sec-64">§64</a>). No es toda la historia, matiza Beauvoir: muchas buscan esa felicidad subordinada <em>porque no les queda otra</em>, dadas sus condiciones materiales.</p>
+<p><strong>El Sujeto y el Otro.</strong> ¿Cómo se ha fabricado esa imagen? Aquí Beauvoir introduce su instrumento conceptual más penetrante: la <em>alteridad</em>. La idea de fondo es general. Yo me defino siendo <em>yo</em> frente a los <em>Otros</em>, los que no son como yo; y un grupo se define como un <em>nosotros</em> frente a los que quedan fuera. Los griegos se pensaban civilizados frente a los <em>bárbaros</em>; el Tercer Reich se proclamó raza superior frente a los judíos, a quienes deshumanizó hasta el exterminio (<a href="../chapters-web/tema-19.html#sec-69">§69</a>). Distinguir un Otro y atribuirle rasgos dice tanto del que mira como del mirado: cuando culpamos al inmigrante de quitarnos el trabajo, hablamos sobre todo de nuestros propios miedos. En toda relación de alteridad hay un <em>Sujeto</em> —que se toma por la norma, lo esencial, el absoluto— y un <em>Otro</em> —lo no-esencial, lo que se define por relación al Sujeto y depende de él—. Pues bien, sostiene Beauvoir, en la civilización occidental el Sujeto por defecto es el <em>varón</em>: cuando pensamos «ser humano», pensamos un varón, y las características del varón se extienden a toda la especie, de modo que la mujer queda definida no como un ser humano completo con sus particularidades, sino como un varón incompleto, un ser carente, <em>el Otro</em>. La fórmula, brutal en su simpleza, sería: <em>ser humano = varón</em>.</p>
+<p><strong>Una opresión sin historia.</strong> Esta «otrificación» no es un juego conceptual: ha <em>producido</em> las vidas concretas de las mujeres, su papel secundario, sus relaciones de dependencia. Y al <em>naturalizarse</em> —al atribuirse a la Naturaleza o a Dios—, se ha vuelto casi invisible e incuestionable: si la mujer es así <em>por naturaleza</em>, no hay nada que hacer. El análisis de Beauvoir rompe ese hechizo al mostrar que se trata de un producto social y, por tanto, reversible. Ahora bien, las mujeres son un caso de opresión muy peculiar, y aquí Beauvoir es de una lucidez incómoda. A diferencia de los judíos o de los esclavos negros, las mujeres <em>no forman un grupo</em> identificable con un origen histórico, una conciencia común y una solidaridad propia: son la mitad de la humanidad, dispersa entre los varones, ligada a ellos. No pueden rastrear el comienzo de su otredad ni reclamarse como pueblo agraviado. A ello se suma lo que Beauvoir llama la <em>unión heteronormativa</em>: no el deseo, sino el ideal social de que la mujer se realice a través del varón con quien se une, lo que la lleva a no reclamar su lugar como Sujeto y a contentarse con su papel de Otro. Por eso las mujeres pueden ser <em>cómplices</em> de su propia sujeción: encuentran en ella una cierta comodidad —la de no tener que cargar con la libertad y sus riesgos—, una felicidad de <em>mala fe</em>, en el sentido sartreano (<a href="../chapters-web/tema-17.html#sec-64">§64</a>). No es toda la historia, matiza Beauvoir: muchas buscan esa felicidad subordinada <em>porque no les queda otra</em>, dadas sus condiciones materiales.</p>
 <p><strong>Los requisitos de la emancipación.</strong> ¿Cómo se sale de ahí? La respuesta de Beauvoir es coherente con su ética: <em>la liberación es tarea de las mujeres mismas</em>. No se trata de pedir a los varones que «concedan» la libertad, sino de que las mujeres rechacen la felicidad de mala fe, descubran su solidaridad y se atrevan al placer y al riesgo de la libertad. El conflicto con los varones será inevitable, pero no eterno: terminará cuando estos <em>reconozcan</em> a las mujeres como Sujetos libres. Conquistar el voto y la independencia económica es necesario, pero no basta, porque no toca la <em>socialización</em> que fabrica a la mujer ni destrona al varón como prototipo de lo humano. Las mujeres han de liberarse de un doble yugo: el de creer que ser libres es volverse como los varones —lo que las aliena de sí mismas— y el de la educación que las amolda al papel de mujer. De ahí dos requisitos previos a la emancipación: que las mujeres sean socializadas para <em>participar</em> en el mundo con proyectos propios, y que puedan explorar las formas concretas en que su cuerpo y su experiencia interpelan al mundo. Todo ello exige <em>cambios estructurales</em> profundos —cuidado compartido de los hijos, igual educación, anticoncepción y aborto, y sobre todo <em>autonomía económica</em>—. Pero la condición de fondo es simbólica: <em>el mito «mujer» debe ser deconstruido para poder ser destruido</em>, porque mientras siga en pie, ninguna otra medida bastará. La meta no es un futuro andrógino donde no existan las diferencias, sino uno en que las diferencias dejen de servir para fabricar dos clases de personas. En él —y este es el giro final, de raíz ética— <em>todos nos reconoceríamos a la vez como Sujetos y como otros</em>, libres y recíprocos, sin Sujeto absoluto ni Otro absoluto.</p>
 <p><strong>La vejez, el otro Otro.</strong> El alcance de este análisis desborda la cuestión de la mujer. En <em>La vejez</em> (1970) Beauvoir aplicó exactamente el mismo método a otro grupo deshumanizado: las personas mayores. También aquí una limitación real —el cuerpo que envejece— sirve de coartada para <em>reducir al anciano a la condición de Otro</em>, negándole la capacidad de emprender proyectos y de relacionarse, que son los rasgos del Sujeto. Y también aquí la marginación no la dicta la biología, sino una sociedad que solo valora a las personas por su productividad laboral —de hecho la vejez llega antes a quien ha tenido una vida más dura: «un minero es ya un anciano a los cincuenta»—. La injusticia, como con las mujeres, consiste en servirse de una diferencia para justificar la exclusión. Que dos libros tan distantes compartan estructura revela hasta qué punto la pareja <em>Sujeto/Otro</em> era, para Beauvoir, una llave universal para pensar la opresión.</p>
-<p><strong>Una figura que escapa a las olas.</strong> ¿Dónde situar a Beauvoir en el mapa de <a href="tema-21.html#sec-76">§76</a>? En ninguna ola del todo. Publicó <em>El segundo sexo</em> en 1949, cuando la primera ola se había apagado y la segunda aún no había nacido, y durante años se negó a llamarse feminista por temor a ese encasillamiento. Y, sin embargo, su libro fue la chispa intelectual de la segunda ola —que lo leyó como su texto fundacional— y sus ideas alcanzan hasta la tercera. Más que pertenecer a una ola, Beauvoir es la <em>bisagra</em> que las une y el sustrato filosófico de casi todo lo que vino después. De ese legado conviene destacar dos aportaciones concretas, además de su feminismo <em>existencialista</em> —la idea, que recorre todo el epígrafe, de que la mujer no tiene una esencia dada sino que se hace en libertad—.</p>
-<p><strong>La sororidad.</strong> Si la liberación es tarea de las propias mujeres, necesitan reconocerse <em>entre sí</em>. Por eso Beauvoir reclama en <em>El segundo sexo</em> la <em>solidaridad</em> entre mujeres: que tomen conciencia común de su situación para conquistar la igualdad sin por ello volverse copias del varón. Esa idea late en la noción actual de <em>sororidad</em> —la hermandad entre mujeres<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>—, que la tercera ola amplió luego con la <em>interseccionalidad</em> (<a href="tema-21.html#sec-76">§76</a>): no una hermandad solo entre iguales de la misma clase, sino entre todas las mujeres, sea cual sea su raza, su clase o su orientación.</p>
+<p><strong>Una figura que escapa a las olas.</strong> ¿Dónde situar a Beauvoir en el mapa de <a href="../chapters-web/tema-21.html#sec-76">§76</a>? En ninguna ola del todo. Publicó <em>El segundo sexo</em> en 1949, cuando la primera ola se había apagado y la segunda aún no había nacido, y durante años se negó a llamarse feminista por temor a ese encasillamiento. Y, sin embargo, su libro fue la chispa intelectual de la segunda ola —que lo leyó como su texto fundacional— y sus ideas alcanzan hasta la tercera. Más que pertenecer a una ola, Beauvoir es la <em>bisagra</em> que las une y el sustrato filosófico de casi todo lo que vino después. De ese legado conviene destacar dos aportaciones concretas, además de su feminismo <em>existencialista</em> —la idea, que recorre todo el epígrafe, de que la mujer no tiene una esencia dada sino que se hace en libertad—.</p>
+<p><strong>La sororidad.</strong> Si la liberación es tarea de las propias mujeres, necesitan reconocerse <em>entre sí</em>. Por eso Beauvoir reclama en <em>El segundo sexo</em> la <em>solidaridad</em> entre mujeres: que tomen conciencia común de su situación para conquistar la igualdad sin por ello volverse copias del varón. Esa idea late en la noción actual de <em>sororidad</em> —la hermandad entre mujeres<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>—, que la tercera ola amplió luego con la <em>interseccionalidad</em> (<a href="../chapters-web/tema-21.html#sec-76">§76</a>): no una hermandad solo entre iguales de la misma clase, sino entre todas las mujeres, sea cual sea su raza, su clase o su orientación.</p>
 <p><strong>El Manifiesto de las 343.</strong> Beauvoir no se quedó en la filosofía especulativa: bajó al terreno de la acción. El mejor ejemplo es el <em>Manifiesto de las 343</em>, que ella misma redactó y que la revista <em>Le Nouvel Observateur</em> publicó el 5 de abril de 1971. En él, 343 mujeres —Beauvoir entre ellas— declaraban públicamente haber abortado, algo entonces ilegal en Francia y castigado con la cárcel. Era, a la vez, una confesión colectiva y un desafío político, y contribuyó a abrir el camino hacia la despenalización del aborto<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. La filósofa de la libertad situada ejercía así, en su propia vida, la responsabilidad que su ética predicaba.</p>
-<p><strong>Balance.</strong> Beauvoir es una pensadora compleja, no exenta de tensiones y contradicciones, y precisamente por eso sigue viva: continúa leída, discutida y, a veces, malinterpretada o invocada en apoyo de causas que ella no habría suscrito. Pero su aportación de fondo permanece intacta. Dio a la filosofía el instrumento para pensar la condición de la mujer —la pareja <em>Sujeto/Otro</em>— y a las mujeres el lenguaje para nombrar su opresión y un horizonte para superarla: un mundo en que la diferencia no fabrique desigualdad. Esa pregunta por <em>quién queda fuera</em> de la categoría de Sujeto pleno no se ha cerrado; reaparece, transformada, en los debates del siglo XXI sobre el género, la diversidad y la justicia, a los que se asoma el tema siguiente (<a href="tema-22.html#sec-79">§79</a>).</p>
+<p><strong>Balance.</strong> Beauvoir es una pensadora compleja, no exenta de tensiones y contradicciones, y precisamente por eso sigue viva: continúa leída, discutida y, a veces, malinterpretada o invocada en apoyo de causas que ella no habría suscrito. Pero su aportación de fondo permanece intacta. Dio a la filosofía el instrumento para pensar la condición de la mujer —la pareja <em>Sujeto/Otro</em>— y a las mujeres el lenguaje para nombrar su opresión y un horizonte para superarla: un mundo en que la diferencia no fabrique desigualdad. Esa pregunta por <em>quién queda fuera</em> de la categoría de Sujeto pleno no se ha cerrado; reaparece, transformada, en los debates del siglo XXI sobre el género, la diversidad y la justicia, a los que se asoma el tema siguiente (<a href="../chapters-web/tema-22.html#sec-79">§79</a>).</p>
 
 
 </section>
@@ -598,27 +610,139 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p>La historia en «olas» refleja sobre todo el desarrollo del movimiento en los países anglosajones, cuya enorme influencia cultural en el siglo XX la ha convertido en el relato dominante. Había feminismos en muchos otros lugares que el esquema no captura bien.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Sobre Butler y el feminismo del siglo XXI volveremos al tratar los retos actuales (<a href="tema-22.html#sec-79">§79</a>), junto a otras voces como las del ecofeminismo. Aquí basta con situarla como la gran referencia de la tercera ola.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Sobre Butler y el feminismo del siglo XXI volveremos al tratar los retos actuales (<a href="../chapters-web/tema-22.html#sec-79">§79</a>), junto a otras voces como las del ecofeminismo. Aquí basta con situarla como la gran referencia de la tercera ola.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Esta resistencia no es anecdótica: encaja con su existencialismo, que desconfía de toda etiqueta fija capaz de sustituir la libertad concreta de la persona por una esencia dada de antemano.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>El término no es nuevo: el primero en usar «sororidad» en castellano fue, curiosamente, el bilbaíno Miguel de Unamuno (<a href="tema-18.html#sec-65">§65</a>), en 1921 («convendría acaso hablar de <em>sororidad</em> y de <em>sororal</em>, de hermandad femenina»). La Real Academia no lo admitió hasta 2018.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>El término no es nuevo: el primero en usar «sororidad» en castellano fue, curiosamente, el bilbaíno Miguel de Unamuno (<a href="../chapters-web/tema-18.html#sec-65">§65</a>), en 1921 («convendría acaso hablar de <em>sororidad</em> y de <em>sororal</em>, de hermandad femenina»). La Real Academia no lo admitió hasta 2018.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>El gesto tuvo eco más allá de Francia: en 1979 más de mil mujeres firmaron en España una declaración semejante en apoyo de <em>las 11 de Basauri</em>, procesadas por aborto cuando aún era delito.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -697,7 +821,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -706,8 +831,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -721,6 +907,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -883,44 +1070,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1019,7 +1216,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-20.html" class="pagination-link" aria-label="Tema 20 · El giro lingüístico y la posmodernidad">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 20 · El giro lingüístico y la posmodernidad</span></span>

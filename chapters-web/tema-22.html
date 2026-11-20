@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-21.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-22.html"><span class="chapter-title">Tema 22 · Retos del siglo XXI</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-22.html"><span class="chapter-title">Tema 22 · Retos del siglo XXI</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-22.html"><span class="chapter-title">Tema 22 · Retos del siglo XXI</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-22.html"><span class="chapter-title">Tema 22 · Retos del siglo XXI</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 22 · Retos del siglo XXI</span></h1>
 </div>
@@ -516,15 +528,15 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-retos-del-siglo-xxi" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-retos-del-siglo-xxi">Para entrar en Retos del siglo XXI</h2>
-<p>Hemos llegado al presente. Las páginas anteriores nos han traído desde los primeros filósofos griegos hasta los grandes nombres del siglo XX, y el último tema dejó una pregunta abierta: la de <em>quién queda fuera</em> de la categoría de Sujeto pleno —quién es tratado como el Otro—, que Beauvoir formuló para las mujeres y que el siglo XXI ha vuelto a plantear en mil frentes nuevos (<a href="tema-21.html#sec-77">§77</a>). Este tema final se asoma a esos frentes. Ya no estudiamos a clásicos consagrados, sino a pensadores vivos o de muy reciente fallecimiento, sobre cuya obra el tiempo aún no ha dictado sentencia: no hay todavía un «canon» del siglo XXI. Por eso lo recorreremos a brochazos, presentando a cada autor por su idea más característica, sin la pretensión de agotarlos.</p>
-<p>Lo haremos en dos pasos. El <strong>primero</strong> describe el <em>suelo</em> que todos pisamos: un mundo <em>globalizado</em>, regido por un capitalismo de nuevo cuño y transformado de raíz por la tecnología digital. Cuatro diagnósticos —los de Klein, Bauman, Chomsky y Han— nos ayudarán a entender qué tipo de sociedad habitamos (<a href="tema-22.html#sec-78">§78</a>). El <strong>segundo</strong> paso atiende a los dos grandes frentes en que el pensamiento crítico actual libra hoy su batalla: la defensa de la <em>naturaleza</em> frente a la crisis ecológica y la continuación de la <em>cuestión de género</em> abierta por el feminismo. Allí se encontrarán Nussbaum, Herrero, Preciado y, de nuevo, Butler (<a href="tema-22.html#sec-79">§79</a>).</p>
+<p>Hemos llegado al presente. Las páginas anteriores nos han traído desde los primeros filósofos griegos hasta los grandes nombres del siglo XX, y el último tema dejó una pregunta abierta: la de <em>quién queda fuera</em> de la categoría de Sujeto pleno —quién es tratado como el Otro—, que Beauvoir formuló para las mujeres y que el siglo XXI ha vuelto a plantear en mil frentes nuevos (<a href="../chapters-web/tema-21.html#sec-77">§77</a>). Este tema final se asoma a esos frentes. Ya no estudiamos a clásicos consagrados, sino a pensadores vivos o de muy reciente fallecimiento, sobre cuya obra el tiempo aún no ha dictado sentencia: no hay todavía un «canon» del siglo XXI. Por eso lo recorreremos a brochazos, presentando a cada autor por su idea más característica, sin la pretensión de agotarlos.</p>
+<p>Lo haremos en dos pasos. El <strong>primero</strong> describe el <em>suelo</em> que todos pisamos: un mundo <em>globalizado</em>, regido por un capitalismo de nuevo cuño y transformado de raíz por la tecnología digital. Cuatro diagnósticos —los de Klein, Bauman, Chomsky y Han— nos ayudarán a entender qué tipo de sociedad habitamos (<a href="../chapters-web/tema-22.html#sec-78">§78</a>). El <strong>segundo</strong> paso atiende a los dos grandes frentes en que el pensamiento crítico actual libra hoy su batalla: la defensa de la <em>naturaleza</em> frente a la crisis ecológica y la continuación de la <em>cuestión de género</em> abierta por el feminismo. Allí se encontrarán Nussbaum, Herrero, Preciado y, de nuevo, Butler (<a href="../chapters-web/tema-22.html#sec-79">§79</a>).</p>
 <p>Una advertencia para no perderse: este tema no busca que memorices ocho doctrinas, sino que salgas del curso con un puñado de herramientas para <em>pensar tu propio tiempo</em>. Cada una de estas ideas es una linterna que puedes encender sobre lo que te rodea —tu móvil, tu trabajo futuro, las noticias, el planeta—. Esa es, al cabo, la pregunta con que se cierra una historia de la filosofía: ¿de qué nos sirve todo esto para entender el mundo en que nos ha tocado vivir?</p>
 </section>
 <section id="sec-78" class="level2">
 <h2 class="anchored" data-anchor-id="sec-78">§78 · Globalización, capitalismo y mundo virtual: Bauman, Chomsky, Han, Klein</h2>
-<p><strong>El suelo común: un mundo globalizado.</strong> Llamamos <em>globalización</em> al proceso por el que las economías, las culturas y las comunicaciones de todo el planeta se han entrelazado hasta formar un único sistema interconectado. Una zapatilla se diseña en un país, se fabrica en otro y se vende en un tercero; una noticia o una moda dan la vuelta al mundo en segundos. Este proceso, acelerado desde el final de la Guerra Fría y por internet, ha traído riqueza y conexión, pero también nuevas formas de desigualdad, precariedad y control. Los cuatro pensadores de este epígrafe son, cada uno a su manera, <em>diagnosticadores del presente</em>: no construyen grandes sistemas como los filósofos clásicos, sino que ponen nombre a un malestar difuso de nuestra época. Continúan, en este sentido, la tarea de los <em>maestros de la sospecha</em> (<a href="tema-14.html#sec-55">§55</a>) y de la Escuela de Fráncfort (<a href="tema-19.html#sec-68">§68</a>): destapar lo que el sistema prefiere mantener oculto.</p>
+<p><strong>El suelo común: un mundo globalizado.</strong> Llamamos <em>globalización</em> al proceso por el que las economías, las culturas y las comunicaciones de todo el planeta se han entrelazado hasta formar un único sistema interconectado. Una zapatilla se diseña en un país, se fabrica en otro y se vende en un tercero; una noticia o una moda dan la vuelta al mundo en segundos. Este proceso, acelerado desde el final de la Guerra Fría y por internet, ha traído riqueza y conexión, pero también nuevas formas de desigualdad, precariedad y control. Los cuatro pensadores de este epígrafe son, cada uno a su manera, <em>diagnosticadores del presente</em>: no construyen grandes sistemas como los filósofos clásicos, sino que ponen nombre a un malestar difuso de nuestra época. Continúan, en este sentido, la tarea de los <em>maestros de la sospecha</em> (<a href="../chapters-web/tema-14.html#sec-55">§55</a>) y de la Escuela de Fráncfort (<a href="../chapters-web/tema-19.html#sec-68">§68</a>): destapar lo que el sistema prefiere mantener oculto.</p>
 <p><strong>Zygmunt Bauman y la modernidad líquida.</strong> El sociólogo y filósofo polaco-británico <em>Zygmunt Bauman</em> (1925-2017) acuñó la imagen que mejor resume la experiencia vital de nuestro tiempo: la <em>modernidad líquida</em>. Su idea parte de un contraste. La modernidad «sólida» de los siglos XIX y XX era estable y duradera: se nacía en un lugar, se aprendía un oficio para toda la vida, se formaba una familia que permanecía, se militaba en ideas firmes. Esas estructuras sólidas —el empleo fijo, las instituciones, los vínculos duraderos— se han <em>derretido</em>. En la modernidad líquida, en cambio, todo fluye y nada se asienta: el trabajo es temporal y cambiante, las relaciones se vuelven frágiles y revocables —Bauman habló de <em>amor líquido</em>—, las identidades se montan y desmontan como quien cambia de ropa. Esta liquidez trae una libertad inédita, pero también una <em>inseguridad</em> permanente: vivimos sin suelo firme bajo los pies, obligados a reinventarnos sin descanso y sin la red de seguridad que daban los antiguos vínculos sólidos. Bauman vio en el <em>consumo</em> el motor de esta condición: la sociedad ya no nos forma como productores disciplinados, sino como consumidores a los que se mantiene perpetuamente insatisfechos para que sigan deseando y comprando.</p>
-<p><strong>Noam Chomsky y la fabricación del consenso.</strong> El estadounidense <em>Noam Chomsky</em> (n.&nbsp;1928) —uno de los lingüistas más importantes del siglo, además de pensador político<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>— ha dedicado medio siglo a analizar el poder en las democracias liberales. Su aportación más citada, formulada junto a Edward Herman en <em>Los guardianes de la libertad</em> (1988), es la teoría de la <em>fabricación del consenso</em>. La pregunta de la que parte es incómoda: en una dictadura, el poder se sostiene por la fuerza; pero ¿cómo se controla a la población en una democracia, donde formalmente todos somos libres y votamos? La respuesta de Chomsky es que el control se ejerce <em>sobre las mentes</em>, no sobre los cuerpos: los grandes medios de comunicación —dependientes de la publicidad y de intereses económicos— filtran la información de modo que la opinión pública acabe <em>consintiendo</em> por su cuenta lo que conviene a las élites. No hace falta prohibir lo que se piensa si se logra fijar de antemano <em>aquello sobre lo que se puede pensar</em>. Con ello Chomsky retoma y actualiza la crítica de la <em>industria cultural</em> que había hecho la Escuela de Fráncfort (<a href="tema-19.html#sec-68">§68</a>) y la vieja noción marxista de <em>ideología</em> (<a href="tema-14.html#sec-55">§55</a>): el discurso que presenta como natural y evidente lo que en realidad sirve a unos pocos.</p>
+<p><strong>Noam Chomsky y la fabricación del consenso.</strong> El estadounidense <em>Noam Chomsky</em> (n.&nbsp;1928) —uno de los lingüistas más importantes del siglo, además de pensador político<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>— ha dedicado medio siglo a analizar el poder en las democracias liberales. Su aportación más citada, formulada junto a Edward Herman en <em>Los guardianes de la libertad</em> (1988), es la teoría de la <em>fabricación del consenso</em>. La pregunta de la que parte es incómoda: en una dictadura, el poder se sostiene por la fuerza; pero ¿cómo se controla a la población en una democracia, donde formalmente todos somos libres y votamos? La respuesta de Chomsky es que el control se ejerce <em>sobre las mentes</em>, no sobre los cuerpos: los grandes medios de comunicación —dependientes de la publicidad y de intereses económicos— filtran la información de modo que la opinión pública acabe <em>consintiendo</em> por su cuenta lo que conviene a las élites. No hace falta prohibir lo que se piensa si se logra fijar de antemano <em>aquello sobre lo que se puede pensar</em>. Con ello Chomsky retoma y actualiza la crítica de la <em>industria cultural</em> que había hecho la Escuela de Fráncfort (<a href="../chapters-web/tema-19.html#sec-68">§68</a>) y la vieja noción marxista de <em>ideología</em> (<a href="../chapters-web/tema-14.html#sec-55">§55</a>): el discurso que presenta como natural y evidente lo que en realidad sirve a unos pocos.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-han.jpg" class="img-fluid figure-img"></p>
@@ -532,14 +544,14 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>Byung-Chul Han y la sociedad del cansancio.</strong> El filósofo coreano-alemán <em>Byung-Chul Han</em> (n.&nbsp;1959) es quizá el pensador más leído del momento sobre la vida en la era digital. Su diagnóstico, condensado en <em>La sociedad del cansancio</em> (2010), describe un cambio profundo en la forma en que el poder nos gobierna. Durante siglos vivimos en una <em>sociedad disciplinaria</em>, organizada en torno a la <em>prohibición</em>: muros, normas y vigilantes que nos decían «no debes». Esa sociedad, dice Han, ha dejado paso a una <em>sociedad del rendimiento</em>, organizada en torno a un imperativo opuesto y aparentemente liberador: «<em>tú puedes</em>, sé tu mejor versión, no hay límites». El resultado es paradójico y cruel: ya no es un amo externo quien nos explota, sino <em>nosotros mismos</em>, convencidos de que nos realizamos. El sujeto del rendimiento es a la vez amo y esclavo, se exige sin tregua y, cuando no llega, no culpa al sistema sino a sí mismo: de ahí la epidemia contemporánea de <em>depresión, ansiedad y agotamiento</em> (<em>burnout</em>). En un segundo diagnóstico, <em>La sociedad de la transparencia</em> (2012), Han añade otra vuelta de tuerca sobre el mundo virtual: en las redes nos exhibimos voluntariamente, ofreciendo nuestros datos y nuestra intimidad sin que nadie nos obligue. El antiguo panóptico que vigilaba desde fuera ha sido sustituido por uno <em>digital</em> en el que somos a la vez prisioneros y guardianes, presos felices que se enseñan al mundo. La libertad que creemos ejercer al publicar es, sugiere Han, una nueva y más sutil forma de control.</p>
-<p><strong>Naomi Klein y el capitalismo del desastre.</strong> La canadiense <em>Naomi Klein</em> (n.&nbsp;1970), periodista y activista más que filósofa académica, se ha convertido en una de las voces críticas más influyentes de la globalización. Su tesis más conocida, expuesta en <em>La doctrina del shock</em> (2007), es la del <em>capitalismo del desastre</em>: la observación de que las reformas económicas más duras —privatizaciones, recortes, desregulación— suelen imponerse aprovechando momentos de <em>conmoción colectiva</em>, cuando una catástrofe natural, una guerra o una crisis financiera dejan a la población aturdida y sin capacidad de reacción. En el desconcierto que sigue al golpe, se aprueba deprisa lo que en tiempos normales la gente rechazaría. Klein actualiza así, para el siglo XXI, la vieja crítica al capitalismo (<a href="tema-15.html#sec-58">§58</a>): ya no se trata solo de la explotación del trabajo en la fábrica, sino de cómo el sistema convierte el sufrimiento y el miedo en oportunidad de negocio. Su otra obra célebre, <em>No logo</em> (1999), había mostrado antes la otra cara del fenómeno: cómo las grandes marcas globales venden no productos, sino <em>identidades</em> y estilos de vida, mientras deslocalizan la producción a países donde la mano de obra es barata y los derechos, escasos.</p>
+<p><strong>Naomi Klein y el capitalismo del desastre.</strong> La canadiense <em>Naomi Klein</em> (n.&nbsp;1970), periodista y activista más que filósofa académica, se ha convertido en una de las voces críticas más influyentes de la globalización. Su tesis más conocida, expuesta en <em>La doctrina del shock</em> (2007), es la del <em>capitalismo del desastre</em>: la observación de que las reformas económicas más duras —privatizaciones, recortes, desregulación— suelen imponerse aprovechando momentos de <em>conmoción colectiva</em>, cuando una catástrofe natural, una guerra o una crisis financiera dejan a la población aturdida y sin capacidad de reacción. En el desconcierto que sigue al golpe, se aprueba deprisa lo que en tiempos normales la gente rechazaría. Klein actualiza así, para el siglo XXI, la vieja crítica al capitalismo (<a href="../chapters-web/tema-15.html#sec-58">§58</a>): ya no se trata solo de la explotación del trabajo en la fábrica, sino de cómo el sistema convierte el sufrimiento y el miedo en oportunidad de negocio. Su otra obra célebre, <em>No logo</em> (1999), había mostrado antes la otra cara del fenómeno: cómo las grandes marcas globales venden no productos, sino <em>identidades</em> y estilos de vida, mientras deslocalizan la producción a países donde la mano de obra es barata y los derechos, escasos.</p>
 </section>
 <section id="sec-79" class="level2">
 <h2 class="anchored" data-anchor-id="sec-79">§79 · Ecologismo y cuestión de género: Nussbaum, Butler, Herrero, Preciado</h2>
-<p><strong>Dos frentes abiertos.</strong> Si el epígrafe anterior describía el suelo que pisamos, este atiende a dos grandes batallas que el pensamiento crítico libra hoy sobre ese suelo. La primera es la <em>ecológica</em>: la toma de conciencia de que el modo de vida que el capitalismo global ha extendido por el planeta choca contra los límites físicos de una Tierra finita. La segunda prolonga la <em>cuestión de género</em> que abrió el feminismo (<a href="tema-21.html#sec-76">§76</a>-<a href="tema-21.html#sec-77">§77</a>): la pregunta por quién cuenta como un sujeto pleno y por cómo la sociedad —y hoy también la técnica— fabrica los cuerpos y las identidades. Las cuatro pensadoras de este epígrafe muestran que ambos frentes están, en el fondo, entrelazados.</p>
-<p><strong>Martha Nussbaum y el enfoque de las capacidades.</strong> La filósofa estadounidense <em>Martha Nussbaum</em> (n.&nbsp;1947) ha recuperado para el presente una vieja intuición: la de que una vida buena es una vida que <em>florece</em>, la <em>eudaimonía</em> que ya buscaba Aristóteles (<a href="tema-04.html#sec-18">§18</a>). Su aportación más influyente, desarrollada junto al economista Amartya Sen, es el <em>enfoque de las capacidades</em>. La pregunta de la que parte es práctica: ¿cómo medir si una sociedad es justa o si un país «se desarrolla»? No basta, responde Nussbaum, con mirar la riqueza o la renta, porque un mismo recurso vale de modo muy distinto para personas distintas. Lo que de verdad importa no es lo que la gente <em>tiene</em>, sino lo que realmente <em>puede hacer y llegar a ser</em>: sus <em>capacidades</em>. Nussbaum llega a enumerar una lista de capacidades básicas que toda persona debería poder ejercer para vivir con dignidad —entre otras: gozar de salud y de integridad corporal, usar los sentidos y la imaginación, pensar, sentir emociones, jugar, participar en la vida política y <em>convivir con las demás especies y con la naturaleza</em>—. Con ello actualiza la pregunta por la justicia que se planteó Rawls (<a href="tema-19.html#sec-71">§71</a>), pero corrigiéndola: lo decisivo no es repartir bienes, sino garantizar que cada cual pueda desplegar una vida plenamente humana. No por azar la última de sus capacidades nombra ya la relación con la naturaleza: la justicia hacia las personas y la justicia hacia el planeta empiezan a pensarse juntas.</p>
-<p><strong>Judith Butler, otra vez: la vida precaria.</strong> Ya conocemos a <em>Judith Butler</em> (n.&nbsp;1956) como la gran teórica de la tercera ola, la que mostró que el género es <em>performativo</em> —un papel que se representa, no una esencia que se posee— y abrió el camino del pensamiento <em>queer</em> (<a href="tema-21.html#sec-76">§76</a>). Conviene volver a ella un momento, porque su obra del siglo XXI ha tomado un giro que la enlaza con los demás autores de este tema. En libros como <em>Vida precaria</em> (2004), Butler desplaza el foco de la identidad a la <em>vulnerabilidad</em>: lo que de verdad compartimos todos los seres humanos no es una esencia, sino la <em>precariedad</em> —el hecho de ser cuerpos expuestos, dependientes de otros, que pueden ser heridos y que mueren—. A partir de ahí se pregunta por qué unas vidas se lloran como pérdidas y otras ni siquiera se reconocen como vidas dignas de duelo (las víctimas anónimas de guerras lejanas, los migrantes ahogados). Esa vulnerabilidad común, lejos de ser una debilidad que superar, es para Butler el cimiento de una <em>ética</em>: si todos somos frágiles e interdependientes, todos nos debemos cuidado y protección. Con este giro, la pensadora del género se asoma al mismo terreno que pisan el ecologismo y el feminismo de los cuidados.</p>
-<p><strong>Yayo Herrero y el ecofeminismo.</strong> La española <em>Yayo Herrero</em> (n.&nbsp;1965) —antropóloga, ingeniera y activista— es una de las voces de referencia del <em>ecofeminismo</em>, la corriente que enlaza las dos batallas de este epígrafe en un solo diagnóstico. Su tesis es que la dominación de la naturaleza y la subordinación de las mujeres tienen una raíz común: un sistema patriarcal y capitalista que trata como <em>recursos invisibles y gratuitos</em> tanto a la naturaleza como al trabajo de cuidados que han sostenido históricamente las mujeres. Herrero lo expresa con dos palabras clave. Somos <em>ecodependientes</em>: cada cosa que comemos, vestimos o respiramos procede de la biosfera, de modo que una economía que crece sin límite en un planeta finito es, sencillamente, imposible. Y somos <em>interdependientes</em>: ningún ser humano se basta a sí mismo —todos hemos sido niños cuidados y casi todos seremos ancianos cuidados—, y ese trabajo de sostener la vida, hecho casi siempre por mujeres y sin pago ni reconocimiento, es la base oculta sobre la que se levanta toda la economía «visible». La conclusión de Herrero es que hay que poner en el centro la <em>sostenibilidad de la vida</em> en lugar de la acumulación de capital: reorganizar la sociedad en torno a lo que de verdad nos mantiene vivos, no en torno al crecimiento por el crecimiento. Así, la crítica al capitalismo del epígrafe anterior (<a href="tema-22.html#sec-78">§78</a>) y la herencia del feminismo (<a href="tema-21.html#sec-77">§77</a>) confluyen en una misma propuesta.</p>
+<p><strong>Dos frentes abiertos.</strong> Si el epígrafe anterior describía el suelo que pisamos, este atiende a dos grandes batallas que el pensamiento crítico libra hoy sobre ese suelo. La primera es la <em>ecológica</em>: la toma de conciencia de que el modo de vida que el capitalismo global ha extendido por el planeta choca contra los límites físicos de una Tierra finita. La segunda prolonga la <em>cuestión de género</em> que abrió el feminismo (<a href="../chapters-web/tema-21.html#sec-76">§76</a>-<a href="../chapters-web/tema-21.html#sec-77">§77</a>): la pregunta por quién cuenta como un sujeto pleno y por cómo la sociedad —y hoy también la técnica— fabrica los cuerpos y las identidades. Las cuatro pensadoras de este epígrafe muestran que ambos frentes están, en el fondo, entrelazados.</p>
+<p><strong>Martha Nussbaum y el enfoque de las capacidades.</strong> La filósofa estadounidense <em>Martha Nussbaum</em> (n.&nbsp;1947) ha recuperado para el presente una vieja intuición: la de que una vida buena es una vida que <em>florece</em>, la <em>eudaimonía</em> que ya buscaba Aristóteles (<a href="../chapters-web/tema-04.html#sec-18">§18</a>). Su aportación más influyente, desarrollada junto al economista Amartya Sen, es el <em>enfoque de las capacidades</em>. La pregunta de la que parte es práctica: ¿cómo medir si una sociedad es justa o si un país «se desarrolla»? No basta, responde Nussbaum, con mirar la riqueza o la renta, porque un mismo recurso vale de modo muy distinto para personas distintas. Lo que de verdad importa no es lo que la gente <em>tiene</em>, sino lo que realmente <em>puede hacer y llegar a ser</em>: sus <em>capacidades</em>. Nussbaum llega a enumerar una lista de capacidades básicas que toda persona debería poder ejercer para vivir con dignidad —entre otras: gozar de salud y de integridad corporal, usar los sentidos y la imaginación, pensar, sentir emociones, jugar, participar en la vida política y <em>convivir con las demás especies y con la naturaleza</em>—. Con ello actualiza la pregunta por la justicia que se planteó Rawls (<a href="../chapters-web/tema-19.html#sec-71">§71</a>), pero corrigiéndola: lo decisivo no es repartir bienes, sino garantizar que cada cual pueda desplegar una vida plenamente humana. No por azar la última de sus capacidades nombra ya la relación con la naturaleza: la justicia hacia las personas y la justicia hacia el planeta empiezan a pensarse juntas.</p>
+<p><strong>Judith Butler, otra vez: la vida precaria.</strong> Ya conocemos a <em>Judith Butler</em> (n.&nbsp;1956) como la gran teórica de la tercera ola, la que mostró que el género es <em>performativo</em> —un papel que se representa, no una esencia que se posee— y abrió el camino del pensamiento <em>queer</em> (<a href="../chapters-web/tema-21.html#sec-76">§76</a>). Conviene volver a ella un momento, porque su obra del siglo XXI ha tomado un giro que la enlaza con los demás autores de este tema. En libros como <em>Vida precaria</em> (2004), Butler desplaza el foco de la identidad a la <em>vulnerabilidad</em>: lo que de verdad compartimos todos los seres humanos no es una esencia, sino la <em>precariedad</em> —el hecho de ser cuerpos expuestos, dependientes de otros, que pueden ser heridos y que mueren—. A partir de ahí se pregunta por qué unas vidas se lloran como pérdidas y otras ni siquiera se reconocen como vidas dignas de duelo (las víctimas anónimas de guerras lejanas, los migrantes ahogados). Esa vulnerabilidad común, lejos de ser una debilidad que superar, es para Butler el cimiento de una <em>ética</em>: si todos somos frágiles e interdependientes, todos nos debemos cuidado y protección. Con este giro, la pensadora del género se asoma al mismo terreno que pisan el ecologismo y el feminismo de los cuidados.</p>
+<p><strong>Yayo Herrero y el ecofeminismo.</strong> La española <em>Yayo Herrero</em> (n.&nbsp;1965) —antropóloga, ingeniera y activista— es una de las voces de referencia del <em>ecofeminismo</em>, la corriente que enlaza las dos batallas de este epígrafe en un solo diagnóstico. Su tesis es que la dominación de la naturaleza y la subordinación de las mujeres tienen una raíz común: un sistema patriarcal y capitalista que trata como <em>recursos invisibles y gratuitos</em> tanto a la naturaleza como al trabajo de cuidados que han sostenido históricamente las mujeres. Herrero lo expresa con dos palabras clave. Somos <em>ecodependientes</em>: cada cosa que comemos, vestimos o respiramos procede de la biosfera, de modo que una economía que crece sin límite en un planeta finito es, sencillamente, imposible. Y somos <em>interdependientes</em>: ningún ser humano se basta a sí mismo —todos hemos sido niños cuidados y casi todos seremos ancianos cuidados—, y ese trabajo de sostener la vida, hecho casi siempre por mujeres y sin pago ni reconocimiento, es la base oculta sobre la que se levanta toda la economía «visible». La conclusión de Herrero es que hay que poner en el centro la <em>sostenibilidad de la vida</em> en lugar de la acumulación de capital: reorganizar la sociedad en torno a lo que de verdad nos mantiene vivos, no en torno al crecimiento por el crecimiento. Así, la crítica al capitalismo del epígrafe anterior (<a href="../chapters-web/tema-22.html#sec-78">§78</a>) y la herencia del feminismo (<a href="../chapters-web/tema-21.html#sec-77">§77</a>) confluyen en una misma propuesta.</p>
 <p><strong>Paul B. Preciado y el cuerpo como territorio.</strong> Cerramos con el más radical de estos pensadores. El filósofo español <em>Paul B. Preciado</em> (n.&nbsp;1970) lleva al límite la idea de Butler de que el género se construye, pero da un paso material que la teoría feminista no había dado: no son solo el lenguaje y las normas los que fabrican nuestros cuerpos, sino también las <em>industrias</em>, los <em>fármacos</em> y las <em>tecnologías</em>. En <em>Testo yonqui</em> (2008) —donde narra su propia experiencia tomando testosterona— acuña el concepto de <em>régimen farmacopornográfico</em> para describir cómo el capitalismo actual gobierna a través del cuerpo y del sexo: la píldora anticonceptiva, las hormonas, la cirugía, la industria del porno y la farmacéutica producen y regulan lo que sentimos, deseamos y somos. El cuerpo deja de ser un dato natural previo y se convierte en un <em>territorio</em> fabricado y disputado, una prolongación de aquella <em>biopolítica</em> —el poder que gestiona la vida misma— que aquí alcanza el plano de las moléculas. Pensador <em>trans</em> y figura central del <em>transfeminismo</em>, Preciado defiende la libertad de cada cual para rehacer su propio cuerpo y su identidad. Sus tesis son discutidas y provocadoras —él mismo busca incomodar—, pero llevan hasta sus últimas consecuencias el descubrimiento con que se abrió todo este recorrido: que muy poco de lo que tenemos por «natural» en la diferencia sexual lo es de veras.</p>
 </section>
 <section id="para-cerrar" class="level2">
@@ -556,19 +568,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -647,7 +771,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -656,8 +781,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -671,6 +857,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -833,44 +1020,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -969,7 +1166,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-21.html" class="pagination-link" aria-label="Tema 21 · Beauvoir y el pensamiento feminista">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 21 · Beauvoir y el pensamiento feminista</span></span>

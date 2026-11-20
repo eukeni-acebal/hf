@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-02.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-03.html"><span class="chapter-title">Tema 3 · Platón de Atenas</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-03.html"><span class="chapter-title">Tema 3 · Platón de Atenas</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -494,10 +506,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-03.html"><span class="chapter-title">Tema 3 · Platón de Atenas</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-03.html"><span class="chapter-title">Tema 3 · Platón de Atenas</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 3 · Platón de Atenas</span></h1>
 </div>
@@ -519,7 +531,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="para-entrar-en-platón" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-platón">Para entrar en Platón</h2>
 <p>Con Platón (h. 427-h. 347 a. e. c.) cambia la escala de lo que vamos a leer. Hasta aquí hemos recogido ideas sueltas, fragmentos, posiciones; ahora, por primera vez, nos encontramos con un <em>sistema</em>: una explicación de conjunto en la que la realidad, el conocimiento, el alma, la virtud y la política se sostienen unas a otras. Por eso le dedicamos un tema entero, y por eso conviene ver el mapa antes de entrar en el detalle.</p>
-<p><strong>Un autor, un sistema.</strong> La pieza que todo lo articula es una distinción que quizá ya conozcas de oídas: la que separa las cosas que vemos de las <em>Formas</em> que las hacen ser lo que son. De ella nace lo demás. Si hay dos planos de realidad, habrá dos formas de acceder a ellos —dos grados de conocimiento (<a href="tema-03.html#sec-10">§10</a>)—; si el ser humano puede conocer las Formas, su <em>alma</em> tendrá algo de esa naturaleza superior (<a href="tema-03.html#sec-11">§11</a>); si el alma tiene partes, habrá una virtud para cada una (<a href="tema-03.html#sec-12">§12</a>); y si la virtud ordena el alma, otro tanto debe ordenar la ciudad (<a href="tema-03.html#sec-13">§13</a>). Un mismo patrón recorre el sistema de arriba abajo, y Platón lo hace explícito en un paralelo famoso: el alma justa y la ciudad justa tienen la misma estructura. Quien entiende ese paralelo entiende a Platón.</p>
+<p><strong>Un autor, un sistema.</strong> La pieza que todo lo articula es una distinción que quizá ya conozcas de oídas: la que separa las cosas que vemos de las <em>Formas</em> que las hacen ser lo que son. De ella nace lo demás. Si hay dos planos de realidad, habrá dos formas de acceder a ellos —dos grados de conocimiento (<a href="../chapters-web/tema-03.html#sec-10">§10</a>)—; si el ser humano puede conocer las Formas, su <em>alma</em> tendrá algo de esa naturaleza superior (<a href="../chapters-web/tema-03.html#sec-11">§11</a>); si el alma tiene partes, habrá una virtud para cada una (<a href="../chapters-web/tema-03.html#sec-12">§12</a>); y si la virtud ordena el alma, otro tanto debe ordenar la ciudad (<a href="../chapters-web/tema-03.html#sec-13">§13</a>). Un mismo patrón recorre el sistema de arriba abajo, y Platón lo hace explícito en un paralelo famoso: el alma justa y la ciudad justa tienen la misma estructura. Quien entiende ese paralelo entiende a Platón.</p>
 <p><strong>Vida y circunstancia.</strong> Nada de esto se piensa en el vacío. Platón es un aristócrata ateniense de una ciudad que acaba de perder la guerra del Peloponeso y vive años de inestabilidad y violencia política. Estaba llamado a gobernar, y de la política se apartó. La causa tiene nombre: la condena y muerte de su maestro Sócrates (h. 470-399 a. e. c.), ejecutado por la propia democracia ateniense en el 399. Que la ciudad matara al hombre más justo que conocía dejó en Platón una herida y una pregunta que ya no lo abandonarían: ¿quién debe gobernar, y cómo se le forma?</p>
 <p><strong>La Academia.</strong> Desengañado de la política de su tiempo, Platón fundó hacia el 387 a. e. c.&nbsp;la <em>Academia</em>, en un bosque a las afueras de Atenas consagrado al héroe Academo; de ahí su nombre, y de ahí proceden nuestras palabras «academia» y «académico». No fue una escuela cualquiera. Suele considerarse la primera institución de enseñanza superior de Occidente: una comunidad estable y duradera, con biblioteca y vida propia, dedicada a investigar y enseñar matemáticas, dialéctica y filosofía —el saber por el saber, no la oratoria útil que vendían los sofistas—<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. La Academia sobrevivió a su fundador cerca de tres siglos —hasta que el saqueo de Atenas por el general romano Sila, en el 86 a. e. c., la dispersó—, y fue el vivero del que salió, entre otros muchos, Aristóteles, que estudió en ella unos veinte años antes de fundar la suya. Su modelo —reunir a maestros y discípulos en una institución dedicada al conocimiento— dejó una huella larga en toda la historia de la educación, hasta nuestras universidades.</p>
 <p><strong>La forma del diálogo.</strong> Un último aviso de lectura. Platón no escribió tratados, sino <em>diálogos</em>: conversaciones, casi siempre con Sócrates de protagonista, en las que las ideas se buscan, se discuten y a veces se quedan sin cerrar. Es pensamiento en movimiento, no doctrina dictada. Nosotros nos apoyaremos sobre todo en sus obras de madurez —en especial la <em>República</em>—, donde el sistema aparece ya formado.</p>
@@ -535,8 +547,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="sec-09">§09 · Platón: la realidad — la teoría de las Formas y el Bien</h2>
 <p>Dibuja un círculo en un papel. Por cuidadoso que seas, ninguna circunferencia que tracemos será un círculo perfecto: siempre habrá un punto algo más cerca del centro que otro, un trazo algo más grueso, un mínimo temblor del pulso. Y, sin embargo, cuando un matemático demuestra un teorema sobre «el círculo», no habla de ninguno de esos dibujos defectuosos, sino de algo que ninguno de ellos llega a ser del todo. ¿De qué habla, entonces? ¿Dónde está ese círculo perfecto del que todos los dibujados son copias fallidas?</p>
 <p>A esa pregunta —y a otras parecidas sobre la justicia, la belleza o el bien— responde Platón con la tesis más influyente de toda su obra: existe una realidad verdadera, eterna e inmutable, distinta del mundo que vemos y tocamos. La llamó el mundo de las <em>Formas</em>. Esta sección explica qué son las Formas, por qué Platón se ve obligado a postularlas y por qué, en su cumbre, sitúa una Forma que ordena y da sentido a todas las demás: la Forma del Bien.</p>
-<p><strong>La herencia de Sócrates: la busca de definiciones.</strong> Platón no parte de cero; recoge un problema que le dejó su maestro. Sócrates recorría Atenas preguntando «¿qué es la valentía?», «¿qué es la justicia?» —lo vimos en <a href="tema-02.html#sec-06">§06</a>—, y rechazaba como respuesta la lista de ejemplos: no quería casos de actos valientes, sino <em>aquello común</em> a todos ellos que los hace valientes, lo que valdría para cualquier caso, en cualquier tiempo y lugar. A eso apuntaba la definición socrática: a un universal estable. Pero Sócrates buscó esos universales sin decir nunca dónde están ni qué clase de realidad tienen. Platón dará el paso que su maestro no dio.</p>
-<p><strong>La herencia de los presocráticos: el flujo y el ser.</strong> El segundo hilo viene de antes. Heráclito había enseñado que todo fluye —<em>pánta rhei</em>, <a href="tema-01.html#sec-03">§03</a>—: las cosas sensibles nacen, cambian y perecen sin descanso, de modo que nada de lo que percibimos permanece idéntico a sí mismo ni un instante. Parménides, en cambio, había sostenido que del verdadero ser solo cabe decir que <em>es</em>: uno, inmóvil, eterno (<a href="tema-01.html#sec-03">§03</a>). Platón no elige entre ambos: los reparte. El mundo sensible es heraclíteo, puro cambio, y por eso de él solo puede haber <em>opinión</em>. Pero el conocimiento verdadero, la ciencia, exige un objeto parmenídeo: algo fijo, sobre lo que de verdad se pueda saber. Si ese objeto no está en el mundo que cambia, tiene que estar en otra parte.</p>
+<p><strong>La herencia de Sócrates: la busca de definiciones.</strong> Platón no parte de cero; recoge un problema que le dejó su maestro. Sócrates recorría Atenas preguntando «¿qué es la valentía?», «¿qué es la justicia?» —lo vimos en <a href="../chapters-web/tema-02.html#sec-06">§06</a>—, y rechazaba como respuesta la lista de ejemplos: no quería casos de actos valientes, sino <em>aquello común</em> a todos ellos que los hace valientes, lo que valdría para cualquier caso, en cualquier tiempo y lugar. A eso apuntaba la definición socrática: a un universal estable. Pero Sócrates buscó esos universales sin decir nunca dónde están ni qué clase de realidad tienen. Platón dará el paso que su maestro no dio.</p>
+<p><strong>La herencia de los presocráticos: el flujo y el ser.</strong> El segundo hilo viene de antes. Heráclito había enseñado que todo fluye —<em>pánta rhei</em>, <a href="../chapters-web/tema-01.html#sec-03">§03</a>—: las cosas sensibles nacen, cambian y perecen sin descanso, de modo que nada de lo que percibimos permanece idéntico a sí mismo ni un instante. Parménides, en cambio, había sostenido que del verdadero ser solo cabe decir que <em>es</em>: uno, inmóvil, eterno (<a href="../chapters-web/tema-01.html#sec-03">§03</a>). Platón no elige entre ambos: los reparte. El mundo sensible es heraclíteo, puro cambio, y por eso de él solo puede haber <em>opinión</em>. Pero el conocimiento verdadero, la ciencia, exige un objeto parmenídeo: algo fijo, sobre lo que de verdad se pueda saber. Si ese objeto no está en el mundo que cambia, tiene que estar en otra parte.</p>
 <p><strong>Qué es una Forma —y por qué no la llamamos «Idea».</strong> Esa «otra parte» es el mundo de las Formas. Y aquí hay que desactivar de entrada un falso amigo. La palabra de Platón es <em>idéa</em> o <em>eîdos</em> —«forma», «aspecto», «aquello que se muestra a la mirada»—, y la tradición la tradujo por «Idea». Pero «idea» significa hoy en castellano un <em>contenido mental</em>: un pensamiento, un concepto que tienes en la cabeza. Y eso es justo lo contrario de lo que Platón quiere decir. Para evitar el equívoco, en este manual las llamaremos <strong>Formas</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Una Forma no es una abstracción que tu mente fabrique a partir de las cosas; es una realidad que <em>subsiste por sí misma</em>, exista o no alguien que la piense. Las cosas no inventan las Formas: las Formas son anteriores, y las cosas las copian.</p>
 <p>Reúne, en concreto, estos rasgos —conviene tenerlos juntos—:</p>
 <ul>
@@ -552,13 +564,13 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Cómo se relacionan las cosas y las Formas.</strong> Pero, si están separados, ¿qué une los dos mundos? ¿Por qué esta rosa es bella? Platón ensaya varias respuestas, más imágenes que doctrina cerrada: la cosa <em>participa</em> de la Forma (<em>méthexis</em>), la <em>imita</em> (<em>mímesis</em>), o la Forma está de algún modo <em>presente</em> en ella. En los tres casos la dirección es la misma: la cosa sensible es lo que es —bella, justa, igual— porque remite a una Forma que ella no agota. La copia debe su ser al modelo. Que esa relación es difícil de pensar lo sabía el propio Platón, que la sometió a crítica años después<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <p><strong>Una jerarquía coronada por el Bien.</strong> Las Formas no forman un montón inconexo. Se ordenan: las más amplias abarcan a las más particulares, y todas se articulan en una jerarquía. Y esa jerarquía tiene una cumbre. Por encima de todas, Platón sitúa la <strong>Forma del Bien</strong>: no una Forma más entre las demás, sino el principio que las hace a la vez <em>valiosas</em> e <em>inteligibles</em>, lo que da unidad y sentido al mundo inteligible entero. Conocer de verdad, para Platón, es ascender hasta el Bien.</p>
 <p><strong>El símil del sol.</strong> El Bien es tan elevado que Platón confiesa no poder describirlo de frente, y recurre a una comparación célebre, en el libro VI de la <em>República</em>: el Bien es, en el mundo inteligible, lo que el sol en el visible. El sol hace dos cosas. Primero, da la luz por la que los ojos ven y las cosas se vuelven visibles; del mismo modo, el Bien es la luz por la que la inteligencia conoce y las Formas se vuelven inteligibles. Pero el sol hace algo más: con su calor, hace que las cosas nazcan y crezcan. También aquí el paralelo se sostiene: el Bien no solo da inteligibilidad a las Formas, sino que es causa de su <em>ser</em> y de su esencia. Por eso Platón llega a decir que el Bien está «más allá del ser» —<em>epékeina tēs ousías</em>— en dignidad y en poder<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Es, a la vez, la fuente de la realidad y la fuente del conocimiento.</p>
-<p>Y aquí el símil nos deja en el umbral de una pregunta. Si el Bien es el sol que ilumina todo lo inteligible, ¿cómo asciende hasta él el alma humana, que parte de las sombras del mundo sensible? ¿Qué grados recorre ese ascenso, qué método lo guía y por qué Platón compara nuestra situación de partida con la de unos prisioneros encadenados en una caverna? De ese camino —del conocimiento y de su método— se ocupa <a href="tema-03.html#sec-10">§10</a>.</p>
+<p>Y aquí el símil nos deja en el umbral de una pregunta. Si el Bien es el sol que ilumina todo lo inteligible, ¿cómo asciende hasta él el alma humana, que parte de las sombras del mundo sensible? ¿Qué grados recorre ese ascenso, qué método lo guía y por qué Platón compara nuestra situación de partida con la de unos prisioneros encadenados en una caverna? De ese camino —del conocimiento y de su método— se ocupa <a href="../chapters-web/tema-03.html#sec-10">§10</a>.</p>
 </section>
 <section id="sec-10" class="level2">
 <h2 class="anchored" data-anchor-id="sec-10">§10 · Platón: el conocimiento</h2>
-<p><a href="tema-03.html#sec-09">§09</a> se cerró con una pregunta: si el Bien es el sol que ilumina todo lo inteligible, ¿cómo asciende hasta él el alma humana, que parte de las sombras? Pero antes de esa hay otra más básica. Las Formas, dijimos, no se ven ni se tocan: no hay color, ni sonido, ni peso que percibir en la Justicia o en la Igualdad. Y, sin embargo, las conocemos. Cuando dices que dos palos son «casi iguales, pero no del todo», los estás midiendo contra una Igualdad perfecta que tus ojos no han visto nunca. ¿De dónde la has sacado? De eso —de dónde viene el conocimiento, cómo se construye y hasta dónde llega— se ocupa esta sección.</p>
-<p><strong>El origen: un alma que recuerda.</strong> Para Platón, el conocimiento verdadero no entra por los sentidos. Los sentidos nos dan el mundo que cambia, y de lo que cambia no hay ciencia, solo opinión (<a href="tema-03.html#sec-09">§09</a>). Entonces, ¿de dónde sale? De dentro. Conocer, sostiene Platón, es <strong>recordar</strong> (<em>anamnesis</em>): el alma, antes de encarnarse en un cuerpo, contempló las Formas, y aprender no es recibir algo nuevo, sino recuperar ese saber dormido<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Platón llegó a imaginarlo como un alma alada que, antes de caer en un cuerpo, siguió el cortejo de los dioses y contempló las Formas en su pureza —desplegaremos esa imagen del carro en <a href="tema-03.html#sec-11">§11</a>—. Lo ilustra, además, con un experimento famoso en el <em>Menón</em>: Sócrates conduce con preguntas a un esclavo que jamás estudió geometría hasta hacerle «descubrir» una verdad sobre el cuadrado; no le ha enseñado nada, dice Platón, solo le ha ayudado a recordar. Y en el <em>Fedón</em> lo razona con el ejemplo de antes: juzgamos que las cosas iguales «se quedan cortas» respecto de la Igualdad misma, luego esa Igualdad la conocíamos ya. Las Formas quedan en el alma como la huella de un sello, y por eso reconocemos en las cosas sus copias imperfectas. Y cuidado: ese saber no es invención nuestra ni cosa subjetiva —si lo fuera, cada cual tendría sus propias Formas; pero la Igualdad, o la Justicia, son las mismas para todos—. La facultad que recuerda no es el ojo ni el oído, sino la inteligencia (el <em>noûs</em>); los sentidos, todo lo más, despiertan el recuerdo, como un retrato despierta la memoria del amigo ausente.</p>
-<p><strong>El proceso: los grados del saber y la dialéctica.</strong> Recordar no es un golpe único, sino un ascenso por grados. Y los grados no son arbitrarios: Platón parte de un principio —ser y conocer son <em>proporcionales</em>: se conoce mejor lo que más es, y de lo que no es no hay conocimiento ninguno—, de modo que a cada grado de realidad le corresponde un grado de saber. Lo dibuja con el símil de la <strong>línea dividida</strong> (<em>República</em> VI): imagina una línea cortada en cuatro tramos, de lo más oscuro a lo más luminoso <a href="tema-03.html#tbl-linea-dividida">Tabla 2</a>. Abajo, en el mundo sensible, solo cabe <em>opinión</em> (<em>doxa</em>): primero la <em>conjetura</em> (<em>eikasía</em>), que se queda en las sombras y las imágenes —el dibujo de una manzana—; luego la <em>creencia</em> (<em>pistis</em>), que se fía de las cosas físicas —la manzana misma—. Arriba, en el mundo inteligible, empieza la <em>ciencia</em> (<em>episteme</em>): primero el <em>pensamiento discursivo</em> (<em>diánoia</em>), el del matemático, que razona con rigor pero parte de hipótesis que no cuestiona y se apoya en figuras dibujadas; y, en la cumbre, la <em>inteligencia</em> (<em>nóesis</em>), que prescinde de toda imagen y asciende a las Formas mismas.</p>
+<p><a href="../chapters-web/tema-03.html#sec-09">§09</a> se cerró con una pregunta: si el Bien es el sol que ilumina todo lo inteligible, ¿cómo asciende hasta él el alma humana, que parte de las sombras? Pero antes de esa hay otra más básica. Las Formas, dijimos, no se ven ni se tocan: no hay color, ni sonido, ni peso que percibir en la Justicia o en la Igualdad. Y, sin embargo, las conocemos. Cuando dices que dos palos son «casi iguales, pero no del todo», los estás midiendo contra una Igualdad perfecta que tus ojos no han visto nunca. ¿De dónde la has sacado? De eso —de dónde viene el conocimiento, cómo se construye y hasta dónde llega— se ocupa esta sección.</p>
+<p><strong>El origen: un alma que recuerda.</strong> Para Platón, el conocimiento verdadero no entra por los sentidos. Los sentidos nos dan el mundo que cambia, y de lo que cambia no hay ciencia, solo opinión (<a href="../chapters-web/tema-03.html#sec-09">§09</a>). Entonces, ¿de dónde sale? De dentro. Conocer, sostiene Platón, es <strong>recordar</strong> (<em>anamnesis</em>): el alma, antes de encarnarse en un cuerpo, contempló las Formas, y aprender no es recibir algo nuevo, sino recuperar ese saber dormido<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Platón llegó a imaginarlo como un alma alada que, antes de caer en un cuerpo, siguió el cortejo de los dioses y contempló las Formas en su pureza —desplegaremos esa imagen del carro en <a href="../chapters-web/tema-03.html#sec-11">§11</a>—. Lo ilustra, además, con un experimento famoso en el <em>Menón</em>: Sócrates conduce con preguntas a un esclavo que jamás estudió geometría hasta hacerle «descubrir» una verdad sobre el cuadrado; no le ha enseñado nada, dice Platón, solo le ha ayudado a recordar. Y en el <em>Fedón</em> lo razona con el ejemplo de antes: juzgamos que las cosas iguales «se quedan cortas» respecto de la Igualdad misma, luego esa Igualdad la conocíamos ya. Las Formas quedan en el alma como la huella de un sello, y por eso reconocemos en las cosas sus copias imperfectas. Y cuidado: ese saber no es invención nuestra ni cosa subjetiva —si lo fuera, cada cual tendría sus propias Formas; pero la Igualdad, o la Justicia, son las mismas para todos—. La facultad que recuerda no es el ojo ni el oído, sino la inteligencia (el <em>noûs</em>); los sentidos, todo lo más, despiertan el recuerdo, como un retrato despierta la memoria del amigo ausente.</p>
+<p><strong>El proceso: los grados del saber y la dialéctica.</strong> Recordar no es un golpe único, sino un ascenso por grados. Y los grados no son arbitrarios: Platón parte de un principio —ser y conocer son <em>proporcionales</em>: se conoce mejor lo que más es, y de lo que no es no hay conocimiento ninguno—, de modo que a cada grado de realidad le corresponde un grado de saber. Lo dibuja con el símil de la <strong>línea dividida</strong> (<em>República</em> VI): imagina una línea cortada en cuatro tramos, de lo más oscuro a lo más luminoso <a href="../chapters-web/tema-03.html#tbl-linea-dividida">Tabla 2</a>. Abajo, en el mundo sensible, solo cabe <em>opinión</em> (<em>doxa</em>): primero la <em>conjetura</em> (<em>eikasía</em>), que se queda en las sombras y las imágenes —el dibujo de una manzana—; luego la <em>creencia</em> (<em>pistis</em>), que se fía de las cosas físicas —la manzana misma—. Arriba, en el mundo inteligible, empieza la <em>ciencia</em> (<em>episteme</em>): primero el <em>pensamiento discursivo</em> (<em>diánoia</em>), el del matemático, que razona con rigor pero parte de hipótesis que no cuestiona y se apoya en figuras dibujadas; y, en la cumbre, la <em>inteligencia</em> (<em>nóesis</em>), que prescinde de toda imagen y asciende a las Formas mismas.</p>
 <span id="tbl-linea-dividida" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>La línea dividida: del conjeturar las sombras al conocer las Formas.</caption>
@@ -603,52 +615,52 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>¿Cómo se sube ese último tramo? Por la <strong>dialéctica</strong>, el método propio de la filosofía. La matemática se queda a medias: da por buenas sus hipótesis —qué es el punto, qué es la unidad— y no las justifica. La dialéctica, en cambio, no se detiene en ninguna: va de una a otra hacia arriba, buscando su fundamento, hasta alcanzar un principio que ya no es hipótesis de nada —el principio no hipotético, la Forma del Bien (<a href="tema-03.html#sec-09">§09</a>)— y desde él desciende de nuevo, ordenando todo a su luz. Conocer del todo es haber llegado ahí: ver cómo cada Forma depende del Bien.</p>
+<p>¿Cómo se sube ese último tramo? Por la <strong>dialéctica</strong>, el método propio de la filosofía. La matemática se queda a medias: da por buenas sus hipótesis —qué es el punto, qué es la unidad— y no las justifica. La dialéctica, en cambio, no se detiene en ninguna: va de una a otra hacia arriba, buscando su fundamento, hasta alcanzar un principio que ya no es hipótesis de nada —el principio no hipotético, la Forma del Bien (<a href="../chapters-web/tema-03.html#sec-09">§09</a>)— y desde él desciende de nuevo, ordenando todo a su luz. Conocer del todo es haber llegado ahí: ver cómo cada Forma depende del Bien.</p>
 <p>Y hay todavía otra manera de subir, no por el razonamiento sino por el deseo: el <em>eros</em>. Para Platón, el amor no es Belleza ni Bien, sino <em>sed</em> de ambos. Empieza prendándose de un cuerpo hermoso y, si no se detiene ahí, asciende de la belleza de los cuerpos a la de las almas, las leyes y los saberes, hasta la Belleza misma, que ya es el Bien. El verdadero filósofo es, en este sentido, un enamorado: <em>filo-sofía</em> significa, al pie de la letra, amor al saber. La dialéctica sube por la razón; el eros, por el anhelo del absoluto. Las dos llevan al mismo sol.</p>
-<p><strong>El alcance: ciencia de las Formas, opinión del mundo sensible.</strong> Esto fija a la vez lo que el conocimiento garantiza y lo que no alcanza. Garantiza <em>ciencia</em> —saber firme y <em>causal</em>, que conoce el porqué de las cosas—, pero solo de las Formas, porque solo ellas son estables; y su garantía última es la Forma del Bien, el principio que las hace inteligibles (el sol de <a href="tema-03.html#sec-09">§09</a>). Del mundo sensible, que no para de cambiar, no hay ciencia posible: lo más que cabe es opinión, y la opinión, aunque dé en el blanco, no sabe por qué acierta, de modo que no es ciencia. Por eso, para Platón, el cuerpo y los sentidos no son la vía del saber, sino su lastre: el filósofo aprende a no fiarse de ellos.</p>
-<p>Todo este recorrido —de las sombras a la luz— lo cuenta Platón en una sola imagen, la más célebre de la filosofía: la <strong>alegoría de la caverna</strong>, con la que abre el libro VII de la <em>República</em>, una de las lecturas obligatorias de la PAU<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Imagina a unos prisioneros encadenados desde niños en el fondo de una cueva, de espaldas a la entrada, que solo ven sombras proyectadas en la pared y las toman por la única realidad: ese es el grado más bajo, la conjetura <a href="tema-03.html#tbl-linea-dividida">Tabla 2</a>. A su espalda arde un fuego —un sol de imitación— que proyecta esas sombras. Si uno se libera y se vuelve hacia el fuego y los objetos, ha pasado a la creencia. Arrastrado a la fuerza, cruza el umbral de la cueva, que marca la frontera entre los dos mundos, y sale al exterior: la luz al principio lo ciega; poco a poco distingue primero sombras y reflejos en el agua, luego las cosas mismas y, al fin, el sol. Ha recorrido el mundo inteligible hasta la Forma del Bien (<a href="tema-03.html#sec-09">§09</a>).</p>
-<p>La alegoría dice todavía dos cosas más. Una, sobre la educación: instruir no es verter datos en un alma vacía, sino girar el alma entera hacia la luz —la <em>paideía</em> es una conversión de la mirada, no un trasvase de información—. Otra, sobre el deber: quien ha visto el sol no puede quedarse fuera; tiene que volver a la caverna, a oscuras y entre burlas, a liberar a los que siguen encadenados. Por qué ese descenso es una obligación —y por qué los que han visto son los que deben gobernar— lo veremos en <a href="tema-03.html#sec-13">§13</a>.</p>
+<p><strong>El alcance: ciencia de las Formas, opinión del mundo sensible.</strong> Esto fija a la vez lo que el conocimiento garantiza y lo que no alcanza. Garantiza <em>ciencia</em> —saber firme y <em>causal</em>, que conoce el porqué de las cosas—, pero solo de las Formas, porque solo ellas son estables; y su garantía última es la Forma del Bien, el principio que las hace inteligibles (el sol de <a href="../chapters-web/tema-03.html#sec-09">§09</a>). Del mundo sensible, que no para de cambiar, no hay ciencia posible: lo más que cabe es opinión, y la opinión, aunque dé en el blanco, no sabe por qué acierta, de modo que no es ciencia. Por eso, para Platón, el cuerpo y los sentidos no son la vía del saber, sino su lastre: el filósofo aprende a no fiarse de ellos.</p>
+<p>Todo este recorrido —de las sombras a la luz— lo cuenta Platón en una sola imagen, la más célebre de la filosofía: la <strong>alegoría de la caverna</strong>, con la que abre el libro VII de la <em>República</em>, una de las lecturas obligatorias de la PAU<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Imagina a unos prisioneros encadenados desde niños en el fondo de una cueva, de espaldas a la entrada, que solo ven sombras proyectadas en la pared y las toman por la única realidad: ese es el grado más bajo, la conjetura <a href="../chapters-web/tema-03.html#tbl-linea-dividida">Tabla 2</a>. A su espalda arde un fuego —un sol de imitación— que proyecta esas sombras. Si uno se libera y se vuelve hacia el fuego y los objetos, ha pasado a la creencia. Arrastrado a la fuerza, cruza el umbral de la cueva, que marca la frontera entre los dos mundos, y sale al exterior: la luz al principio lo ciega; poco a poco distingue primero sombras y reflejos en el agua, luego las cosas mismas y, al fin, el sol. Ha recorrido el mundo inteligible hasta la Forma del Bien (<a href="../chapters-web/tema-03.html#sec-09">§09</a>).</p>
+<p>La alegoría dice todavía dos cosas más. Una, sobre la educación: instruir no es verter datos en un alma vacía, sino girar el alma entera hacia la luz —la <em>paideía</em> es una conversión de la mirada, no un trasvase de información—. Otra, sobre el deber: quien ha visto el sol no puede quedarse fuera; tiene que volver a la caverna, a oscuras y entre burlas, a liberar a los que siguen encadenados. Por qué ese descenso es una obligación —y por qué los que han visto son los que deben gobernar— lo veremos en <a href="../chapters-web/tema-03.html#sec-13">§13</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/t03-caverna.jpg" class="img-fluid figure-img"></p>
 <figcaption>La alegoría de la caverna: los prisioneros encadenados ante las sombras, el fuego y, fuera, la luz del sol. || Atribución: Jan Saenredam (1604), según Cornelis van Haarlem, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p>Conviene reparar en lo que todo esto da por supuesto. Recordar lo contemplado antes de nacer, ascender de las sombras a las Formas, soltarse del cuerpo y sus sentidos: nada de ello sería posible sin un alma capaz de desprenderse de lo sensible y emparentada con lo inteligible. ¿Qué es, entonces, esa alma que recuerda, asciende y se libera? Es la pregunta de <a href="tema-03.html#sec-11">§11</a>.</p>
+<p>Conviene reparar en lo que todo esto da por supuesto. Recordar lo contemplado antes de nacer, ascender de las sombras a las Formas, soltarse del cuerpo y sus sentidos: nada de ello sería posible sin un alma capaz de desprenderse de lo sensible y emparentada con lo inteligible. ¿Qué es, entonces, esa alma que recuerda, asciende y se libera? Es la pregunta de <a href="../chapters-web/tema-03.html#sec-11">§11</a>.</p>
 </section>
 <section id="sec-11" class="level2">
 <h2 class="anchored" data-anchor-id="sec-11">§11 · Platón: la psique</h2>
-<p><a href="tema-03.html#sec-10">§10</a> terminó con una pregunta: ¿qué es esa alma que recuerda las Formas, asciende de las sombras a la luz y se libera del cuerpo? Toda la teoría del conocimiento de Platón descansa sobre una idea del alma —la <em>psyché</em>—, y a ella dedicamos esta sección.</p>
-<p><strong>Dos principios: alma y cuerpo.</strong> La antropología de Platón es <strong>dualista</strong>: el ser humano está hecho de dos principios, alma y cuerpo, y no a partes iguales. El cuerpo nace, cambia y muere; recibe la vida del alma, que es su <em>principio vital</em>. El alma, en cambio, es la parte divina, lo que nos hace verdaderamente humanos: fue creada antes que el cuerpo, no la afectan los vaivenes del mundo sensible y —al menos en su parte más alta— es inmortal. Entre ambos no hay armonía, sino tensión. Heredero del orfismo (<a href="tema-01.html#sec-03">§03</a>), Platón ve el cuerpo casi como una cárcel del alma: por su causa, dice, nos enredamos en pasiones, disputas e ignorancia<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Por eso la tarea del filósofo es <em>purificar</em> el alma mientras dura su estancia en el cuerpo, ejercitándola en desprenderse de lo sensible.</p>
+<p><a href="../chapters-web/tema-03.html#sec-10">§10</a> terminó con una pregunta: ¿qué es esa alma que recuerda las Formas, asciende de las sombras a la luz y se libera del cuerpo? Toda la teoría del conocimiento de Platón descansa sobre una idea del alma —la <em>psyché</em>—, y a ella dedicamos esta sección.</p>
+<p><strong>Dos principios: alma y cuerpo.</strong> La antropología de Platón es <strong>dualista</strong>: el ser humano está hecho de dos principios, alma y cuerpo, y no a partes iguales. El cuerpo nace, cambia y muere; recibe la vida del alma, que es su <em>principio vital</em>. El alma, en cambio, es la parte divina, lo que nos hace verdaderamente humanos: fue creada antes que el cuerpo, no la afectan los vaivenes del mundo sensible y —al menos en su parte más alta— es inmortal. Entre ambos no hay armonía, sino tensión. Heredero del orfismo (<a href="../chapters-web/tema-01.html#sec-03">§03</a>), Platón ve el cuerpo casi como una cárcel del alma: por su causa, dice, nos enredamos en pasiones, disputas e ignorancia<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Por eso la tarea del filósofo es <em>purificar</em> el alma mientras dura su estancia en el cuerpo, ejercitándola en desprenderse de lo sensible.</p>
 <p><strong>Un alma con tres partes.</strong> Pero el alma no es simple. Platón distingue en ella <strong>tres partes</strong>, cada una con su función, su asiento en el cuerpo y su deseo propio. Para hacerlo intuible recurrió a una imagen, la del carro alado del <em>Fedro</em>: un auriga que conduce un tiro de dos caballos.</p>
 <ul>
 <li>La parte <strong>racional</strong> (<em>logistikón</em>), sede del pensamiento y la voluntad, es la que debe gobernar y equilibrar a las otras dos; es la más alejada de los sentidos y la única propiamente inmortal. Reside en la cabeza. Es el auriga que lleva las riendas.</li>
 <li>La parte <strong>irascible</strong> (<em>thymoeidés</em>), sede del ánimo, el coraje y el sentido del honor, reside en el pecho. Es el caballo noble, que de suyo se pone del lado de la razón —aunque una mala educación puede pasarlo al bando de los apetitos—.</li>
 <li>La parte <strong>concupiscible</strong> (<em>epithymetikón</em>), sede de los apetitos y las necesidades vitales —comida, bebida, sexo—, reside en el vientre. Es el caballo desbocado, que tira hacia el suelo y hay que sujetar.</li>
 </ul>
-<p>A cada parte le corresponde una virtud propia, y a su equilibrio la justicia del alma; pero de las virtudes nos ocupamos en <a href="tema-03.html#sec-12">§12</a>. Y como Platón verá esta misma estructura de tres repetida en la ciudad, volveremos sobre ella al tratar su política (<a href="tema-03.html#sec-13">§13</a>).</p>
-<p><strong>El alma inmortal y la metempsícosis.</strong> Si el alma contempló las Formas antes de nacer (la anamnesis de <a href="tema-03.html#sec-10">§10</a>), es que existe antes del cuerpo y le sobrevive. Platón sostiene, en efecto, que el alma —su parte racional— es <strong>inmortal</strong><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, y que está sometida a la <strong>metempsícosis</strong> o reencarnación, doctrina que también toma del orfismo y reelabora a su manera. En el <em>Fedón</em> describe almas que, tras la muerte, vagan apegadas a lo corpóreo hasta reencarnarse en un cuerpo nuevo —humano o animal— según hayan vivido: el alma justa puede aspirar a una vida mejor. Y en la <em>República</em> lo cuenta con el <strong>mito de Er</strong>, un guerrero que regresa de entre los muertos: las almas, en número limitado, recorren un ciclo de unos mil años entre vida y vida<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, y antes de reencarnarse <em>eligen</em> su próxima vida, de modo que cada cual es, en buena parte, responsable de su destino.</p>
-<p>Un alma así —dividida en tres, ordenada o desordenada según quién lleve las riendas— plantea de inmediato una pregunta moral: ¿cuándo está bien un alma? Cuando cada parte hace lo suyo bajo el mando de la razón. Esa es la puerta de las virtudes, y por ella entramos en <a href="tema-03.html#sec-12">§12</a>.</p>
+<p>A cada parte le corresponde una virtud propia, y a su equilibrio la justicia del alma; pero de las virtudes nos ocupamos en <a href="../chapters-web/tema-03.html#sec-12">§12</a>. Y como Platón verá esta misma estructura de tres repetida en la ciudad, volveremos sobre ella al tratar su política (<a href="../chapters-web/tema-03.html#sec-13">§13</a>).</p>
+<p><strong>El alma inmortal y la metempsícosis.</strong> Si el alma contempló las Formas antes de nacer (la anamnesis de <a href="../chapters-web/tema-03.html#sec-10">§10</a>), es que existe antes del cuerpo y le sobrevive. Platón sostiene, en efecto, que el alma —su parte racional— es <strong>inmortal</strong><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, y que está sometida a la <strong>metempsícosis</strong> o reencarnación, doctrina que también toma del orfismo y reelabora a su manera. En el <em>Fedón</em> describe almas que, tras la muerte, vagan apegadas a lo corpóreo hasta reencarnarse en un cuerpo nuevo —humano o animal— según hayan vivido: el alma justa puede aspirar a una vida mejor. Y en la <em>República</em> lo cuenta con el <strong>mito de Er</strong>, un guerrero que regresa de entre los muertos: las almas, en número limitado, recorren un ciclo de unos mil años entre vida y vida<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, y antes de reencarnarse <em>eligen</em> su próxima vida, de modo que cada cual es, en buena parte, responsable de su destino.</p>
+<p>Un alma así —dividida en tres, ordenada o desordenada según quién lleve las riendas— plantea de inmediato una pregunta moral: ¿cuándo está bien un alma? Cuando cada parte hace lo suyo bajo el mando de la razón. Esa es la puerta de las virtudes, y por ella entramos en <a href="../chapters-web/tema-03.html#sec-12">§12</a>.</p>
 </section>
 <section id="sec-12" class="level2">
 <h2 class="anchored" data-anchor-id="sec-12">§12 · Platón: las virtudes</h2>
-<p><a href="tema-03.html#sec-11">§11</a> dejó una pregunta en el aire: ¿cuándo está bien un alma? La respuesta de Platón es elegante y tiene la forma misma de su psicología. Un alma está bien cuando cada una de sus tres partes hace lo suyo y la razón gobierna; está mal cuando los caballos se desbocan y arrastran al auriga. A esa buena disposición del alma la llamamos <strong>virtud</strong> (<em>areté</em>).</p>
-<p><strong>Una virtud para cada parte.</strong> Recordemos qué es una <em>areté</em>: la excelencia que hace que algo cumpla bien su función —la del caballo es correr; la del cuchillo, cortar (<a href="tema-02.html#sec-06">§06</a>)—. Como el alma tiene tres partes (<a href="tema-03.html#sec-11">§11</a>), tiene tres excelencias, una por cada una:</p>
+<p><a href="../chapters-web/tema-03.html#sec-11">§11</a> dejó una pregunta en el aire: ¿cuándo está bien un alma? La respuesta de Platón es elegante y tiene la forma misma de su psicología. Un alma está bien cuando cada una de sus tres partes hace lo suyo y la razón gobierna; está mal cuando los caballos se desbocan y arrastran al auriga. A esa buena disposición del alma la llamamos <strong>virtud</strong> (<em>areté</em>).</p>
+<p><strong>Una virtud para cada parte.</strong> Recordemos qué es una <em>areté</em>: la excelencia que hace que algo cumpla bien su función —la del caballo es correr; la del cuchillo, cortar (<a href="../chapters-web/tema-02.html#sec-06">§06</a>)—. Como el alma tiene tres partes (<a href="../chapters-web/tema-03.html#sec-11">§11</a>), tiene tres excelencias, una por cada una:</p>
 <ul>
 <li>la <strong>sabiduría</strong> (<em>sophía</em>) es la virtud de la parte racional: el saber que le permite gobernar mirando al bien del conjunto;</li>
 <li>la <strong>valentía</strong> (<em>andreía</em>) es la virtud de la parte irascible: sostener firme, ante el peligro y el deseo, lo que la razón ha dictado;</li>
 <li>la <strong>templanza</strong> (<em>sōphrosýnē</em>) es la virtud de la parte concupiscible: el dominio de los apetitos<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>.</li>
 </ul>
 <p><strong>La justicia: el orden del alma.</strong> Falta una cuarta, y es la decisiva. La <strong>justicia</strong> (<em>dikaiosýnē</em>) no es una virtud más junto a las otras tres, sino lo que resulta cuando las tres están en su sitio: cada parte hace su tarea y ninguna usurpa la ajena. El alma justa es un alma <em>en orden</em> —gobernada por la razón, defendida por el ánimo, servida por los apetitos—, y ese orden es, dice Platón, la <em>salud</em> del alma; la injusticia, en cambio, es su enfermedad, un alma enferma aunque no lo note. De ahí una consecuencia que Platón defenderá con fuerza: ser justo no es un sacrificio que uno acepta a regañadientes, sino lo único que de verdad le conviene. Nadie, sabiéndolo, elige estar enfermo.</p>
-<p>Y todo esto se apoya, en última instancia, en el saber. La parte que debe mandar es la racional precisamente porque puede <em>conocer</em> el bien; y quien conoce de verdad qué es bueno, obra bien. Es la tesis socrático-platónica —la virtud es conocimiento, el vicio ignorancia— que vimos en <a href="tema-02.html#sec-07">§07</a>. Educar las virtudes será, por tanto, ante todo formar esa parte que conoce.</p>
+<p>Y todo esto se apoya, en última instancia, en el saber. La parte que debe mandar es la racional precisamente porque puede <em>conocer</em> el bien; y quien conoce de verdad qué es bueno, obra bien. Es la tesis socrático-platónica —la virtud es conocimiento, el vicio ignorancia— que vimos en <a href="../chapters-web/tema-02.html#sec-07">§07</a>. Educar las virtudes será, por tanto, ante todo formar esa parte que conoce.</p>
 <p>Estas cuatro —sabiduría, valentía, templanza y justicia— harán fortuna: son las que la tradición posterior llamará <em>virtudes cardinales</em>, las que la Edad Media cristiana pondrá como gozne (del latín <em>cardo</em>, «quicio») de la vida moral.</p>
-<p>Una última cosa, que abre la sección siguiente. Si la justicia es que cada parte del alma haga lo suyo bajo el gobierno de la razón, ¿no ocurrirá lo mismo en una comunidad? Platón está convencido de que el alma y la ciudad comparten estructura —tres partes, tres funciones, una sola justicia—, y que la una se entiende mirando a la otra. De esa ciudad justa trata <a href="tema-03.html#sec-13">§13</a>.</p>
+<p>Una última cosa, que abre la sección siguiente. Si la justicia es que cada parte del alma haga lo suyo bajo el gobierno de la razón, ¿no ocurrirá lo mismo en una comunidad? Platón está convencido de que el alma y la ciudad comparten estructura —tres partes, tres funciones, una sola justicia—, y que la una se entiende mirando a la otra. De esa ciudad justa trata <a href="../chapters-web/tema-03.html#sec-13">§13</a>.</p>
 </section>
 <section id="sec-13" class="level2">
 <h2 class="anchored" data-anchor-id="sec-13">§13 · Platón: el proyecto político</h2>
-<p>Hemos visto la realidad (<a href="tema-03.html#sec-09">§09</a>), el conocimiento (<a href="tema-03.html#sec-10">§10</a>), el alma (<a href="tema-03.html#sec-11">§11</a>) y sus virtudes (<a href="tema-03.html#sec-12">§12</a>); ahora esas piezas se montan en una sola pregunta, la que la muerte de Sócrates le dejó clavada: ¿quién debe gobernar, y cómo se construye una ciudad justa? Para responderla escribió su obra mayor, la <em>República</em>, y en ella diseñó la ciudad ideal, la <em>kallípolis</em> o «ciudad hermosa».</p>
+<p>Hemos visto la realidad (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), el conocimiento (<a href="../chapters-web/tema-03.html#sec-10">§10</a>), el alma (<a href="../chapters-web/tema-03.html#sec-11">§11</a>) y sus virtudes (<a href="../chapters-web/tema-03.html#sec-12">§12</a>); ahora esas piezas se montan en una sola pregunta, la que la muerte de Sócrates le dejó clavada: ¿quién debe gobernar, y cómo se construye una ciudad justa? Para responderla escribió su obra mayor, la <em>República</em>, y en ella diseñó la ciudad ideal, la <em>kallípolis</em> o «ciudad hermosa».</p>
 <p><strong>De qué nace la ciudad.</strong> Empecemos por lo más llano: ¿por qué vivimos en ciudades? Porque no nos bastamos solos. Nadie produce por sí mismo el alimento, el vestido y la casa que necesita; nos hacen falta los demás. De esa dependencia nace la división del trabajo, y con ella tres tareas básicas: <em>producir</em> los bienes, <em>defender</em> la comunidad y <em>dirigir</em> el conjunto. A cada tarea corresponde un grupo, y así la ciudad justa tiene tres clases: los productores (labradores, artesanos, mercaderes), los guardianes (los guerreros) y los gobernantes.</p>
-<p><strong>La ciudad es el alma en grande.</strong> Aquí asoma la idea que vertebra toda su política: la ciudad tiene la misma estructura que el alma. Las tres clases corresponden a las tres partes del alma (<a href="tema-03.html#sec-11">§11</a>), y cada una tiene su virtud (<a href="tema-03.html#sec-12">§12</a>), exactamente como aquellas.</p>
+<p><strong>La ciudad es el alma en grande.</strong> Aquí asoma la idea que vertebra toda su política: la ciudad tiene la misma estructura que el alma. Las tres clases corresponden a las tres partes del alma (<a href="../chapters-web/tema-03.html#sec-11">§11</a>), y cada una tiene su virtud (<a href="../chapters-web/tema-03.html#sec-12">§12</a>), exactamente como aquellas.</p>
 <span id="tbl-paralelo-alma-ciudad" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>El paralelo alma–ciudad: tres partes, tres clases, una misma justicia.</caption>
@@ -688,7 +700,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p>Y la justicia funciona igual en los dos planos: una ciudad es justa cuando cada clase hace lo suyo y ninguna se mete en lo ajeno, cuando el productor produce, el guardián defiende y el gobernante dirige, del mismo modo que el alma es justa cuando cada parte cumple su función bajo el mando de la razón. La justicia, en la ciudad como en el alma, es ese orden armónico; la injusticia, su desorden.</p>
-<p><strong>El rey-filósofo.</strong> ¿Y quién debe gobernar? La respuesta de Platón es la más célebre, y la más polémica, de su política: deben gobernar los filósofos. No por capricho, sino por coherencia con todo lo anterior. Gobernar bien es dirigir la ciudad hacia el bien; y solo puede hacerlo quien <em>conoce</em> el Bien, quien ha salido de la caverna y ha visto el sol (<a href="tema-03.html#sec-09">§09</a>, <a href="tema-03.html#sec-10">§10</a>). Por eso escribe Platón que, mientras los filósofos no sean reyes o los reyes no filosofen, no habrá fin para los males de las ciudades. Formar a esos gobernantes exige un camino largo: tras años de matemáticas, hacia los treinta empiezan la dialéctica, que los lleva a contemplar la Forma del Bien; después, quince años de cargos prácticos que los curten; y solo hacia los cincuenta, ya probados, gobiernan. Y aquí Platón salda la deuda que dejó pendiente la caverna: el que ha visto la luz preferiría quedarse contemplándola, pero tiene que <em>volver</em> a la penumbra a gobernar a los demás. No lo hace por ambición, que es la peor señal en un gobernante, sino por deber. Casi hay que obligarlo.</p>
+<p><strong>El rey-filósofo.</strong> ¿Y quién debe gobernar? La respuesta de Platón es la más célebre, y la más polémica, de su política: deben gobernar los filósofos. No por capricho, sino por coherencia con todo lo anterior. Gobernar bien es dirigir la ciudad hacia el bien; y solo puede hacerlo quien <em>conoce</em> el Bien, quien ha salido de la caverna y ha visto el sol (<a href="../chapters-web/tema-03.html#sec-09">§09</a>, <a href="../chapters-web/tema-03.html#sec-10">§10</a>). Por eso escribe Platón que, mientras los filósofos no sean reyes o los reyes no filosofen, no habrá fin para los males de las ciudades. Formar a esos gobernantes exige un camino largo: tras años de matemáticas, hacia los treinta empiezan la dialéctica, que los lleva a contemplar la Forma del Bien; después, quince años de cargos prácticos que los curten; y solo hacia los cincuenta, ya probados, gobiernan. Y aquí Platón salda la deuda que dejó pendiente la caverna: el que ha visto la luz preferiría quedarse contemplándola, pero tiene que <em>volver</em> a la penumbra a gobernar a los demás. No lo hace por ambición, que es la peor señal en un gobernante, sino por deber. Casi hay que obligarlo.</p>
 <p><strong>La unidad de la ciudad y la ley.</strong> ¿Para qué todo esto? Para un fin que Platón pone por encima de cualquier otro: la unidad de la ciudad. El mayor mal de una ciudad, dice, es lo que la divide y la parte en bandos; el mayor bien, lo que la mantiene unida<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>. La ley y las instituciones existen para procurar esa unidad y el bien del conjunto, no el de una parte. De ahí las medidas más drásticas y más discutidas de la <em>República</em>, todas pensadas para guardianes y gobernantes: entre ellos no habrá propiedad privada ni familia propia, sino que compartirán los bienes, y aun los hijos se criarán en común, porque la propiedad y la familia engendran el «esto es mío y no tuyo» que rompe la ciudad en pedazos. Se trata de que nadie tire para sí, de que todos digan «lo nuestro». Por la misma lógica, entre los guardianes mujeres y hombres reciben la misma educación y desempeñan las mismas funciones, aunque Platón siga teniéndolas por naturalmente más débiles<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p>
 <p><strong>La aristocracia y su degradación.</strong> La ciudad gobernada por los mejores es lo que Platón llama aristocracia, que significa, literalmente, «gobierno de los mejores». Es para él el único régimen justo, porque en él gobierna la razón, encarnada en los filósofos. Pero ninguna obra humana dura para siempre, y Platón describe cómo la ciudad ideal, si se corrompe, va degenerando en una serie de regímenes cada vez peores, cada uno gobernado por un deseo que ha destronado a la razón<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>:</p>
 <ol type="1">
@@ -698,8 +710,8 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Democracia.</strong> El gobierno de la mayoría, que pone la libertad por encima de todo. Cada cual hace lo que le place y todas las opiniones se tienen por iguales.</li>
 <li><strong>Tiranía.</strong> El peor de los regímenes, nacido del exceso de libertad de la democracia: del desorden surge un caudillo que somete a todos. La libertad sin medida acaba en esclavitud.</li>
 </ol>
-<p>Platón mira con especial desconfianza la democracia: una ciudad donde manda la mayoría sin saber, donde cualquiera opina de todo como si todas las opiniones valieran igual —el viejo relativismo de los sofistas (<a href="tema-02.html#sec-05">§05</a>)— es para él una ciudad sin timón. Y no olvidaba que fue una democracia la que condenó a Sócrates.</p>
-<p>Conviene no confundir esta secuencia con la clasificación de Aristóteles (<a href="tema-04.html#sec-19">§19</a>). La de Platón es un relato de <em>decadencia</em>, ligado a los tipos de alma, que desciende del mejor régimen al peor. La de Aristóteles será una <em>tipología</em> estática, que ordena las constituciones según cuántos gobiernan y en interés de quién. Ambos usan el nombre de «aristocracia» para un buen gobierno, pero en Platón es el ideal único, mientras que Aristóteles lo verá como una más entre las formas posibles, y preferirá en la práctica la república de la clase media.</p>
+<p>Platón mira con especial desconfianza la democracia: una ciudad donde manda la mayoría sin saber, donde cualquiera opina de todo como si todas las opiniones valieran igual —el viejo relativismo de los sofistas (<a href="../chapters-web/tema-02.html#sec-05">§05</a>)— es para él una ciudad sin timón. Y no olvidaba que fue una democracia la que condenó a Sócrates.</p>
+<p>Conviene no confundir esta secuencia con la clasificación de Aristóteles (<a href="../chapters-web/tema-04.html#sec-19">§19</a>). La de Platón es un relato de <em>decadencia</em>, ligado a los tipos de alma, que desciende del mejor régimen al peor. La de Aristóteles será una <em>tipología</em> estática, que ordena las constituciones según cuántos gobiernan y en interés de quién. Ambos usan el nombre de «aristocracia» para un buen gobierno, pero en Platón es el ideal único, mientras que Aristóteles lo verá como una más entre las formas posibles, y preferirá en la práctica la república de la clase media.</p>
 <p>Con la ciudad justa se cierra el sistema de Platón: de las Formas a la política, todo encaja en una misma arquitectura, sostenida por el Bien y recorrida por una sola idea de Justicia. Es una construcción imponente.</p>
 
 
@@ -712,32 +724,144 @@ ul.task-list li input[type="checkbox"] {
 <li id="fn3"><p>Hablar de «dos mundos» es una simplificación didáctica útil, pero discutida: muchos intérpretes prefieren leer en Platón <em>grados de realidad</em> —de la sombra a la Forma— antes que dos territorios separados. Mantenemos la imagen por su claridad, conscientes de su límite.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>En el diálogo <em>Parménides</em>, el propio Platón pone en boca de Parménides objeciones a la teoría de la participación —entre ellas el llamado argumento del «tercer hombre»—. Que el autor critique su propia idea es señal de que nunca la dio por terminada.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Platón, <em>República</em>, VI, 508a-509b; la fórmula «más allá del ser» traduce <em>epékeina tēs ousías</em> (509b).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>La <em>anamnesis</em> presupone que el alma ha existido antes del cuerpo: una herencia órfico-pitagórica —la inmortalidad y la transmigración del alma— que Platón asume y reelabora. Sobre Pitágoras y el orfismo, ver <a href="tema-01.html#sec-03">§03</a>; sobre la metempsícosis platónica, ver <a href="tema-03.html#sec-11">§11</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>La caverna admite tres lecturas a la vez: gnoseológica (el ascenso del conocer), educativa (la formación como conversión de la mirada) y política (el deber de quien ha visto). Aquí la seguimos como ascenso del saber; su cara política se trata en <a href="tema-03.html#sec-13">§13</a>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>La <em>anamnesis</em> presupone que el alma ha existido antes del cuerpo: una herencia órfico-pitagórica —la inmortalidad y la transmigración del alma— que Platón asume y reelabora. Sobre Pitágoras y el orfismo, ver <a href="../chapters-web/tema-01.html#sec-03">§03</a>; sobre la metempsícosis platónica, ver <a href="../chapters-web/tema-03.html#sec-11">§11</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>La caverna admite tres lecturas a la vez: gnoseológica (el ascenso del conocer), educativa (la formación como conversión de la mirada) y política (el deber de quien ha visto). Aquí la seguimos como ascenso del saber; su cara política se trata en <a href="../chapters-web/tema-03.html#sec-13">§13</a>.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>Los órficos jugaban con la semejanza entre <em>sôma</em> (cuerpo) y <em>sêma</em> (tumba): el cuerpo sería la tumba del alma. Platón recoge el motivo, aunque no llega al desprecio absoluto de lo corporal.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>Platón no es del todo uniforme: el <em>Fedón</em> argumenta la inmortalidad del alma sin más, mientras que en otros lugares solo la parte racional escapa a la muerte y las otras dos perecen con el cuerpo. Seguimos aquí esta segunda lectura.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p>Mil años: cien de vida terrena por diez de existencia ultraterrena. El número diez no es casual: es el número señero del pitagorismo.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn11"><p>En rigor, Platón presenta la templanza menos como la virtud de una sola parte que como el acuerdo de las tres sobre cuál debe mandar: la concordia por la que el ánimo y los apetitos aceptan el gobierno de la razón.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>Que el mayor bien de la ciudad sea su unidad y el mayor mal su división: Platón, <em>República</em>, V, 462a-b; el gobierno de los filósofos, en 473c-d.&nbsp;De este tramo, ley y unidad de la ciudad, procede el texto del modelo PAU.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn13"><p>La comunidad de bienes y de familias, y el gobierno de unos pocos sabios sobre el resto, son los puntos por los que más se ha criticado a Platón: ya los rebatirá Aristóteles (ver <a href="tema-04.html#sec-19">§19</a>), y lectores modernos como Popper vieron aquí un germen de autoritarismo. Otros lo leen como un retrato de la justicia, no como un plan de gobierno.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>La comunidad de bienes y de familias, y el gobierno de unos pocos sabios sobre el resto, son los puntos por los que más se ha criticado a Platón: ya los rebatirá Aristóteles (ver <a href="../chapters-web/tema-04.html#sec-19">§19</a>), y lectores modernos como Popper vieron aquí un germen de autoritarismo. Otros lo leen como un retrato de la justicia, no como un plan de gobierno.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn14"><p>Platón expone la secuencia de los regímenes en la <em>República</em>, VIII–IX, y la traza en paralelo a la decadencia del alma: a cada régimen corresponde un tipo de carácter.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -816,7 +940,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -825,8 +950,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -840,6 +1026,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1002,44 +1189,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1138,7 +1335,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-02.html" class="pagination-link" aria-label="Tema 2 · La Ilustración griega: los sofistas y Sócrates">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 2 · La Ilustración griega: los sofistas y Sócrates</span></span>

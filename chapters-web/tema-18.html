@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-17.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-18.html"><span class="chapter-title">Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-18.html"><span class="chapter-title">Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-18.html"><span class="chapter-title">Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-5.html">Parte V · Siglos XX y XXI</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-18.html"><span class="chapter-title">Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 18 · El pensamiento español: Unamuno, Ortega, Zambrano</span></h1>
 </div>
@@ -516,13 +528,13 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="para-entrar-en-el-pensamiento-español" class="level2">
 <h2 class="anchored" data-anchor-id="para-entrar-en-el-pensamiento-español">Para entrar en el pensamiento español</h2>
-<p>Mientras Heidegger preguntaba por el ser y Sartre proclamaba que estamos condenados a ser libres (<a href="tema-17.html#sec-63">§63</a>-<a href="tema-17.html#sec-64">§64</a>), en España, por un camino propio y a su aire, tres pensadores hacían de la <em>vida</em> el centro de la filosofía. No es que copiaran al existencialismo: en parte lo anticipan —Unamuno escribe su obra mayor catorce años antes que Heidegger— y en parte dialogan con él de tú a tú. Lo que comparten es una misma desconfianza de la razón fría y abstracta, la que cree poder entenderlo todo desde fuera, sin contar con quien vive, sufre y muere.</p>
-<p>Por eso a los tres les vale el mismo gesto: ponerle a la <em>razón</em> un apellido que la ate a la vida. Lo seguiremos en orden cronológico, que es también el de un magisterio. Primero, <em>Miguel de Unamuno</em>, el hombre del <em>sentimiento trágico</em>, que vive la razón como un combate contra el corazón (<a href="tema-18.html#sec-65">§65</a>). Después, su rival más joven, <em>José Ortega y Gasset</em>, que busca una <em>razón vital</em>, capaz de pensar la vida sin renunciar a la claridad del concepto (<a href="tema-18.html#sec-66">§66</a>). Y, por último, la discípula más original de Ortega, <em>María Zambrano</em>, que da un paso más y reclama una <em>razón poética</em>, reconciliada con lo que el concepto deja fuera (<a href="tema-18.html#sec-67">§67</a>).</p>
+<p>Mientras Heidegger preguntaba por el ser y Sartre proclamaba que estamos condenados a ser libres (<a href="../chapters-web/tema-17.html#sec-63">§63</a>-<a href="../chapters-web/tema-17.html#sec-64">§64</a>), en España, por un camino propio y a su aire, tres pensadores hacían de la <em>vida</em> el centro de la filosofía. No es que copiaran al existencialismo: en parte lo anticipan —Unamuno escribe su obra mayor catorce años antes que Heidegger— y en parte dialogan con él de tú a tú. Lo que comparten es una misma desconfianza de la razón fría y abstracta, la que cree poder entenderlo todo desde fuera, sin contar con quien vive, sufre y muere.</p>
+<p>Por eso a los tres les vale el mismo gesto: ponerle a la <em>razón</em> un apellido que la ate a la vida. Lo seguiremos en orden cronológico, que es también el de un magisterio. Primero, <em>Miguel de Unamuno</em>, el hombre del <em>sentimiento trágico</em>, que vive la razón como un combate contra el corazón (<a href="../chapters-web/tema-18.html#sec-65">§65</a>). Después, su rival más joven, <em>José Ortega y Gasset</em>, que busca una <em>razón vital</em>, capaz de pensar la vida sin renunciar a la claridad del concepto (<a href="../chapters-web/tema-18.html#sec-66">§66</a>). Y, por último, la discípula más original de Ortega, <em>María Zambrano</em>, que da un paso más y reclama una <em>razón poética</em>, reconciliada con lo que el concepto deja fuera (<a href="../chapters-web/tema-18.html#sec-67">§67</a>).</p>
 <p>Son tres voces, no una escuela, y a menudo discuten entre sí. Pero juntas dibujan una manera peninsular de filosofar: desde la vida concreta, con la lengua viva y sin miedo a que el pensamiento roce la literatura.</p>
 </section>
 <section id="sec-65" class="level2">
 <h2 class="anchored" data-anchor-id="sec-65">§65 · Miguel de Unamuno</h2>
-<p><strong>El hombre de carne y hueso.</strong> <em>Miguel de Unamuno</em> (1864-1936), bilbaíno, catedrático y rector de la Universidad de Salamanca y figura mayor de la Generación del 98<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, abre su filosofía con una protesta. La filosofía de los sistemas —se queja— habla de «el hombre» en abstracto, de un sujeto sin rostro que ni nace ni muere. A ese fantasma opone Unamuno <em>el hombre de carne y hueso</em>, «el que nace, sufre y muere —sobre todo muere—, el que come y bebe y juega y duerme y piensa y quiere». La filosofía no brota de la pura curiosidad, sino de ese hombre concreto y de su angustia ante la muerte. En esto Unamuno prolonga a Kierkegaard (<a href="tema-17.html#sec-62">§62</a>) y se adelanta al existencialismo: el punto de partida no es el saber, sino el existir.</p>
+<p><strong>El hombre de carne y hueso.</strong> <em>Miguel de Unamuno</em> (1864-1936), bilbaíno, catedrático y rector de la Universidad de Salamanca y figura mayor de la Generación del 98<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, abre su filosofía con una protesta. La filosofía de los sistemas —se queja— habla de «el hombre» en abstracto, de un sujeto sin rostro que ni nace ni muere. A ese fantasma opone Unamuno <em>el hombre de carne y hueso</em>, «el que nace, sufre y muere —sobre todo muere—, el que come y bebe y juega y duerme y piensa y quiere». La filosofía no brota de la pura curiosidad, sino de ese hombre concreto y de su angustia ante la muerte. En esto Unamuno prolonga a Kierkegaard (<a href="../chapters-web/tema-17.html#sec-62">§62</a>) y se adelanta al existencialismo: el punto de partida no es el saber, sino el existir.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-unamuno.jpg" class="img-fluid figure-img"></p>
@@ -536,27 +548,27 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-66" class="level2">
 <h2 class="anchored" data-anchor-id="sec-66">§66 · Ortega y Gasset: la razón vital</h2>
-<p><strong>Yo soy yo y mi circunstancia.</strong> <em>José Ortega y Gasset</em> (1883-1955), madrileño, es el filósofo español más influyente del siglo XX: maestro de varias generaciones, prosista deslumbrante y fundador de la <em>Revista de Occidente</em>, por la que entró en España buena parte del pensamiento europeo. Movido por el afán <em>regeneracionista</em> de su tiempo —sacar a España de su atraso abriéndola a Europa—, hizo de la filosofía una tarea pública, y su pensamiento maduró en tres tiempos: del <em>objetivismo</em> juvenil (que aún veía en lo subjetivo el error) al <em>perspectivismo</em> y, por fin, al <em>raciovitalismo</em>. Su filosofía cabe entera en una fórmula que enuncia muy joven, en las <em>Meditaciones del Quijote</em> (1914): «<em>Yo soy yo y mi circunstancia, y si no la salvo a ella no me salvo yo</em>». El yo no es una sustancia aislada que luego se asoma al mundo, como el cogito de Descartes (<a href="tema-08.html#sec-36">§36</a>); tampoco el mundo lo es todo. La realidad primera es la <em>unión</em> de ambos: yo, siempre, junto a mi <em>circunstancia</em>, que tiene dos niveles —el <em>histórico-cultural</em> (mi época, mi tradición) y el <em>particular</em> (mi cuerpo, mi familia, las cosas y las gentes entre las que me toca vivir cada día)—. De ahí una consecuencia que Ortega convertirá en método: <em>ningún dato de la realidad, por menudo que sea, queda fuera de la filosofía</em>. «Salvar la circunstancia» es hacerse cargo de ella y darle sentido; y solo salvándola me salvo yo.</p>
+<p><strong>Yo soy yo y mi circunstancia.</strong> <em>José Ortega y Gasset</em> (1883-1955), madrileño, es el filósofo español más influyente del siglo XX: maestro de varias generaciones, prosista deslumbrante y fundador de la <em>Revista de Occidente</em>, por la que entró en España buena parte del pensamiento europeo. Movido por el afán <em>regeneracionista</em> de su tiempo —sacar a España de su atraso abriéndola a Europa—, hizo de la filosofía una tarea pública, y su pensamiento maduró en tres tiempos: del <em>objetivismo</em> juvenil (que aún veía en lo subjetivo el error) al <em>perspectivismo</em> y, por fin, al <em>raciovitalismo</em>. Su filosofía cabe entera en una fórmula que enuncia muy joven, en las <em>Meditaciones del Quijote</em> (1914): «<em>Yo soy yo y mi circunstancia, y si no la salvo a ella no me salvo yo</em>». El yo no es una sustancia aislada que luego se asoma al mundo, como el cogito de Descartes (<a href="../chapters-web/tema-08.html#sec-36">§36</a>); tampoco el mundo lo es todo. La realidad primera es la <em>unión</em> de ambos: yo, siempre, junto a mi <em>circunstancia</em>, que tiene dos niveles —el <em>histórico-cultural</em> (mi época, mi tradición) y el <em>particular</em> (mi cuerpo, mi familia, las cosas y las gentes entre las que me toca vivir cada día)—. De ahí una consecuencia que Ortega convertirá en método: <em>ningún dato de la realidad, por menudo que sea, queda fuera de la filosofía</em>. «Salvar la circunstancia» es hacerse cargo de ella y darle sentido; y solo salvándola me salvo yo.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-ortega.jpg" class="img-fluid figure-img"></p>
 <figcaption>José Ortega y Gasset (1883-1955), el filósofo español más influyente del siglo XX y maestro de la «razón vital». || Atribución: revista <em>Nuevo Mundo</em>, 1920, dominio público / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>El perspectivismo.</strong> De ahí se sigue su <em>perspectivismo</em>. Cada vida es un punto de vista único e insustituible sobre el mundo: «donde está mi pupila no hay ninguna otra». Ortega lo explica con un ejemplo que conviene recordar: la Sierra de Guadarrama no es la misma vista desde Madrid que desde Segovia. ¿Cuál de las dos es la visión verdadera? La pregunta no tiene sentido: ambas lo son, igualmente verdaderas, y se <em>complementan</em> —se conoce mejor la sierra mirándola desde Madrid <em>y</em> desde Segovia que desde un solo lado—. Recoge así el perspectivismo de Nietzsche (<a href="tema-16.html#sec-60">§60</a>), que hacía de toda verdad una interpretación, pero lo vuelve afirmativo: la perspectiva no <em>deforma</em> la realidad, es el único modo de acceder a ella, y la verdad es la <em>composición progresiva</em> de los puntos de vista. Lo único falso es pretender una verdad «desde ningún lugar»:</p>
+<p><strong>El perspectivismo.</strong> De ahí se sigue su <em>perspectivismo</em>. Cada vida es un punto de vista único e insustituible sobre el mundo: «donde está mi pupila no hay ninguna otra». Ortega lo explica con un ejemplo que conviene recordar: la Sierra de Guadarrama no es la misma vista desde Madrid que desde Segovia. ¿Cuál de las dos es la visión verdadera? La pregunta no tiene sentido: ambas lo son, igualmente verdaderas, y se <em>complementan</em> —se conoce mejor la sierra mirándola desde Madrid <em>y</em> desde Segovia que desde un solo lado—. Recoge así el perspectivismo de Nietzsche (<a href="../chapters-web/tema-16.html#sec-60">§60</a>), que hacía de toda verdad una interpretación, pero lo vuelve afirmativo: la perspectiva no <em>deforma</em> la realidad, es el único modo de acceder a ella, y la verdad es la <em>composición progresiva</em> de los puntos de vista. Lo único falso es pretender una verdad «desde ningún lugar»:</p>
 <blockquote class="blockquote">
 <p>La realidad, como un paisaje, tiene infinitas perspectivas, todas ellas igualmente verídicas y auténticas. La sola perspectiva falsa es esa que pretende ser la única.</p>
 <p>—José Ortega y Gasset, <em>El Espectador</em> I, «Verdad y perspectiva» (1916)</p>
 </blockquote>
 <p>De ahí extrae Ortega dos consecuencias. Una, sobre el conocimiento: si mi mirada es parcial y las de los demás aportan lo que a la mía le falta, los otros dejan de ser un estorbo para la objetividad y pasan a ser <em>necesarios</em> para ella —el individualismo, lejos de encerrarnos, es condición de un conocimiento más rico—. Otra, cívica: si ninguna perspectiva agota la verdad y todas hacen falta para componerla, la <em>tolerancia</em> deja de ser una concesión y se vuelve condición del conocer y del convivir.</p>
-<p><strong>La razón vital.</strong> Su idea más propia responde a una disyuntiva que considera falsa. El <em>racionalismo</em> (<a href="tema-08.html#sec-34">§34</a>) confió en una razón pura y abstracta que da la espalda a la vida; el irracionalismo, harto de ella, renunció a la razón. En su artículo <em>Ni vitalismo ni racionalismo</em> (1924), Ortega busca una tercera vía: una <em>razón vital</em>, puesta al servicio de la vida y arraigada en ella. Con ello se aparta por igual de dos excesos: del <em>racionalismo</em>, que sueña una razón sin límites, capaz de conocerlo y regirlo todo; y del <em>vitalismo</em> de un Bergson, que, fiándolo todo a la intuición y al impulso vital, deja la razón en segundo plano. Para Ortega la razón se da <em>dentro</em> de la vida, rodeada y limitada por ella: no es la legisladora de lo real, sino su <em>cronista</em>. Porque la <em>vida</em> es la <em>realidad radical</em>: no la materia ni el espíritu, sino el ámbito en que toda otra cosa aparece. Por eso invierte la vieja jerarquía que unía la filosofía al ocio: «no vivimos para pensar, sino que pensamos para vivir». Y vivir no es algo hecho, sino <em>quehacer</em>: encontrarse arrojado a una circunstancia y tener que decidir a cada paso qué hacer con ella —proyecto, libertad y, al tiempo, límite—. La vida nos es dada, pero no nos es dada hecha: tenemos que hacérnosla.</p>
+<p><strong>La razón vital.</strong> Su idea más propia responde a una disyuntiva que considera falsa. El <em>racionalismo</em> (<a href="../chapters-web/tema-08.html#sec-34">§34</a>) confió en una razón pura y abstracta que da la espalda a la vida; el irracionalismo, harto de ella, renunció a la razón. En su artículo <em>Ni vitalismo ni racionalismo</em> (1924), Ortega busca una tercera vía: una <em>razón vital</em>, puesta al servicio de la vida y arraigada en ella. Con ello se aparta por igual de dos excesos: del <em>racionalismo</em>, que sueña una razón sin límites, capaz de conocerlo y regirlo todo; y del <em>vitalismo</em> de un Bergson, que, fiándolo todo a la intuición y al impulso vital, deja la razón en segundo plano. Para Ortega la razón se da <em>dentro</em> de la vida, rodeada y limitada por ella: no es la legisladora de lo real, sino su <em>cronista</em>. Porque la <em>vida</em> es la <em>realidad radical</em>: no la materia ni el espíritu, sino el ámbito en que toda otra cosa aparece. Por eso invierte la vieja jerarquía que unía la filosofía al ocio: «no vivimos para pensar, sino que pensamos para vivir». Y vivir no es algo hecho, sino <em>quehacer</em>: encontrarse arrojado a una circunstancia y tener que decidir a cada paso qué hacer con ella —proyecto, libertad y, al tiempo, límite—. La vida nos es dada, pero no nos es dada hecha: tenemos que hacérnosla.</p>
 <p><strong>La razón histórica.</strong> Si la vida es quehacer y no naturaleza fija, entonces el ser humano no se entiende como una cosa, sino como una historia. «El hombre no tiene naturaleza, sino que tiene… historia» (<em>Historia como sistema</em>, 1935): somos lo que hemos sido, y cada presente se sostiene sobre un <em>suelo</em> —el pasado— y se lanza hacia un <em>proyecto</em> —el futuro—. Por eso la razón que sirve a la vida ha de ser <em>histórica</em>, y aun <em>narrativa</em>: para comprender algo humano —qué es el «amor», qué es una nación— no se busca su esencia intemporal, se cuenta su historia. Frente a la razón pura de un Kant, una <em>razón narrativa</em>. Y como ese pasado cambia de una hornada a otra, el motor de la historia son las <em>generaciones</em>: cada una llega al mundo con creencias algo distintas de las de sus mayores, y en ese relevo —siempre un punto conflictivo— avanza el tiempo histórico. A este mismo análisis pertenece su distinción entre las <em>ideas</em> que tenemos —y discutimos— y las <em>creencias</em> en que estamos sin advertirlo: «las ideas se tienen; en las creencias se está». Las creencias son el suelo no pensado que pisamos; cuando una se tambalea, se abre una <em>duda</em> y sobreviene la <em>crisis</em>, y hay que volver a pensar lo que se daba por descontado<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<p><strong>El hombre-masa.</strong> Ese mismo análisis lo llevó Ortega a la sociedad, en su obra más leída, <em>La rebelión de las masas</em> (1930). Su tesis no es económica, sino moral: ha irrumpido en la vida pública el <em>hombre-masa</em>, que no se define por la clase ni por el dinero, sino por una actitud —el «hombre medio» satisfecho de sí, que se cree con todos los derechos y ninguna obligación, y que exige a los demás lo que no se exige a sí mismo—. Frente a él, la <em>minoría</em> o <em>élite</em> no es una casta privilegiada, sino quien se impone disciplina y exigencias; la diferencia entre ambos no es de cantidad, sino de calidad. Ortega lo retrata en tres figuras reconocibles aún hoy: el <em>señorito satisfecho</em>, que da por hecho que todo le es debido; el <em>bárbaro especialista</em>, que por dominar un rincón de una ciencia se cree autorizado a opinar de todo; y el <em>niño mimado</em>, que eleva su capricho a ley. Y, a diferencia de Marx (<a href="tema-15.html#sec-58">§58</a>), Ortega niega que la historia esté garantizada: la cultura es solo un barniz que puede saltar, y debajo aguarda intacta la barbarie.</p>
+<p><strong>El hombre-masa.</strong> Ese mismo análisis lo llevó Ortega a la sociedad, en su obra más leída, <em>La rebelión de las masas</em> (1930). Su tesis no es económica, sino moral: ha irrumpido en la vida pública el <em>hombre-masa</em>, que no se define por la clase ni por el dinero, sino por una actitud —el «hombre medio» satisfecho de sí, que se cree con todos los derechos y ninguna obligación, y que exige a los demás lo que no se exige a sí mismo—. Frente a él, la <em>minoría</em> o <em>élite</em> no es una casta privilegiada, sino quien se impone disciplina y exigencias; la diferencia entre ambos no es de cantidad, sino de calidad. Ortega lo retrata en tres figuras reconocibles aún hoy: el <em>señorito satisfecho</em>, que da por hecho que todo le es debido; el <em>bárbaro especialista</em>, que por dominar un rincón de una ciencia se cree autorizado a opinar de todo; y el <em>niño mimado</em>, que eleva su capricho a ley. Y, a diferencia de Marx (<a href="../chapters-web/tema-15.html#sec-58">§58</a>), Ortega niega que la historia esté garantizada: la cultura es solo un barniz que puede saltar, y debajo aguarda intacta la barbarie.</p>
 <p>Lo que nos importa retener es ese raciovitalismo: la razón reconciliada con la vida y con el tiempo. Y precisamente sobre él trabajará su discípula más honda, María Zambrano, que aceptará la razón vital para enseguida encontrarla aún demasiado atada al concepto.</p>
 </section>
 <section id="sec-67" class="level2">
 <h2 class="anchored" data-anchor-id="sec-67">§67 · María Zambrano: la razón poética</h2>
-<p><strong>De la razón vital a la razón poética.</strong> <em>María Zambrano</em> (1904-1991), malagueña, se formó en Madrid con <em>Ortega</em> y con <em>Xavier Zubiri</em>, y de la razón vital de su maestro (<a href="tema-18.html#sec-66">§66</a>) parte; pero pronto le hace una objeción decisiva. La razón vital arraiga la razón en la vida, de acuerdo, pero sigue siendo una razón <em>discursiva</em>, que avanza con conceptos, definiciones y argumentos. Y el concepto, para apresar su objeto, lo <em>violenta</em>: lo separa, lo fija, lo despoja de cuanto en él era singular, vivo y oscuro. Queda fuera, así, toda una región de lo real —el alma, el sufrimiento, lo sagrado, lo que se siente sin poder decirse del todo— que la filosofía, desde Platón, había dejado del lado de la poesía. Ya en <em>Filosofía y poesía</em> (1939) Zambrano planteó esa vieja rivalidad: la filosofía busca con prisa lo uno y universal; la poesía se queda, fiel y sin prisa, con lo múltiple y lo concreto que se le da. Su empeño será reconciliarlas en una forma de conocer que llama <em>razón poética</em>: el rigor del pensar, sin la violencia del concepto.</p>
+<p><strong>De la razón vital a la razón poética.</strong> <em>María Zambrano</em> (1904-1991), malagueña, se formó en Madrid con <em>Ortega</em> y con <em>Xavier Zubiri</em>, y de la razón vital de su maestro (<a href="../chapters-web/tema-18.html#sec-66">§66</a>) parte; pero pronto le hace una objeción decisiva. La razón vital arraiga la razón en la vida, de acuerdo, pero sigue siendo una razón <em>discursiva</em>, que avanza con conceptos, definiciones y argumentos. Y el concepto, para apresar su objeto, lo <em>violenta</em>: lo separa, lo fija, lo despoja de cuanto en él era singular, vivo y oscuro. Queda fuera, así, toda una región de lo real —el alma, el sufrimiento, lo sagrado, lo que se siente sin poder decirse del todo— que la filosofía, desde Platón, había dejado del lado de la poesía. Ya en <em>Filosofía y poesía</em> (1939) Zambrano planteó esa vieja rivalidad: la filosofía busca con prisa lo uno y universal; la poesía se queda, fiel y sin prisa, con lo múltiple y lo concreto que se le da. Su empeño será reconciliarlas en una forma de conocer que llama <em>razón poética</em>: el rigor del pensar, sin la violencia del concepto.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-zambrano.jpg" class="img-fluid figure-img"></p>
@@ -566,33 +578,145 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Qué es la razón poética.</strong> No es renunciar a la razón en favor del puro sentimiento, ni hacer poesía en lugar de filosofía. Es una razón que se <em>casa</em> con la poesía: que une el pensar y el sentir en un mismo acto de conocimiento. Frente a la razón violenta que se apodera de las cosas, las define y las posee, la razón poética es <em>receptiva</em>: aguarda, escucha, deja que las cosas se revelen por sí mismas. Zambrano la piensa con una imagen hermosa, la de los <em>claros del bosque</em>: esos huecos de luz entre los árboles a los que no se llega buscándolos a la fuerza, sino deteniéndose, en una espera atenta, para que la verdad se muestre. Por eso su escritura misma cambia de forma: no demuestra, <em>alumbra</em>; su palabra no quiere atrapar la cosa, sino dejar que aparezca, como la claridad del amanecer —de ahí su gusto por las <em>auroras</em>—. Conocer, para ella, se parece menos a cazar que a <em>recibir</em>.</p>
 <p><strong>El saber del alma y lo divino.</strong> En esa apertura recupera Zambrano dos cosas que la razón moderna había expulsado. Una es el <em>alma</em> misma: frente a una razón que solo mira hacia afuera, hacia el mundo y sus objetos, ella reclama un saber del interior —de los sueños, del tiempo vivido, de la vida que se <em>confiesa</em>—. La otra es <em>lo sagrado</em> y <em>lo divino</em>: en <em>El hombre y lo divino</em> (1955) rastrea cómo de la experiencia originaria de lo sagrado —eso que nos sobrecoge antes de tener nombre— fueron naciendo los dioses y, con el tiempo, la propia filosofía; no lo trata como dogma, sino como una dimensión de la experiencia humana que el pensamiento no debería ignorar. Y a todo ello lo gobierna la <em>piedad</em>, que ella define con finura como «el saber tratar adecuadamente con lo otro»: con lo distinto, lo oscuro, lo que no es como yo. La razón poética es, así, una razón <em>piadosa</em>, hospitalaria con lo que la razón discursiva suele despreciar por confuso.</p>
 <p><strong>El exilio como condición.</strong> Su pensamiento no se entiende sin su biografía. Republicana e hija de la España que perdió la guerra, Zambrano salió del país en 1939 y vivió un exilio larguísimo —Francia, México, La Habana, Puerto Rico, Roma, hasta una aldea del Jura suizo— de más de cuarenta años; no regresó hasta 1984. Y no lo padeció solo como una desgracia: lo <em>pensó</em>. Hizo del <em>exilio</em> una categoría filosófica, una manera de conocer desde el despojamiento y desde el margen, donde quien lo ha perdido todo ve lo que el instalado no alcanza a ver. En ese destierro escribió lo mejor de su obra —<em>El hombre y lo divino</em>, <em>Claros del bosque</em> (1977)— y desde él, ya muy mayor, llegó el reconocimiento: el Premio Príncipe de Asturias en 1981, el regreso a España en 1984 y, en 1988, el Premio Cervantes, el más alto de las letras en lengua española, que ninguna mujer había recibido antes. Murió en Madrid en 1991. La que había pensado una razón que acoge lo excluido fue, ella misma, mucho tiempo una voz excluida.</p>
-<p>Con estas tres voces —el combate de Unamuno, la claridad de Ortega, la escucha de Zambrano— se cierra una manera de pensar la razón desde la vida y desde el sentimiento. Pero el siglo XX libró además otra gran batalla en torno a la razón: la que pregunta, tras la catástrofe de los totalitarismos, qué puede esperarse de ella en la sociedad, en la ciencia y en la política. A ese frente —de la Escuela de Fráncfort a Rawls— se dedica el tema siguiente (<a href="tema-19.html#sec-68">§68</a>).</p>
+<p>Con estas tres voces —el combate de Unamuno, la claridad de Ortega, la escucha de Zambrano— se cierra una manera de pensar la razón desde la vida y desde el sentimiento. Pero el siglo XX libró además otra gran batalla en torno a la razón: la que pregunta, tras la catástrofe de los totalitarismos, qué puede esperarse de ella en la sociedad, en la ciencia y en la política. A ese frente —de la Escuela de Fráncfort a Rawls— se dedica el tema siguiente (<a href="../chapters-web/tema-19.html#sec-68">§68</a>).</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Al Unamuno escritor le debemos, de paso, un guiño que reaparece en el feminismo de hoy: en 1921 fue el primero en usar en castellano la palabra <em>sororidad</em> —«Antígona era <em>soror</em>, hermana. Y convendría acaso hablar de <em>sororidad</em> y de <em>sororal</em>, de hermandad femenina»—, casi un siglo antes de que la RAE la admitiera (2018) y de que la idea se asociara a Beauvoir (<a href="tema-21.html#sec-77">§77</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Al Unamuno escritor le debemos, de paso, un guiño que reaparece en el feminismo de hoy: en 1921 fue el primero en usar en castellano la palabra <em>sororidad</em> —«Antígona era <em>soror</em>, hermana. Y convendría acaso hablar de <em>sororidad</em> y de <em>sororal</em>, de hermandad femenina»—, casi un siglo antes de que la RAE la admitiera (2018) y de que la idea se asociara a Beauvoir (<a href="../chapters-web/tema-21.html#sec-77">§77</a>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>De ahí el título de otra de sus obras, <em>La agonía del cristianismo</em> (1925): no la muerte del cristianismo, sino el cristianismo entendido como lucha interior incesante. Para Unamuno, una fe que no agoniza —que no pelea con la duda— está muerta.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>La distinción es de <em>Ideas y creencias</em> (1940); la crisis histórica sobreviene cuando es una creencia <em>colectiva</em> la que falla, y la cultura es el repertorio de ideas con que un tiempo intenta orientarse en ese hueco.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -671,7 +795,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -680,8 +805,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -695,6 +881,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -857,44 +1044,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -993,7 +1190,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-17.html" class="pagination-link" aria-label="Tema 17 · El existencialismo">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 17 · El existencialismo</span></span>

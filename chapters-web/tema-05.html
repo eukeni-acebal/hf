@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web/tema-04.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Saltar al contenido principal</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Barra de herramientas">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-05.html"><span class="chapter-title">Tema 5 · Las filosofías helenísticas</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-05.html"><span class="chapter-title">Tema 5 · Las filosofías helenísticas</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Sitio web"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/es/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Historia de la Filosofía</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/es/" title="Colección Areté" class="quarto-navigation-tool px-1" aria-label="Colección Areté"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/fh/" title="Euskarazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Euskarazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf" title="Descargar el PDF" class="quarto-navigation-tool px-1" aria-label="Descargar el PDF"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa" title="Avisar de una errata" class="quarto-navigation-tool px-1" aria-label="Avisar de una errata"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/hf" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro" aria-label="Alternar modo oscuro"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte I · Antigüedad</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Parte I · Antigüedad</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección: Parte I · Antigüedad">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 1 · Del mito a la filosofía</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte II · Edad Media</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Parte II · Edad Media</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección: Parte II · Edad Media">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 6 · La filosofía medieval: Dios, fe y razón</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte III · Edad Moderna</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Parte III · Edad Moderna</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección: Parte III · Edad Moderna">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 7 · El nacimiento de la modernidad</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte IV · El siglo XIX</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">Parte IV · El siglo XIX</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección: Parte IV · El siglo XIX">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 13 · El utilitarismo</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parte-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Parte V · Siglos XX y XXI</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar sección">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">Parte V · Siglos XX y XXI</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección: Parte V · Siglos XX y XXI">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web/tema-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tema 17 · El existencialismo</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/fh/" lang="eu" hreflang="eu">Euskaraz</a></li>
+<li><a href="https://github.com/eukeni-acebal/hf/releases/latest/download/historia-de-la-filosofia.pdf">Descargar PDF</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Errata%20o%20sugerencia%20%C2%B7%20Historia%20de%20la%20Filosof%C3%ADa">Escríbeme</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">En esta página</h2>
    
   <ul class="collapse">
@@ -495,10 +507,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-05.html"><span class="chapter-title">Tema 5 · Las filosofías helenísticas</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Hilo de Ariadna"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parte-1.html">Parte I · Antigüedad</a></li><li class="breadcrumb-item"><a href="../chapters-web/tema-05.html"><span class="chapter-title">Tema 5 · Las filosofías helenísticas</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">Tema 5 · Las filosofías helenísticas</span></h1>
 </div>
@@ -522,7 +534,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="de-las-polis-al-imperio" class="level2">
 <h2 class="anchored" data-anchor-id="de-las-polis-al-imperio">De las polis al imperio</h2>
 <p>En el año 323 a. e. c.&nbsp;muere en Babilonia Alejandro Magno (356-323 a. e. c.), y con él se cierra una época. En apenas trece años, el rey de Macedonia había conquistado el mundo conocido, desde Grecia hasta el valle del Indo, y a su muerte ese imperio se reparte entre sus generales en una constelación de grandes monarquías. El mapa político en que había nacido la filosofía —el de las pequeñas ciudades-estado independientes, las <em>poleis</em>— se ha deshecho para siempre. Llamamos <em>período helenístico</em> a los tres siglos que van de esa muerte a la consolidación del dominio de Roma, y <em>filosofías helenísticas</em> a las corrientes que florecen en ellos: el cinismo, el epicureísmo, el estoicismo y el escepticismo.</p>
-<p><strong>El final de la ciudad como horizonte.</strong> Para entender estas filosofías hay que medir lo que ese cambio político significó. La polis griega no había sido solo una forma de gobierno: era el marco entero de la vida buena. Cuando Aristóteles definía al ser humano como un «animal político» (<em>zóon politikón</em>), por naturaleza destinado a realizarse en la comunidad de la ciudad (<a href="tema-04.html#sec-19">§19</a>), expresaba una convicción compartida: fuera de la polis, decía, solo cabe ser una bestia o un dios. Pero la generación siguiente a la suya vio precisamente eso: ciudades que conservaban sus templos y sus fiestas pero habían perdido lo esencial, la soberanía. Las decisiones que contaban ya no se tomaban en la asamblea de ciudadanos, sino en las cortes lejanas de unos reyes. El ciudadano que deliberaba sobre la guerra y la paz se convierte en súbdito de un imperio inmenso y ajeno, en el que su voto no decide nada. Si la vida lograda no puede ya buscarse en el gobierno de la ciudad, ¿dónde buscarla?</p>
+<p><strong>El final de la ciudad como horizonte.</strong> Para entender estas filosofías hay que medir lo que ese cambio político significó. La polis griega no había sido solo una forma de gobierno: era el marco entero de la vida buena. Cuando Aristóteles definía al ser humano como un «animal político» (<em>zóon politikón</em>), por naturaleza destinado a realizarse en la comunidad de la ciudad (<a href="../chapters-web/tema-04.html#sec-19">§19</a>), expresaba una convicción compartida: fuera de la polis, decía, solo cabe ser una bestia o un dios. Pero la generación siguiente a la suya vio precisamente eso: ciudades que conservaban sus templos y sus fiestas pero habían perdido lo esencial, la soberanía. Las decisiones que contaban ya no se tomaban en la asamblea de ciudadanos, sino en las cortes lejanas de unos reyes. El ciudadano que deliberaba sobre la guerra y la paz se convierte en súbdito de un imperio inmenso y ajeno, en el que su voto no decide nada. Si la vida lograda no puede ya buscarse en el gobierno de la ciudad, ¿dónde buscarla?</p>
 <p>La respuesta de las filosofías helenísticas es unánime en su dirección, aunque diversa en su contenido: si el mundo exterior se ha vuelto incontrolable, la vida buena ha de buscarse <em>dentro</em>, en aquello que sí depende de nosotros. El centro de gravedad de la filosofía se desplaza de la ciudad al individuo, y de la teoría a la conducta. La pregunta deja de ser «¿cómo debe organizarse la polis justa?» (la de Platón y Aristóteles) y pasa a ser «¿cómo debo vivir yo para no ser desdichado en un mundo que no gobierno?». Es el mismo giro hacia el interior que, siglos más tarde, repetirán otras épocas de incertidumbre.</p>
 <p><strong>La filosofía como terapia.</strong> De ahí el rasgo que mejor define a todas estas escuelas: conciben la filosofía como una <em>terapia</em>, una medicina del alma. No buscan el saber por el saber, como la Academia de Platón o el Liceo de Aristóteles, sino la salud del que sufre. Epicuro lo dirá sin rodeos: «vacío es el discurso del filósofo que no remedia ningún padecimiento humano; pues igual que de nada sirve una medicina que no expulsa las enfermedades del cuerpo, tampoco la filosofía si no expulsa el padecimiento del alma»<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. La filosofía es un <em>arte de vivir</em> (<em>téchne tou bíou</em>): un saber práctico cuyo fin no es describir el mundo, sino enseñar a vivir en él sin zozobra. El filósofo se vuelve algo parecido a un médico, y la doctrina, a un tratamiento.</p>
 <p>Esto explica un parecido de familia entre escuelas por lo demás enfrentadas. Las cuatro reparten su doctrina, de un modo u otro, en dos grandes frentes. Por un lado, una <em>física</em> o una <em>lógica</em>: una imagen de qué es el mundo y de cómo podemos conocerlo, que el epicureísmo y el estoicismo desarrollan con detalle y que el cinismo, en cambio, casi desprecia. Por otro, y sobre todo, una <em>ética</em>: la parte que de verdad importa, porque es la que cura. En todas ellas la física está al servicio de la ética: se estudia la naturaleza no por curiosidad, sino para liberarse del miedo y aprender a vivir conforme a ella. La teoría es el medio; la serenidad, el fin.</p>
@@ -532,19 +544,19 @@ ul.task-list li input[type="checkbox"] {
 <li><p>La <em>autarquía</em> (<em>autárkeia</em>): la autosuficiencia, el bastarse a sí mismo. El sabio helenístico aspira a depender lo menos posible de lo que no controla —de la fortuna, de los bienes externos, de la opinión ajena—, porque solo así su serenidad queda a salvo. Cuanto menos necesite de fuera, menos podrá arrebatarle el mundo. Los cínicos llevan este ideal al extremo del despojamiento; los demás lo modulan, pero ninguno renuncia a él.</p></li>
 </ol>
 <p>Ataraxía y autarquía son las dos caras de una misma aspiración: una paz interior que no esté a merced de lo exterior. Si la felicidad dependiera de la salud, la riqueza, el poder o el aplauso, sería tan frágil como ellos, pues todos pueden perderse. La apuesta común de las escuelas helenísticas es desplazar la felicidad a un terreno seguro, el del propio interior, el único que un imperio no puede conquistar.</p>
-<p><strong>Cuatro respuestas a una misma pregunta.</strong> Sobre este fondo compartido, cada escuela traza su camino, y es en los caminos donde se separan. El cínico busca la autarquía aboliendo las necesidades, en una vida de renuncia provocadora (<a href="tema-05.html#sec-20">§20</a>). El epicúreo la busca en el placer bien entendido, que no es el exceso, sino la ausencia serena de dolor, cultivada entre amigos al margen de la política (<a href="tema-05.html#sec-21">§21</a>). El estoico la busca en la virtud y en la aceptación del destino, viviendo conforme a la razón que gobierna el cosmos (<a href="tema-05.html#sec-22">§22</a>). El escéptico, por fin, la busca por una vía inesperada: suspendiendo todo juicio, renunciando a afirmar nada, para que la calma llegue justo cuando dejamos de empeñarnos en saber (<a href="tema-05.html#sec-23">§23</a>). Cuatro respuestas distintas, a veces opuestas, a la única pregunta que de verdad les importa a todas: cómo vivir bien cuando ya no se puede cambiar el mundo. Las leeremos en ese orden, que es a grandes rasgos el de su nacimiento, y cerraremos el tema, y con él la Antigüedad, con una figura que encarna su ocaso: Hipatia de Alejandría (<a href="tema-05.html#sec-24">§24</a>).</p>
+<p><strong>Cuatro respuestas a una misma pregunta.</strong> Sobre este fondo compartido, cada escuela traza su camino, y es en los caminos donde se separan. El cínico busca la autarquía aboliendo las necesidades, en una vida de renuncia provocadora (<a href="../chapters-web/tema-05.html#sec-20">§20</a>). El epicúreo la busca en el placer bien entendido, que no es el exceso, sino la ausencia serena de dolor, cultivada entre amigos al margen de la política (<a href="../chapters-web/tema-05.html#sec-21">§21</a>). El estoico la busca en la virtud y en la aceptación del destino, viviendo conforme a la razón que gobierna el cosmos (<a href="../chapters-web/tema-05.html#sec-22">§22</a>). El escéptico, por fin, la busca por una vía inesperada: suspendiendo todo juicio, renunciando a afirmar nada, para que la calma llegue justo cuando dejamos de empeñarnos en saber (<a href="../chapters-web/tema-05.html#sec-23">§23</a>). Cuatro respuestas distintas, a veces opuestas, a la única pregunta que de verdad les importa a todas: cómo vivir bien cuando ya no se puede cambiar el mundo. Las leeremos en ese orden, que es a grandes rasgos el de su nacimiento, y cerraremos el tema, y con él la Antigüedad, con una figura que encarna su ocaso: Hipatia de Alejandría (<a href="../chapters-web/tema-05.html#sec-24">§24</a>).</p>
 </section>
 <section id="sec-20" class="level2">
 <h2 class="anchored" data-anchor-id="sec-20">§20 · El cinismo</h2>
 <p>El cinismo es la más antigua y la más radical de las escuelas helenísticas, y también la menos doctrinal: apenas tiene teoría, porque su filosofía no se expone, se <em>vive</em>. Más que un sistema, es una forma de existencia, una provocación deliberada contra todo lo que la sociedad da por supuesto. Por eso no encontraremos en él una física ni una teoría del conocimiento dignas de ese nombre: el cínico desprecia la especulación como un lujo inútil. Toda su filosofía es ética, y una ética llevada al límite.</p>
-<p><strong>La raíz socrática.</strong> El cinismo nace de Sócrates, o de uno de los Sócrates posibles. Entre los discípulos del maestro, junto a Platón, estuvo Antístenes (h. 445-h. 365 a. e. c.), que retuvo de él no la teoría, sino el ejemplo de una vida austera, dueña de sí, indiferente a las comodidades y a la opinión (<a href="tema-02.html#sec-06">§06</a>). Si Platón heredó del maestro la pregunta por las Formas y el saber, Antístenes heredó la figura del hombre que se basta a sí mismo y que mide el valor de las cosas por la virtud, no por la riqueza ni la fama. De esa herencia, llevada a su extremo, surge el cinismo.</p>
+<p><strong>La raíz socrática.</strong> El cinismo nace de Sócrates, o de uno de los Sócrates posibles. Entre los discípulos del maestro, junto a Platón, estuvo Antístenes (h. 445-h. 365 a. e. c.), que retuvo de él no la teoría, sino el ejemplo de una vida austera, dueña de sí, indiferente a las comodidades y a la opinión (<a href="../chapters-web/tema-02.html#sec-06">§06</a>). Si Platón heredó del maestro la pregunta por las Formas y el saber, Antístenes heredó la figura del hombre que se basta a sí mismo y que mide el valor de las cosas por la virtud, no por la riqueza ni la fama. De esa herencia, llevada a su extremo, surge el cinismo.</p>
 <p><strong>Diógenes, el perro.</strong> Su figura mayor es Diógenes de Sinope (h. 412-323 a. e. c.), uno de los personajes más célebres de la Antigüedad, en torno al cual se acumuló un enjambre de anécdotas. De él procede, probablemente, el nombre mismo de la escuela: <em>kynikós</em> significa «perruno», «como un perro» (<em>kýon</em>), y los cínicos asumieron con orgullo el insulto. Vivían, en efecto, como perros: sin casa, sin pudor, sin propiedad, haciendo en público lo que la costumbre reserva a lo privado, ladrando contra las convenciones y mordiendo a los poderosos. Se cuenta que Diógenes habitaba en un tonel, que toda su propiedad era un manto, un zurrón y un bastón, y que cuando vio a un niño beber agua en el hueco de las manos tiró su único cuenco, reprochándose haber cargado con algo superfluo.</p>
 <p>Las anécdotas, ciertas o no, son la doctrina: cada una ilustra una idea. Cuando Alejandro Magno, dueño del mundo, se plantó ante él y le ofreció concederle lo que pidiera, Diógenes respondió: «Apártate, que me tapas el sol». El hombre más poderoso de la tierra nada tenía que ofrecer al que nada necesitaba: la escena entera es una lección sobre la autarquía (ver el puente de este tema). De Diógenes se cuenta también que paseaba a plena luz del día con una linterna encendida; preguntado qué buscaba, contestaba: «Busco un hombre», esto es, un ser humano de verdad, alguien que viviera conforme a su naturaleza y no según la mentira de las convenciones.</p>
 <p><strong>La vida según la naturaleza.</strong> Bajo las provocaciones late una tesis sencilla y seria. El cínico sostiene que la infelicidad humana procede de las convenciones sociales (<em>nómos</em>): la riqueza, el poder, la fama, las buenas maneras, el pudor, la patria, son acuerdos artificiales que nos esclavizan, porque nos hacen desear y temer cosas que no necesitamos. Frente a ese mundo falso, el cínico propone vivir <em>según la naturaleza</em> (<em>katà phýsin</em>): reducir las necesidades a lo estrictamente natural, como comer cuando se tiene hambre o abrigarse del frío, y despreciar todo lo demás. Quien nada necesita, nada teme perder, y es por tanto libre y autosuficiente. La autarquía se conquista, pues, no acumulando bienes, sino aboliendo deseos. En esto el cínico invierte la lógica corriente: no es más libre el que más tiene, sino el que menos necesita.</p>
 <p>De esa raíz nacen dos rasgos más. El primero es la <em>askesis</em> (<em>áskesis</em>), el ejercicio, el entrenamiento: como la virtud es un asunto de práctica y no de teoría, el cínico se ejercita en la privación, pasando frío, hambre y fatiga, para endurecer el alma y volverse inmune a la fortuna, igual que el atleta entrena el cuerpo. El segundo es la <em>parresía</em>, la libertad de palabra: el cínico dice la verdad a la cara de cualquiera, sin miedo y sin halago, porque nada tiene que perder y a nadie debe agradar.</p>
-<p><strong>Cosmopolitismo.</strong> De este rechazo de las convenciones se sigue una idea de enorme porvenir. Preguntado por su patria, Diógenes respondió que era <em>kosmopolítes</em>, «ciudadano del mundo». La frase, en un griego para quien la ciudadanía era la pertenencia a una polis concreta, resultaba casi un contrasentido provocador; pero anunciaba algo nuevo. Si las fronteras entre ciudades son convenciones artificiales, el sabio no pertenece a ninguna en particular, sino a la humanidad entera. En un mundo que acababa de romper las murallas de las pequeñas ciudades, esta idea de una comunidad humana universal, por encima de patrias y leyes locales, tenía un eco profundo, y el estoicismo la recogerá y la elevará a doctrina (<a href="tema-05.html#sec-22">§22</a>).</p>
-<p><strong>De Crates a Hiparquia, y el puente al estoicismo.</strong> El cinismo se transmitió no como escuela formal, sino como un modo de vida que pasaba de maestro a discípulo. El heredero de Diógenes fue Crates de Tebas (h. 365-h. 285 a. e. c.), que repartió su considerable fortuna para abrazar la pobreza cínica y que, a diferencia del áspero Diógenes, fue recordado como una figura amable, casi un consejero benévolo. Con él se asocia un caso notable para la historia de la filosofía y de las mujeres en ella: Hiparquia de Maronea (h. 350-h. 280 a. e. c.), que renunció a su posición acomodada para casarse con Crates y vivir como filósofa cínica, en pie de igualdad con los hombres, participando en banquetes y discusiones de los que las mujeres estaban excluidas. Es una de las pocas mujeres filósofas de la Antigüedad de las que conservamos el nombre y algún hecho, en la estela de Aspasia (<a href="tema-02.html#sec-08">§08</a>).</p>
-<p>La importancia histórica de Crates desborda al cinismo, porque de su magisterio salió quien fundaría la escuela más influyente del período. Un joven mercader llegado de Chipre, Zenón de Citio, naufragó cerca de Atenas, entró por casualidad en una librería, quedó prendado de los relatos sobre Sócrates y preguntó dónde podría encontrar un hombre semejante; le señalaron a Crates, que pasaba en ese momento. Así, el estoicismo (<a href="tema-05.html#sec-22">§22</a>) hunde su raíz en el cinismo: Zenón aprendió del cínico el ideal de la vida conforme a la naturaleza y la autarquía del sabio, aunque después templaría su radicalismo y le añadiría la física y la lógica que el cinismo había despreciado. El cínico fue siempre, para los estoicos, una figura admirada e incómoda: el espejo extremo de su propio ideal.</p>
+<p><strong>Cosmopolitismo.</strong> De este rechazo de las convenciones se sigue una idea de enorme porvenir. Preguntado por su patria, Diógenes respondió que era <em>kosmopolítes</em>, «ciudadano del mundo». La frase, en un griego para quien la ciudadanía era la pertenencia a una polis concreta, resultaba casi un contrasentido provocador; pero anunciaba algo nuevo. Si las fronteras entre ciudades son convenciones artificiales, el sabio no pertenece a ninguna en particular, sino a la humanidad entera. En un mundo que acababa de romper las murallas de las pequeñas ciudades, esta idea de una comunidad humana universal, por encima de patrias y leyes locales, tenía un eco profundo, y el estoicismo la recogerá y la elevará a doctrina (<a href="../chapters-web/tema-05.html#sec-22">§22</a>).</p>
+<p><strong>De Crates a Hiparquia, y el puente al estoicismo.</strong> El cinismo se transmitió no como escuela formal, sino como un modo de vida que pasaba de maestro a discípulo. El heredero de Diógenes fue Crates de Tebas (h. 365-h. 285 a. e. c.), que repartió su considerable fortuna para abrazar la pobreza cínica y que, a diferencia del áspero Diógenes, fue recordado como una figura amable, casi un consejero benévolo. Con él se asocia un caso notable para la historia de la filosofía y de las mujeres en ella: Hiparquia de Maronea (h. 350-h. 280 a. e. c.), que renunció a su posición acomodada para casarse con Crates y vivir como filósofa cínica, en pie de igualdad con los hombres, participando en banquetes y discusiones de los que las mujeres estaban excluidas. Es una de las pocas mujeres filósofas de la Antigüedad de las que conservamos el nombre y algún hecho, en la estela de Aspasia (<a href="../chapters-web/tema-02.html#sec-08">§08</a>).</p>
+<p>La importancia histórica de Crates desborda al cinismo, porque de su magisterio salió quien fundaría la escuela más influyente del período. Un joven mercader llegado de Chipre, Zenón de Citio, naufragó cerca de Atenas, entró por casualidad en una librería, quedó prendado de los relatos sobre Sócrates y preguntó dónde podría encontrar un hombre semejante; le señalaron a Crates, que pasaba en ese momento. Así, el estoicismo (<a href="../chapters-web/tema-05.html#sec-22">§22</a>) hunde su raíz en el cinismo: Zenón aprendió del cínico el ideal de la vida conforme a la naturaleza y la autarquía del sabio, aunque después templaría su radicalismo y le añadiría la física y la lógica que el cinismo había despreciado. El cínico fue siempre, para los estoicos, una figura admirada e incómoda: el espejo extremo de su propio ideal.</p>
 </section>
 <section id="sec-21" class="level2">
 <h2 class="anchored" data-anchor-id="sec-21">§21 · El epicureísmo</h2>
@@ -556,8 +568,8 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>El Jardín.</strong> Epicuro enseñaba en una casa con huerto a las afueras de Atenas, de donde la escuela tomó su nombre: el <em>Jardín</em> (<em>Kêpos</em>). No era una academia de investigación, sino una comunidad de amigos que compartían una forma de vida apartada de la política y de las ambiciones de la ciudad. En ella, contra la costumbre de la época, se admitía a mujeres y a esclavos, lo que escandalizó a los contemporáneos y alimentó las calumnias sobre los excesos del Jardín. La realidad era casi opuesta a la leyenda: el régimen epicúreo era sobrio, frugal y centrado en la amistad.</p>
-<p><strong>La canónica: el criterio de verdad.</strong> Epicuro llama <em>canónica</em> a su teoría del conocimiento, de <em>kanón</em>, la regla o el canon que permite distinguir lo verdadero de lo falso. Es un <em>empirismo</em> riguroso: todo conocimiento procede de los sentidos, y son las <em>sensaciones</em> el primer criterio de verdad. Las sensaciones, sostiene, nunca engañan por sí mismas; el error nace después, cuando la mente juzga precipitadamente sobre ellas. A las sensaciones se suman las <em>prolepsis</em> (<em>prólepsis</em>), las nociones generales que la experiencia repetida deja en nosotros —la idea de «hombre» o de «árbol», formada por el recuerdo de muchos hombres y árboles—, y las <em>afecciones</em> (<em>páthe</em>), el placer y el dolor, que son el criterio de lo que hay que buscar y lo que hay que evitar. La canónica importa porque pone los pies de la ética en el suelo: el bien y el mal no se deducen de un mundo de Formas separado (<a href="tema-03.html#sec-09">§09</a>), sino que se sienten, aquí y ahora, como placer y como dolor.</p>
-<p><strong>La física: átomos y vacío.</strong> Para curar al alma hay que liberarla de sus miedos, y el mayor de ellos nace de una falsa imagen del mundo. Por eso Epicuro recupera y adapta el atomismo de Demócrito (<a href="tema-01.html#sec-03">§03</a>): no existen más que <em>átomos</em> —partículas indivisibles, eternas e imperceptibles— y el <em>vacío</em> por el que se mueven. Todo cuanto hay, incluida el alma, es un agregado de átomos que el azar de sus choques compone y descompone. A la física heredada Epicuro añade un rasgo propio y discutido, el <em>clinamen</em> o desviación: los átomos, al caer, se desvían a veces de su trayectoria de un modo imprevisible, y de esa mínima indeterminación nace tanto la formación de los mundos como un margen de libertad que el determinismo estricto de Demócrito no dejaba.</p>
+<p><strong>La canónica: el criterio de verdad.</strong> Epicuro llama <em>canónica</em> a su teoría del conocimiento, de <em>kanón</em>, la regla o el canon que permite distinguir lo verdadero de lo falso. Es un <em>empirismo</em> riguroso: todo conocimiento procede de los sentidos, y son las <em>sensaciones</em> el primer criterio de verdad. Las sensaciones, sostiene, nunca engañan por sí mismas; el error nace después, cuando la mente juzga precipitadamente sobre ellas. A las sensaciones se suman las <em>prolepsis</em> (<em>prólepsis</em>), las nociones generales que la experiencia repetida deja en nosotros —la idea de «hombre» o de «árbol», formada por el recuerdo de muchos hombres y árboles—, y las <em>afecciones</em> (<em>páthe</em>), el placer y el dolor, que son el criterio de lo que hay que buscar y lo que hay que evitar. La canónica importa porque pone los pies de la ética en el suelo: el bien y el mal no se deducen de un mundo de Formas separado (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), sino que se sienten, aquí y ahora, como placer y como dolor.</p>
+<p><strong>La física: átomos y vacío.</strong> Para curar al alma hay que liberarla de sus miedos, y el mayor de ellos nace de una falsa imagen del mundo. Por eso Epicuro recupera y adapta el atomismo de Demócrito (<a href="../chapters-web/tema-01.html#sec-03">§03</a>): no existen más que <em>átomos</em> —partículas indivisibles, eternas e imperceptibles— y el <em>vacío</em> por el que se mueven. Todo cuanto hay, incluida el alma, es un agregado de átomos que el azar de sus choques compone y descompone. A la física heredada Epicuro añade un rasgo propio y discutido, el <em>clinamen</em> o desviación: los átomos, al caer, se desvían a veces de su trayectoria de un modo imprevisible, y de esa mínima indeterminación nace tanto la formación de los mundos como un margen de libertad que el determinismo estricto de Demócrito no dejaba.</p>
 <p>De esta física materialista se siguen dos consecuencias liberadoras, que son el verdadero motivo de estudiarla:</p>
 <ol type="1">
 <li><em>Los dioses no han de temerse.</em> Epicuro no niega que existan dioses, pero sostiene que, siendo perfectos y felices, viven en una serena indiferencia, sin ocuparse del mundo ni de los hombres. No crearon el universo ni lo gobiernan, no premian ni castigan. El miedo a la cólera divina, que tantas vidas amarga, carece por tanto de fundamento.</li>
@@ -576,7 +588,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="sec-22" class="level2">
 <h2 class="anchored" data-anchor-id="sec-22">§22 · El estoicismo</h2>
 <p>El estoicismo es, de las cuatro, la escuela más influyente y duradera: nacida en Atenas hacia el 300 a. e. c., llegó a ser la filosofía dominante del mundo romano y dejó una huella que alcanza hasta hoy. Comparte con el epicureísmo la ambición de un sistema completo y el fin terapéutico, pero le opone, punto por punto, una imagen del mundo y una idea de la felicidad casi contrarias<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Donde el epicúreo se retira, el estoico se compromete; donde el epicúreo busca el placer, el estoico busca la virtud; donde el epicúreo ve átomos y azar, el estoico ve un cosmos ordenado por la razón.</p>
-<p><strong>La Estoa y sus tres edades.</strong> El nombre viene del lugar de enseñanza: Zenón de Citio (h. 334-h. 262 a. e. c.), el antiguo discípulo de Crates el cínico (<a href="tema-05.html#sec-20">§20</a>), enseñaba en el <em>Stoa Poikíle</em>, el «pórtico pintado» del ágora de Atenas. De ahí, <em>estoicos</em>, «los del pórtico». La escuela tuvo una vida larguísima, que suele dividirse en tres etapas: la <em>Estoa antigua</em> (Zenón y, sobre todo, Crisipo de Solos, h. 279-h. 206 a. e. c., el gran sistematizador, de quien se dijo que «sin Crisipo no habría Estoa»), la <em>Estoa media</em> y la <em>Estoa romana</em>, la mejor conservada, con tres autores que aún se leen: el político y dramaturgo Séneca (h. 4 a. e. c.&nbsp;– 65 e. c.), el esclavo liberto Epicteto (h. 55-h. 135 e. c.) y el emperador Marco Aurelio (121-180 e. c.). Que un esclavo y un emperador profesaran la misma filosofía dice ya algo de su mensaje: la libertad interior no depende de la condición exterior.</p>
+<p><strong>La Estoa y sus tres edades.</strong> El nombre viene del lugar de enseñanza: Zenón de Citio (h. 334-h. 262 a. e. c.), el antiguo discípulo de Crates el cínico (<a href="../chapters-web/tema-05.html#sec-20">§20</a>), enseñaba en el <em>Stoa Poikíle</em>, el «pórtico pintado» del ágora de Atenas. De ahí, <em>estoicos</em>, «los del pórtico». La escuela tuvo una vida larguísima, que suele dividirse en tres etapas: la <em>Estoa antigua</em> (Zenón y, sobre todo, Crisipo de Solos, h. 279-h. 206 a. e. c., el gran sistematizador, de quien se dijo que «sin Crisipo no habría Estoa»), la <em>Estoa media</em> y la <em>Estoa romana</em>, la mejor conservada, con tres autores que aún se leen: el político y dramaturgo Séneca (h. 4 a. e. c.&nbsp;– 65 e. c.), el esclavo liberto Epicteto (h. 55-h. 135 e. c.) y el emperador Marco Aurelio (121-180 e. c.). Que un esclavo y un emperador profesaran la misma filosofía dice ya algo de su mensaje: la libertad interior no depende de la condición exterior.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-marco-aurelio.jpg" class="img-fluid figure-img"></p>
@@ -591,7 +603,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p><em>La apatía como meta.</em> El sabio aspira a la <em>apatheia</em> (<em>apátheia</em>), la ausencia de pasiones. Las pasiones, como el miedo, el deseo desordenado, la pena o el placer exaltado, son para el estoico juicios falsos, errores de la razón que valoran como bien o como mal lo que es indiferente. Erradicarlos no es volverse insensible, sino dejar de ser esclavo de lo que no se controla, y alcanzar así una serenidad firme, próxima a la ataraxía epicúrea aunque conquistada por otro camino (ver el puente de este tema).</p></li>
 </ol>
 <p><strong>Lo que depende de nosotros.</strong> El corazón práctico de esta ética lo formuló Epicteto en una distinción tan simple como poderosa: hay cosas que dependen de nosotros y cosas que no. Dependen de nosotros nuestros juicios, nuestros deseos y nuestras acciones; no dependen de nosotros el cuerpo, la riqueza, la fama, ni nada de cuanto la fortuna da y quita. La fuente de toda desdicha es empeñarse en controlar lo segundo; la raíz de la serenidad, ocuparse solo de lo primero y aceptar el resto como viene. «No te empeñes en que las cosas sucedan como quieres, sino quiere que sucedan como suceden, y tu vida transcurrirá serena» (<em>Enquiridión</em>, 8). De ahí la actitud estoica ante el destino: como nada puede ser de otro modo, la sabiduría consiste en aceptar de buen grado lo que el orden del mundo dispone, en amar el propio destino, y no en rebelarse en vano contra lo inevitable.</p>
-<p><strong>Cosmopolitismo y deber.</strong> A diferencia del epicúreo, el estoico no se retira del mundo. Si una misma razón, el logos, habita en todos los seres humanos, entonces todos somos, por naturaleza, conciudadanos de una única comunidad racional: la <em>cosmópolis</em>, la ciudad del mundo. La idea, esbozada por los cínicos (<a href="tema-05.html#sec-20">§20</a>), se vuelve aquí doctrina madura y fundamento de deberes: cada cual ha de cumplir el papel que le ha tocado, sea en la familia, en la ciudad o en la humanidad, como quien desempeña con dignidad un papel en una obra cuyo argumento no ha escrito. De esta raíz estoica brotará una larga descendencia: la idea de una ley natural común a todos los hombres, de una igualdad esencial entre ellos por encima de su condición, y de unos deberes hacia la humanidad entera, que pasará al derecho romano, al cristianismo y, mucho más tarde, a las declaraciones de derechos.</p>
+<p><strong>Cosmopolitismo y deber.</strong> A diferencia del epicúreo, el estoico no se retira del mundo. Si una misma razón, el logos, habita en todos los seres humanos, entonces todos somos, por naturaleza, conciudadanos de una única comunidad racional: la <em>cosmópolis</em>, la ciudad del mundo. La idea, esbozada por los cínicos (<a href="../chapters-web/tema-05.html#sec-20">§20</a>), se vuelve aquí doctrina madura y fundamento de deberes: cada cual ha de cumplir el papel que le ha tocado, sea en la familia, en la ciudad o en la humanidad, como quien desempeña con dignidad un papel en una obra cuyo argumento no ha escrito. De esta raíz estoica brotará una larga descendencia: la idea de una ley natural común a todos los hombres, de una igualdad esencial entre ellos por encima de su condición, y de unos deberes hacia la humanidad entera, que pasará al derecho romano, al cristianismo y, mucho más tarde, a las declaraciones de derechos.</p>
 </section>
 <section id="sec-23" class="level2">
 <h2 class="anchored" data-anchor-id="sec-23">§23 · El escepticismo helenístico</h2>
@@ -599,15 +611,15 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Dos escepticismos.</strong> Conviene distinguir desde el principio dos corrientes que la historia suele juntar. La primera es el <em>escepticismo académico</em>: paradójicamente, la propia Academia de Platón, en los siglos posteriores a su muerte, dio un giro escéptico bajo Arcesilao (h. 316-h. 241 a. e. c.) y Carnéades (h. 214-h. 129 a. e. c.), que dirigieron sus armas sobre todo contra el dogmatismo de los estoicos y su pretensión de un criterio seguro de verdad. La segunda es el <em>escepticismo pirrónico</em>, que se remonta a Pirrón de Elis (h. 360-h. 270 a. e. c.) —figura casi legendaria, que no escribió nada— y que fue sistematizado mucho después por Enesidemo (s. I a. e. c.) y, sobre todo, por Sexto Empírico (h. 160-h. 210 e. c.), médico y filósofo a quien debemos casi todo lo que sabemos del movimiento. Es esta segunda corriente la que dio al escepticismo su forma clásica y su nombre.</p>
 <p><strong>La suspensión del juicio.</strong> El razonamiento pirrónico procede en tres pasos. Primero constata que, para cualquier afirmación, puede oponerse otra de fuerza semejante: a todo argumento se le encuentra un contraargumento, a toda apariencia, una apariencia contraria, como la torre que parece redonda de lejos y cuadrada de cerca, o la miel que es dulce al sano y amarga al enfermo. A este equilibrio de razones opuestas lo llaman <em>isostheneia</em>. Los escépticos reunieron estas oposiciones en listas de <em>tropos</em> o modos, recetas para generar, ante cualquier cuestión, el desacuerdo que impide decidirse. Segundo: ante razones de igual peso a favor y en contra, lo único honesto es no inclinarse por ninguna, <em>suspender el juicio</em>. A esa suspensión la llaman <em>epojé</em> (<em>epoché</em>), el término clave de toda la escuela: ni afirmo ni niego, me abstengo. Tercero, y aquí está la sorpresa: de la suspensión del juicio se sigue, como por sí sola, la <em>ataraxía</em>, la serenidad (ver el puente de este tema).</p>
 <p><strong>La serenidad por la renuncia.</strong> ¿Cómo puede la renuncia a saber producir la paz? La respuesta escéptica es fina. Lo que nos atormenta, dicen, no son las cosas, sino nuestras opiniones sobre las cosas: el que cree firmemente que algo es un gran bien sufre por no tenerlo y teme perderlo; el que cree que algo es un gran mal vive angustiado por evitarlo. Quien suspende el juicio sobre si las cosas son buenas o malas en sí mismas se libera de esa angustia, y la serenidad le llega, dicen, «como la sombra al cuerpo». El escéptico cuenta una anécdota reveladora sobre el pintor Apeles, que, desesperado por no lograr pintar la espuma de la boca de un caballo, arrojó contra el cuadro la esponja con que limpiaba los pinceles, y el azar logró lo que el empeño no había conseguido. Así la ataraxía: llega justo cuando se deja de perseguirla. Para vivir mientras tanto, el escéptico se guía sin dogmas por las apariencias y las costumbres: sigue lo que parece, come cuando tiene hambre y respeta las leyes de su tierra, pero sin afirmar que nada de eso sea verdadero o bueno en sentido último.</p>
-<p><strong>Frente al escepticismo de los sofistas.</strong> Conviene no confundir este escepticismo con el de los sofistas, que vimos en la Ilustración griega (<a href="tema-02.html#sec-05">§05</a>). La diferencia es de fondo. Protágoras, al sostener que «el hombre es la medida de todas las cosas», afirmaba una tesis, el relativismo: cada cual tiene su verdad, y todas valen. Gorgias defendía, con sus paradojas, que nada existe, o que, si existe, no puede conocerse ni comunicarse: otra tesis, esta vez negativa. Ambos <em>afirmaban</em> algo sobre el conocimiento, y por eso el escéptico los considera tan dogmáticos como a sus rivales. El pirrónico, en cambio, no afirma ni que haya muchas verdades ni que no haya ninguna: se limita a no pronunciarse, a mantener abierta la investigación —de hecho, <em>skeptikós</em> significa «el que examina, el que indaga»— sin concluir jamás. Donde el sofista sienta una doctrina relativista, el escéptico se abstiene de toda doctrina. Es una distinción sutil, pero capital, y vale la pena retenerla, porque marca la diferencia entre negar la verdad y, simplemente, dejar de afirmarla.</p>
+<p><strong>Frente al escepticismo de los sofistas.</strong> Conviene no confundir este escepticismo con el de los sofistas, que vimos en la Ilustración griega (<a href="../chapters-web/tema-02.html#sec-05">§05</a>). La diferencia es de fondo. Protágoras, al sostener que «el hombre es la medida de todas las cosas», afirmaba una tesis, el relativismo: cada cual tiene su verdad, y todas valen. Gorgias defendía, con sus paradojas, que nada existe, o que, si existe, no puede conocerse ni comunicarse: otra tesis, esta vez negativa. Ambos <em>afirmaban</em> algo sobre el conocimiento, y por eso el escéptico los considera tan dogmáticos como a sus rivales. El pirrónico, en cambio, no afirma ni que haya muchas verdades ni que no haya ninguna: se limita a no pronunciarse, a mantener abierta la investigación —de hecho, <em>skeptikós</em> significa «el que examina, el que indaga»— sin concluir jamás. Donde el sofista sienta una doctrina relativista, el escéptico se abstiene de toda doctrina. Es una distinción sutil, pero capital, y vale la pena retenerla, porque marca la diferencia entre negar la verdad y, simplemente, dejar de afirmarla.</p>
 </section>
 <section id="sec-24" class="level2">
 <h2 class="anchored" data-anchor-id="sec-24">§24 · Hipatia de Alejandría</h2>
 <p>Cerramos el tema, y con él la Antigüedad entera, con una figura que no pertenece ya a las escuelas helenísticas, sino a su largo crepúsculo. Hipatia de Alejandría (h. 355-415 e. c.) vivió más de seis siglos después de Diógenes y de Epicuro, cuando el mundo grecorromano se cristianizaba y la filosofía pagana se apagaba. Su nombre cierra el subtítulo de toda esta parte del libro, «de Tales de Mileto a Hipatia de Alejandría», y no por azar: en ella y en su muerte se ha querido ver, con razón o sin ella, el símbolo del fin de una época<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
-<p><strong>Figura y contexto.</strong> Hipatia fue hija de Teón de Alejandría (s. IV e. c.), matemático y astrónomo, último miembro asociado al célebre Museo de Alejandría, la gran institución de saber del mundo antiguo. Educada por su padre en las matemáticas, la astronomía y la filosofía, llegó a superarlo en fama y a dirigir en su ciudad una escuela de orientación <em>neoplatónica</em>, la corriente que, recogiendo y sistematizando la herencia de Platón (<a href="tema-03.html#sec-09">§09</a>), dominaba el pensamiento de la Antigüedad tardía. Enseñó durante décadas a un círculo de discípulos, paganos y cristianos por igual, que la rodeaban con devoción; uno de ellos, Sinesio de Cirene (h. 370-h. 413 e. c.), llegó a obispo cristiano y conservó hacia su maestra, en las cartas que se han conservado, una admiración reverente. Mujer respetada en una ciudad de hombres, consejera escuchada por las autoridades, Hipatia gozó en vida de una autoridad intelectual y moral excepcional.</p>
-<p><strong>La aportación.</strong> No ha sobrevivido ninguna obra suya, de modo que su contribución debe reconstruirse a partir de testimonios. En matemáticas y astronomía, las fuentes le atribuyen <em>comentarios</em> —ediciones comentadas, destinadas a la enseñanza— sobre obras capitales de la ciencia antigua: la <em>Aritmética</em> de Diofanto, las <em>Cónicas</em> de Apolonio y el sistema astronómico de Ptolomeo, en parte en colaboración con su padre. Se le atribuye también la mejora de instrumentos científicos, como el <em>astrolabio</em>, para medir la posición de los astros, y aparatos para medir la densidad de los líquidos, según se desprende de las cartas de Sinesio. En filosofía, su magisterio neoplatónico la sitúa en la última gran tradición del pensamiento antiguo. Más que por una doctrina original, que no podemos documentar, Hipatia importa como figura: la culminación de una larga estirpe de saber, y una de las poquísimas mujeres que en toda la Antigüedad alcanzaron el primer rango intelectual, en la línea que en este manual abrieron Aspasia (<a href="tema-02.html#sec-08">§08</a>) e Hiparquia (<a href="tema-05.html#sec-20">§20</a>).</p>
+<p><strong>Figura y contexto.</strong> Hipatia fue hija de Teón de Alejandría (s. IV e. c.), matemático y astrónomo, último miembro asociado al célebre Museo de Alejandría, la gran institución de saber del mundo antiguo. Educada por su padre en las matemáticas, la astronomía y la filosofía, llegó a superarlo en fama y a dirigir en su ciudad una escuela de orientación <em>neoplatónica</em>, la corriente que, recogiendo y sistematizando la herencia de Platón (<a href="../chapters-web/tema-03.html#sec-09">§09</a>), dominaba el pensamiento de la Antigüedad tardía. Enseñó durante décadas a un círculo de discípulos, paganos y cristianos por igual, que la rodeaban con devoción; uno de ellos, Sinesio de Cirene (h. 370-h. 413 e. c.), llegó a obispo cristiano y conservó hacia su maestra, en las cartas que se han conservado, una admiración reverente. Mujer respetada en una ciudad de hombres, consejera escuchada por las autoridades, Hipatia gozó en vida de una autoridad intelectual y moral excepcional.</p>
+<p><strong>La aportación.</strong> No ha sobrevivido ninguna obra suya, de modo que su contribución debe reconstruirse a partir de testimonios. En matemáticas y astronomía, las fuentes le atribuyen <em>comentarios</em> —ediciones comentadas, destinadas a la enseñanza— sobre obras capitales de la ciencia antigua: la <em>Aritmética</em> de Diofanto, las <em>Cónicas</em> de Apolonio y el sistema astronómico de Ptolomeo, en parte en colaboración con su padre. Se le atribuye también la mejora de instrumentos científicos, como el <em>astrolabio</em>, para medir la posición de los astros, y aparatos para medir la densidad de los líquidos, según se desprende de las cartas de Sinesio. En filosofía, su magisterio neoplatónico la sitúa en la última gran tradición del pensamiento antiguo. Más que por una doctrina original, que no podemos documentar, Hipatia importa como figura: la culminación de una larga estirpe de saber, y una de las poquísimas mujeres que en toda la Antigüedad alcanzaron el primer rango intelectual, en la línea que en este manual abrieron Aspasia (<a href="../chapters-web/tema-02.html#sec-08">§08</a>) e Hiparquia (<a href="../chapters-web/tema-05.html#sec-20">§20</a>).</p>
 <p><strong>La muerte.</strong> Hipatia vivió sus últimos años en una Alejandría desgarrada por el conflicto. La ciudad era un polvorín de tensiones entre comunidades —paganos, judíos y cristianos— y de pugnas por el poder entre las autoridades civiles y las eclesiásticas, encarnadas en el prefecto imperial Orestes y en el patriarca Cirilo de Alejandría (h. 376-444 e. c.). Hipatia, amiga y consejera de Orestes y figura visible del paganismo culto, quedó atrapada en esa lucha. En marzo del año 415 e. c., una turba la asaltó en plena calle, la arrastró hasta una iglesia y la asesinó con un ensañamiento atroz. Su muerte conmocionó al mundo antiguo y la convirtió muy pronto en un símbolo: el de la razón y el saber aplastados por la violencia del fanatismo. Conviene, eso sí, leer ese símbolo con cuidado. Las causas de su muerte fueron sobre todo políticas, no una persecución de la ciencia como tal, y la historia posterior la cargó de significados —mártir de la filosofía, alegoría del paganismo vencido— que dicen tanto de cada época como de ella misma. Pero, despojado de leyenda, el hecho desnudo conserva su fuerza: una de las mentes más cultivadas de su tiempo, una mujer libre y respetada, murió a manos de una multitud. Con ella se suele cerrar, por convención y por símbolo, la historia de la filosofía antigua.</p>
-<p><strong>El hilo que continúa.</strong> No conviene, sin embargo, leer este final como una muerte de la filosofía. Las preguntas de las escuelas helenísticas —cómo vivir, cómo alcanzar la serenidad, cómo ser libre interiormente— no murieron con la Antigüedad. El ideal socrático de una vida examinada (<a href="tema-02.html#sec-06">§06</a>), la ética de la felicidad de Aristóteles (<a href="tema-04.html#sec-18">§18</a>) y estas cuatro filosofías de vida que acabamos de recorrer se transmitieron, transformados, al cristianismo, que heredó del estoicismo su ley natural y su cosmopolitismo, y a toda la tradición posterior. La pregunta por el arte de vivir, que el helenismo puso en el centro, no ha dejado de hacerse desde entonces.</p>
+<p><strong>El hilo que continúa.</strong> No conviene, sin embargo, leer este final como una muerte de la filosofía. Las preguntas de las escuelas helenísticas —cómo vivir, cómo alcanzar la serenidad, cómo ser libre interiormente— no murieron con la Antigüedad. El ideal socrático de una vida examinada (<a href="../chapters-web/tema-02.html#sec-06">§06</a>), la ética de la felicidad de Aristóteles (<a href="../chapters-web/tema-04.html#sec-18">§18</a>) y estas cuatro filosofías de vida que acabamos de recorrer se transmitieron, transformados, al cristianismo, que heredó del estoicismo su ley natural y su cosmopolitismo, y a toda la tradición posterior. La pregunta por el arte de vivir, que el helenismo puso en el centro, no ha dejado de hacerse desde entonces.</p>
 </section>
 <section id="las-cuatro-escuelas-de-un-vistazo" class="level2">
 <h2 class="anchored" data-anchor-id="las-cuatro-escuelas-de-un-vistazo">Las cuatro escuelas, de un vistazo</h2>
@@ -684,19 +696,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Alternar modo oscuro");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Alternar modo oscuro");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -775,7 +899,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -784,8 +909,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -799,6 +985,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -961,44 +1148,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1097,7 +1294,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Código desplazable","output":"Salida desplazable"};
+  </script>
+<nav class="page-navigation" aria-label="Página">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web/tema-04.html" class="pagination-link" aria-label="Tema 4 · Aristóteles de Estagira">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Tema 4 · Aristóteles de Estagira</span></span>
